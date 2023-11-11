@@ -3,15 +3,8 @@
 
 int main() 
 {
-	//OKNA - DOCELOWO ZROBIĆ Z TEGO KLASE
-	sf::RenderWindow menu(sf::VideoMode(600.f, 600.f), "Menu");
-	sf::RenderWindow glowne(sf::VideoMode(400.f, 400.f), "Projekt-PACMAN");
-	sf::RenderWindow help(sf::VideoMode(200.f, 200.f), "Pomoc");
-	sf::RenderWindow esc(sf::VideoMode(200.f, 200.f), "Opuszczanie gry");
-
-	glowne.close();//trzeba uważać bo te okna i tak się na chwile pokażą
-	help.close();
-	esc.close();
+	//INICJALIZACJA SILNIKA GRY (KLASY Gra)
+	Gra gra;//obiekt klasy Gra
 
 	//WROGOWIE - DOCELOWO ZROBIĆ Z TEGO KLASE
 	sf::CircleShape wrog_1(100.f);
@@ -32,17 +25,13 @@ int main()
 	wrog_1.setOutlineThickness(-5.f); wrog_2.setOutlineThickness(-5.f); wrog_3.setOutlineThickness(-5.f); wrog_4.setOutlineThickness(-5.f);
 
 	//PĘTLA GRY
-	while (menu.isOpen())
+	while (gra.getWindowIsOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
-		sf::Event event;
-		while (menu.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				menu.close();
-		}
-		menu.clear();
-		menu.draw(wrog_4);
-		menu.display();
+		//aktualizowanie stanu gry
+		gra.aktualizuj();
+
+		//wyświetlanie zawartości
+		gra.wyswietlaj();
 	}
 	return 0;
 }

@@ -20,7 +20,12 @@ public:
 	Gra();//konstruktor
 	~Gra();//destruktor
 
+	//akcesory
+	const bool getWindowIsOpen()const;//funckja odpowiadaj¹ca za otwieranie okna
+
 	//publiczne metody
+	void pollEvents();
+
 	void aktualizuj();
 	void wyswietlaj();
 };
