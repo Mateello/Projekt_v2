@@ -1,5 +1,6 @@
 ﻿#include <SFML/Graphics.hpp>
-#include <gra.h>
+#include "gra.h"
+
 int main() 
 {
 	//OKNA - DOCELOWO ZROBIĆ Z TEGO KLASE
