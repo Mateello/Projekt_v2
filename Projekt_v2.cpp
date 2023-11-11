@@ -1,5 +1,6 @@
 ﻿#include <SFML/Graphics.hpp>
-int main()
+#include <gra.h>
+int main() 
 {
 	//OKNA - DOCELOWO ZROBIĆ Z TEGO KLASE
 	sf::RenderWindow menu(sf::VideoMode(600.f, 600.f), "Menu");
