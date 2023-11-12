@@ -29,7 +29,7 @@ void Gra::pollEvents()//zwracanie wydarzeñ
 		}
 	}
 }
-void Gra::aktualizuj()
+void Gra::aktualizuj()//wyrzuciæ spowrotem pêtle pollEvents do Maina???
 {
 	this->pollEvents();
 }
