@@ -1,12 +1,14 @@
-﻿#include <SFML/Graphics.hpp>
-#include "gra.h"
+﻿//ARiSS 3 Sem, s194336 Projekt - "PACMAN"
+
+#include <SFML/Graphics.hpp>
+//#include "gra.h" - próba zrobienia osobnego folderu z "silnikiem" gry 
 
 int main() 
 {
 	//INICJALIZACJA SILNIKA GRY (KLASY Gra)
-	Gra gra;//obiekt klasy Gra
+	//Gra gra;//obiekt klasy Gra
 
-	//WROGOWIE - DOCELOWO ZROBIĆ Z TEGO KLASE
+	//WROGOWIE - DOCELOWO ZROBIĆ Z TEGO OSOBNĄ KLASĘ
 	sf::CircleShape wrog_1(100.f);
 	sf::CircleShape wrog_2(100.f, 3);
 	sf::RectangleShape wrog_3(sf::Vector2f(150.f, 100.f));
@@ -24,14 +26,33 @@ int main()
 	wrog_1.setOutlineColor(wr_outline); wrog_2.setOutlineColor(wr_outline); wrog_3.setOutlineColor(wr_outline); wrog_4.setOutlineColor(wr_outline);
 	wrog_1.setOutlineThickness(-5.f); wrog_2.setOutlineThickness(-5.f); wrog_3.setOutlineThickness(-5.f); wrog_4.setOutlineThickness(-5.f);
 
-	//PĘTLA GRY
-	while (gra.getWindowIsOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
-	{
-		//aktualizowanie stanu gry
-		gra.aktualizuj();
+	//OKNA - NA RAZIE OBECNIE PO ZA OSOBNYM FOLDEREM I KLASĄ
+	sf::RenderWindow menu(sf::VideoMode(600.f,600.f), "Menu");
+	sf::RenderWindow glowne(sf::VideoMode(400.f, 400.f), "Projekt - PACMAN");
+	sf::RenderWindow help(sf::VideoMode(200.f, 200.f), "Help");
+	sf::RenderWindow esc(sf::VideoMode(200.f, 200.f), "Esc");
+	glowne.close();
+	help.close();
+	esc.close();
 
-		//wyświetlanie zawartości
-		gra.wyswietlaj();
+	//PĘTLA GRY
+	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
+	{
+		sf::Event event;
+		while (menu.pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				menu.close();
+			case sf::Event::KeyPressed:
+				if (event.key.code == sf::Keyboard::Escape)
+					menu.close();
+			}
+		}
+		menu.clear();
+		menu.draw(wrog_4);
+		menu.display();
 	}
 	return 0;
 }
