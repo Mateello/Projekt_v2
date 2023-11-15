@@ -1,18 +1,43 @@
 ﻿//ARiSS 3 Sem, s194336 Projekt - "PACMAN"
 
 #include <SFML/Graphics.hpp>
+#include<iostream>
 //#include "gra.h" - próba zrobienia osobnego folderu z "silnikiem" gry 
-#include"okno.h"//podłączenie pliku nagłówkowego odpowiadającego za klasy i metody związane z oknami
+//#include"okno.h" - później będzie podłączone
 
 int main() 
 {
 	//INICJALIZACJA SILNIKA GRY (KLASY Gra)
 	//Gra gra;//obiekt klasy Gra
 
-	//OKNA - OBIEKTY 
-	sf::RenderWindow menu(sf::VideoMode(600.f, 600.f), "Menu");
+	//OKNA - OBIEKTY -------------------------------------------------------------DOCELOWO WSZYSTKO ZWIĄZANE Z OKNAMI ZOSTANIE PRZERZUCONE DO INNYCH PLIKÓW
+	sf::VideoMode menu_wymiary = sf::VideoMode(600.f,600.f);
+	sf::RenderWindow menu(menu_wymiary, "Menu");
+	float szerokosc = menu_wymiary.width;
+	float wysokosc = menu_wymiary.height;
 
-	Okno window(600,600,"nie wiem");
+	sf::Font czcionka;
+	sf::Text tekst[3];
+
+	if (!czcionka.loadFromFile("Righteous-Regular.ttf"))//ładowanie czcionki z pliku
+	{
+		std::cout << "Nie udalo sie zaladowac czcionki!" << "\n";//napis wyskakujący w oknie konsoli gdy nie załadujemy czcionki
+	}
+
+	tekst[0].setFont(czcionka);
+	tekst[0].setFillColor(sf::Color(255, 255, 255));
+	tekst[0].setString("Graj");
+	tekst[0].setPosition(sf::Vector2f(szerokosc / 3, wysokosc / 4/*(masymalna ilość wierszy +1)*1 */));//pozycja linijki tekstu
+
+	tekst[1].setFont(czcionka);
+	tekst[1].setFillColor(sf::Color(255, 0, 0));
+	tekst[1].setString("Opcje");
+	tekst[1].setPosition(sf::Vector2f(szerokosc / 3, wysokosc / 2.7/*(masymalna ilość wierszy +1)*2*/));//pozycja linijki tekstu
+
+	tekst[2].setFont(czcionka);
+	tekst[2].setFillColor(sf::Color(0, 255, 0));
+	tekst[2].setString("Wyjscie");
+	tekst[2].setPosition(sf::Vector2f(szerokosc / 3, wysokosc / 2/*(masymalna ilość wierszy +1)*3*/));//pozycja linijki tekstu
 
 	//WROGOWIE - DOCELOWO ZROBIĆ Z TEGO OSOBNĄ KLASĘ
 	sf::CircleShape wrog_1(100.f);
@@ -28,18 +53,9 @@ int main()
 
 	sf::Color wr_kl (sf::Color::Red);//kolor wrogów
 	wrog_1.setFillColor(wr_kl); wrog_2.setFillColor(wr_kl); wrog_3.setFillColor(wr_kl); wrog_4.setFillColor(wr_kl);
-	sf::Color wr_outline(sf::Color::Yellow);//kolor otoczki
+	sf::Color wr_outline(sf::Color(00, 0, 255));//kolor otoczki
 	wrog_1.setOutlineColor(wr_outline); wrog_2.setOutlineColor(wr_outline); wrog_3.setOutlineColor(wr_outline); wrog_4.setOutlineColor(wr_outline);
 	wrog_1.setOutlineThickness(-5.f); wrog_2.setOutlineThickness(-5.f); wrog_3.setOutlineThickness(-5.f); wrog_4.setOutlineThickness(-5.f);
-
-	//OKNA - NA RAZIE OBECNIE PO ZA OSOBNYM FOLDEREM I KLASĄ ------------------------------------ profilaktycznie zostawiam
-	/*sf::RenderWindow menu(sf::VideoMode(600.f, 600.f), "Menu");
-	sf::RenderWindow glowne(sf::VideoMode(400.f, 400.f), "Projekt - PACMAN");
-	sf::RenderWindow help(sf::VideoMode(200.f, 200.f), "Help");
-	sf::RenderWindow esc(sf::VideoMode(200.f, 200.f), "Opuszczanie gry"); 
-	glowne.close(); 
-	help.close(); 
-	esc.close();*/ 
 
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
@@ -50,15 +66,20 @@ int main()
 			switch (event.type)
 			{
 			case sf::Event::Closed:
-				window.close(menu);
+				menu.close();
 			case sf::Event::KeyPressed:
 				if (event.key.code == sf::Keyboard::Escape)
-					window.close(menu);
+					menu.close();
 			}
 		}
-		window.clear(menu);
-		window.rysuj(menu);
-		window.display(menu);//na obecną chwilę nie udało się załadować czcionki! ----------------------- failed to create the font face !!!!!!!!!!!!!!!!!!!!!!!
+		menu.clear();
+		menu.draw(wrog_4);
+
+		for (int i = 0; i < 3/*maksymalna ilość wierszy*/; i++)
+		{
+			menu.draw(tekst[i]);//rysowanie po koleji linijek tekstu
+		}
+		menu.display();
 	}
 	return 0;
 }

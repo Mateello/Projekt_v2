@@ -7,7 +7,7 @@ class Okno
 	sf::Font czcionka;//zmienna odpowiadaj¹ca za czcionke
 	sf::Text tekst[3];//tablica zawieraj¹ca teksty w danej lini - narazie 3
 public:
-	Okno(float szerokosc,float wysokosc,std::string name);//konstruktor
+	Okno(float szerokosc,float wysokosc);//konstruktor
 	~Okno();
 
 	/*virtual*/ void rysuj(sf::RenderWindow& window);//funkcja rysuj¹ca okno po przkazaniu jej przez wskaŸnik parametrów okna
