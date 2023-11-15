@@ -9,7 +9,7 @@ int main()
 	//INICJALIZACJA SILNIKA GRY (KLASY Gra)
 	//Gra gra;//obiekt klasy Gra
 
-	//OKNA - OBIEKTY
+	//OKNA - OBIEKTY 
 	sf::RenderWindow menu(sf::VideoMode(600.f, 600.f), "Menu");
 
 	Okno window(600,600,"nie wiem");
