@@ -2,11 +2,17 @@
 
 #include <SFML/Graphics.hpp>
 //#include "gra.h" - próba zrobienia osobnego folderu z "silnikiem" gry 
+#include"okno.h"//podłączenie pliku nagłówkowego odpowiadającego za klasy i metody związane z oknami
 
 int main() 
 {
 	//INICJALIZACJA SILNIKA GRY (KLASY Gra)
 	//Gra gra;//obiekt klasy Gra
+
+	//OKNA - OBIEKTY
+	sf::RenderWindow menu(sf::VideoMode(600.f, 600.f), "Menu");
+
+	Okno window(600,600,"nie wiem");
 
 	//WROGOWIE - DOCELOWO ZROBIĆ Z TEGO OSOBNĄ KLASĘ
 	sf::CircleShape wrog_1(100.f);
@@ -26,14 +32,14 @@ int main()
 	wrog_1.setOutlineColor(wr_outline); wrog_2.setOutlineColor(wr_outline); wrog_3.setOutlineColor(wr_outline); wrog_4.setOutlineColor(wr_outline);
 	wrog_1.setOutlineThickness(-5.f); wrog_2.setOutlineThickness(-5.f); wrog_3.setOutlineThickness(-5.f); wrog_4.setOutlineThickness(-5.f);
 
-	//OKNA - NA RAZIE OBECNIE PO ZA OSOBNYM FOLDEREM I KLASĄ
-	sf::RenderWindow menu(sf::VideoMode(600.f,600.f), "Menu");
+	//OKNA - NA RAZIE OBECNIE PO ZA OSOBNYM FOLDEREM I KLASĄ ------------------------------------ profilaktycznie zostawiam
+	/*sf::RenderWindow menu(sf::VideoMode(600.f, 600.f), "Menu");
 	sf::RenderWindow glowne(sf::VideoMode(400.f, 400.f), "Projekt - PACMAN");
 	sf::RenderWindow help(sf::VideoMode(200.f, 200.f), "Help");
-	sf::RenderWindow esc(sf::VideoMode(200.f, 200.f), "Esc");
-	glowne.close();
-	help.close();
-	esc.close();
+	sf::RenderWindow esc(sf::VideoMode(200.f, 200.f), "Opuszczanie gry"); 
+	glowne.close(); 
+	help.close(); 
+	esc.close();*/ 
 
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
@@ -44,15 +50,15 @@ int main()
 			switch (event.type)
 			{
 			case sf::Event::Closed:
-				menu.close();
+				window.close(menu);
 			case sf::Event::KeyPressed:
 				if (event.key.code == sf::Keyboard::Escape)
-					menu.close();
+					window.close(menu);
 			}
 		}
-		menu.clear();
-		menu.draw(wrog_4);
-		menu.display();
+		window.clear(menu);
+		window.rysuj(menu);
+		window.display(menu);//na obecną chwilę nie udało się załadować czcionki! ----------------------- failed to create the font face !!!!!!!!!!!!!!!!!!!!!!!
 	}
 	return 0;
 }
