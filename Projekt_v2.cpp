@@ -16,6 +16,9 @@ int main()
 	float szerokosc = menu_wymiary.width;
 	float wysokosc = menu_wymiary.height;
 
+	sf::Clock zegar;//tworzymy obiekt mierzący czas
+	float obrot = 0.f;
+
 	sf::Font czcionka;
 	sf::Text tekst[3];
 
@@ -42,20 +45,30 @@ int main()
 	//WROGOWIE - DOCELOWO ZROBIĆ Z TEGO OSOBNĄ KLASĘ
 	sf::CircleShape wrog_1(100.f);
 	sf::CircleShape wrog_2(100.f, 3);
-	sf::RectangleShape wrog_3(sf::Vector2f(150.f, 100.f));
+	sf::RectangleShape wrog_3(sf::Vector2f(100.f, 100.f));
 	sf::ConvexShape wrog_4;
-	wrog_4.setPointCount(5);
+
+	wrog_4.setPointCount(8);
 	wrog_4.setPoint(0, sf::Vector2f(0.f, 0.f));
-	wrog_4.setPoint(1, sf::Vector2f(30.f, 10.f));
-	wrog_4.setPoint(2, sf::Vector2f(30.f, 50.f));
-	wrog_4.setPoint(3, sf::Vector2f(20.f, 50.f));
-	wrog_4.setPoint(4, sf::Vector2f(0.f, 70.f));
+	wrog_4.setPoint(1, sf::Vector2f(10.f, -30.f));
+	wrog_4.setPoint(2, sf::Vector2f(20.f, 0.f));
+	wrog_4.setPoint(3, sf::Vector2f(50.f, 10.f));
+	wrog_4.setPoint(4, sf::Vector2f(20.f, 20.f));
+	wrog_4.setPoint(5, sf::Vector2f(10.f, 50.f));
+	wrog_4.setPoint(6, sf::Vector2f(0.f, 20.f));
+	wrog_4.setPoint(7, sf::Vector2f(-30.f, 10.f));
+
+	wrog_4.setPosition(sf::Vector2f(50.f,50.f));
+
+	sf::Vector2f pozycja;
+	pozycja.x = wrog_4.getPosition().x; pozycja.y = wrog_4.getPosition().y;
+	sf::Vector2f przesuniecie; 
 
 	sf::Color wr_kl (sf::Color::Red);//kolor wrogów
 	wrog_1.setFillColor(wr_kl); wrog_2.setFillColor(wr_kl); wrog_3.setFillColor(wr_kl); wrog_4.setFillColor(wr_kl);
 	sf::Color wr_outline(sf::Color(00, 0, 255));//kolor otoczki
-	wrog_1.setOutlineColor(wr_outline); wrog_2.setOutlineColor(wr_outline); wrog_3.setOutlineColor(wr_outline); wrog_4.setOutlineColor(wr_outline);
-	wrog_1.setOutlineThickness(-5.f); wrog_2.setOutlineThickness(-5.f); wrog_3.setOutlineThickness(-5.f); wrog_4.setOutlineThickness(-5.f);
+	wrog_1.setOutlineColor(wr_outline); wrog_2.setOutlineColor(wr_outline); wrog_3.setOutlineColor(wr_outline);
+	wrog_1.setOutlineThickness(-5.f); wrog_2.setOutlineThickness(-5.f); wrog_3.setOutlineThickness(-5.f);
 
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
@@ -80,6 +93,25 @@ int main()
 			menu.draw(tekst[i]);//rysowanie po koleji linijek tekstu
 		}
 		menu.display();
+		if (zegar.getElapsedTime().asMilliseconds() > 10.0f)//-----------------nieregularny wróg porusza się i obraca 
+		{
+			wrog_4.setRotation(obrot+=2.5f);
+
+			pozycja = wrog_4.getPosition();
+
+			if (pozycja.x > 500.f)
+			przesuniecie.x = -2.f;
+			if (pozycja.x <100.f)
+			przesuniecie.x = 3.f;
+			if (pozycja.y > 500.f)
+			przesuniecie.y = -1.5f;
+			if(pozycja.y <100.f)
+			przesuniecie.y = 2.5f;
+
+			wrog_4.move(sf::Vector2f(przesuniecie));
+
+			zegar.restart();
+		}
 	}
 	return 0;
 }
