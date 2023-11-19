@@ -4,18 +4,33 @@
 #include<iostream>
 //#include "gra.h" - próba zrobienia osobnego folderu z "silnikiem" gry 
 //#include"okno.h" - później będzie podłączone
+class Okno//przygotowanie klasy Okno
+{
+	sf::VideoMode wymiar;
+	std::string nazwa;
+public:
+	Okno(float szerokosc, float wysokosc, std::string nazwa);//konstruktor
+	~Okno();
 
+	void wGore();//przesuwanie się w gore
+	void wDol();//przesuwanie się w dol
+};
 int main() 
 {
 	//INICJALIZACJA SILNIKA GRY (KLASY Gra)
 	//Gra gra;//obiekt klasy Gra
 
 	//OKNA - OBIEKTY -------------------------------------------------------------DOCELOWO WSZYSTKO ZWIĄZANE Z OKNAMI ZOSTANIE PRZERZUCONE DO INNYCH PLIKÓW
+	Okno glowne(400,400,"Pac-Man");
+	sf::RenderWindow glowne;
+
+	sf::RenderWindow *window;
+	window = &glowne;
+
 	sf::VideoMode menu_wymiary = sf::VideoMode(600.f,600.f);
 	sf::RenderWindow menu(menu_wymiary, "Menu");
 	float szerokosc = menu_wymiary.width;
 	float wysokosc = menu_wymiary.height;
-
 	sf::Clock zegar;//tworzymy obiekt mierzący czas
 	float obrot = 0.f;
 

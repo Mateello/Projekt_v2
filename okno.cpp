@@ -34,13 +34,3 @@ void Okno::rysuj(sf::RenderWindow& window)
 		window.draw(tekst[i]);//rysowanie po koleji linijek tekstu
 	}
 }
-void Okno::clear(sf::RenderWindow& window){
-	window.clear();
-}
-void Okno::display(sf::RenderWindow& window){
-	window.display();
-}
-void Okno::close(sf::RenderWindow& window)
-{
-	window.close();
-}

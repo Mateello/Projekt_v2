@@ -11,9 +11,6 @@ public:
 	~Okno();
 
 	/*virtual*/ void rysuj(sf::RenderWindow& window);//funkcja rysuj¹ca okno po przkazaniu jej przez wskaŸnik parametrów okna
-	void clear(sf::RenderWindow& window);
-	void display(sf::RenderWindow& window);
-	void close(sf::RenderWindow& window);
 	void wGore();//przesuwanie siê w gore
 	void wDol();//przesuwanie siê w dol
 };
