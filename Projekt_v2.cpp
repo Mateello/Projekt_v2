@@ -4,35 +4,41 @@
 #include<iostream>
 //#include "gra.h" - próba zrobienia osobnego folderu z "silnikiem" gry 
 //#include"okno.h" - później będzie podłączone
-class Okno//przygotowanie klasy Okno
+class Gracz
 {
-	sf::VideoMode wymiar;
-	std::string nazwa;
+	sf::Vector2f pozycja;
+	sf::Vector2f rozmiar_okna;
+	sf::Vector2f window;
+	sf::Texture Pacman_t;
+	sf::Sprite Pacman;
 public:
-	Okno(float szerokosc, float wysokosc, std::string nazwa);//konstruktor
-	~Okno();
-
-	void wGore();//przesuwanie się w gore
-	void wDol();//przesuwanie się w dol
+	Gracz(float x_in, float y_in, float okno_x, float okno_y);
+	sf::Sprite getGracz();
 };
+Gracz::Gracz(float x_in, float y_in, float okno_x, float okno_y)
+{
+	Pacman_t.loadFromFile("nastepny.png");
+	Pacman.setTexture(Pacman_t);
+	window.x = okno_x; window.y = okno_y;
+}
+sf::Sprite Gracz::getGracz()
+{
+	return Pacman;
+}
 int main() 
 {
 	//INICJALIZACJA SILNIKA GRY (KLASY Gra)
 	//Gra gra;//obiekt klasy Gra
 
 	//OKNA - OBIEKTY -------------------------------------------------------------DOCELOWO WSZYSTKO ZWIĄZANE Z OKNAMI ZOSTANIE PRZERZUCONE DO INNYCH PLIKÓW
-	Okno glowne(400,400,"Pac-Man");
-	sf::RenderWindow glowne;
-
-	sf::RenderWindow *window;
-	window = &glowne;
-
 	sf::VideoMode menu_wymiary = sf::VideoMode(600.f,600.f);
 	sf::RenderWindow menu(menu_wymiary, "Menu");
 	float szerokosc = menu_wymiary.width;
 	float wysokosc = menu_wymiary.height;
 	sf::Clock zegar;//tworzymy obiekt mierzący czas
 	float obrot = 0.f;
+
+	Gracz P1(225, 225, 250, 250);
 
 	sf::Font czcionka;
 	sf::Text tekst[3];
@@ -102,6 +108,7 @@ int main()
 		}
 		menu.clear();
 		menu.draw(wrog_4);
+		menu.draw(P1.getGracz());
 
 		for (int i = 0; i < 3/*maksymalna ilość wierszy*/; i++)
 		{
@@ -110,7 +117,7 @@ int main()
 		menu.display();
 		if (zegar.getElapsedTime().asMilliseconds() > 10.0f)//-----------------nieregularny wróg porusza się i obraca 
 		{
-			wrog_4.setRotation(obrot+=2.5f);
+			wrog_4.setRotation(obrot+=5.f);
 
 			pozycja = wrog_4.getPosition();
 
