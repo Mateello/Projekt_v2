@@ -2,44 +2,18 @@
 
 #include <SFML/Graphics.hpp>
 #include<iostream>
+#include "gracz.h" //osobny folder z klasą i jej metodami - lda przejrzystości kodu
+//#include"okno.h" --- będzie odkomentowane jak naprawię
 //#include "gra.h" - próba zrobienia osobnego folderu z "silnikiem" gry 
-//#include"okno.h" - później będzie podłączone
-class Gracz
-{
-	sf::Vector2f pozycja;
-	sf::Vector2f rozmiar_okna;
-	sf::Vector2f window;
-	sf::Texture Pacman_t;
-	sf::Sprite Pacman;
-public:
-	Gracz(float x_in, float y_in, float okno_x, float okno_y);
-	sf::Sprite getGracz();
-};
-Gracz::Gracz(float x_in, float y_in, float okno_x, float okno_y)
-{
-	Pacman_t.loadFromFile("nastepny.png");
-	Pacman.setTexture(Pacman_t);
-	window.x = okno_x; window.y = okno_y;
-}
-sf::Sprite Gracz::getGracz()
-{
-	return Pacman;
-}
+
 int main() 
 {
 	//INICJALIZACJA SILNIKA GRY (KLASY Gra)
 	//Gra gra;//obiekt klasy Gra
 
 	//OKNA - OBIEKTY -------------------------------------------------------------DOCELOWO WSZYSTKO ZWIĄZANE Z OKNAMI ZOSTANIE PRZERZUCONE DO INNYCH PLIKÓW
-	sf::VideoMode menu_wymiary = sf::VideoMode(600.f,600.f);
-	sf::RenderWindow menu(menu_wymiary, "Menu");
-	float szerokosc = menu_wymiary.width;
-	float wysokosc = menu_wymiary.height;
-	sf::Clock zegar;//tworzymy obiekt mierzący czas
-	float obrot = 0.f;
-
-	Gracz P1(225, 225, 250, 250);
-
+	sf::RenderWindow menu(sf::VideoMode(600.f,600.f),"Menu");
+	//Menu MenuGlowne(menu.getSize().x, menu.getSize().y);
 	sf::Font czcionka;
 	sf::Text tekst[3];
 
@@ -49,19 +23,30 @@ int main()
 	}
 
 	tekst[0].setFont(czcionka);
-	tekst[0].setFillColor(sf::Color(255, 255, 255));
+	tekst[0].setFillColor(sf::Color::White);
 	tekst[0].setString("Graj");
-	tekst[0].setPosition(sf::Vector2f(szerokosc / 3, wysokosc / 4/*(masymalna ilość wierszy +1)*1 */));//pozycja linijki tekstu
+	tekst[0].setCharacterSize(60);
+	tekst[0].setPosition(200, 100);//pozycja linijki tekstu
 
 	tekst[1].setFont(czcionka);
-	tekst[1].setFillColor(sf::Color(255, 0, 0));
-	tekst[1].setString("Opcje");
-	tekst[1].setPosition(sf::Vector2f(szerokosc / 3, wysokosc / 2.7/*(masymalna ilość wierszy +1)*2*/));//pozycja linijki tekstu
+	tekst[1].setFillColor(sf::Color::White);
+	tekst[1].setString("Pomoc");
+	tekst[1].setCharacterSize(40);
+	tekst[1].setPosition(200, 250);
 
 	tekst[2].setFont(czcionka);
-	tekst[2].setFillColor(sf::Color(0, 255, 0));
+	tekst[2].setFillColor(sf::Color::White);
 	tekst[2].setString("Wyjscie");
-	tekst[2].setPosition(sf::Vector2f(szerokosc / 3, wysokosc / 2/*(masymalna ilość wierszy +1)*3*/));//pozycja linijki tekstu
+	tekst[2].setCharacterSize(40);
+	tekst[2].setPosition(200, 400);
+
+	sf::Clock zegar;//tworzymy obiekt mierzący czas
+	float obrot = 0.f;
+
+	Gracz P1(100, 100, 250, 250);
+
+	/*sf::Font czcionka;
+	sf::Text tekst[3];*/
 
 	//WROGOWIE - DOCELOWO ZROBIĆ Z TEGO OSOBNĄ KLASĘ
 	sf::CircleShape wrog_1(100.f);
@@ -97,19 +82,33 @@ int main()
 		sf::Event event;
 		while (menu.pollEvent(event))
 		{
-			switch (event.type)
+			if (event.type = sf::Event::Closed)
 			{
-			case sf::Event::Closed:
 				menu.close();
-			case sf::Event::KeyPressed:
-				if (event.key.code == sf::Keyboard::Escape)
-					menu.close();
 			}
+			/*if (event.type = sf::Event::KeyReleased)
+			{
+				if ((event.key.code == sf::Keyboard::Up)|| (event.key.code == sf::Keyboard::W))//jeśli na klawiaturze nacisnę strzałkę w górę lub W wywołuje metodę "wGore"
+				{
+					MenuGlowne.wGore();
+				}
+				if ((event.key.code == sf::Keyboard::Down) || (event.key.code == sf::Keyboard::S))//jeśli na klawiaturze nacisnę strzałkę w dół lub S wywołuje metodę "wDol"
+				{
+					MenuGlowne.wDol();
+				}
+				if (event.key.code == sf::Keyboard::Enter)
+				{
+					sf::RenderWindow glowne(sf::VideoMode(800.f, 800.f), "Projekt - PACMAN");
+					sf::RenderWindow help(sf::VideoMode(800.f, 800.f), "Pomoc");
+
+				}
+			}*/
+			
 		}
-		menu.clear();
+		menu.clear(sf::Color::Black);
+		//MenuGlowne.rysuj(menu);//obiekt MenuGlowne rysuje okno menu - a dokładniej na nim to co jest zawarte w obiekcie
 		menu.draw(wrog_4);
 		menu.draw(P1.getGracz());
-
 		for (int i = 0; i < 3/*maksymalna ilość wierszy*/; i++)
 		{
 			menu.draw(tekst[i]);//rysowanie po koleji linijek tekstu
