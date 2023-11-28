@@ -1,0 +1,21 @@
+#include <SFML/Graphics.hpp>
+#include<iostream>
+#include <random>
+
+class wrog
+{
+	sf::Vector2f position;
+	float xVel = 1, yVel = 1;
+	float promien;
+	int wierzcholki;//ilosc wierzcholkow wrogów
+	sf::CircleShape krztalt;
+
+public:
+	wrog(float r,int w, float szerokoscOkna, float wysokoscOkna);
+	~wrog();
+
+	sf::CircleShape getWrog();
+	float losPozycjeX(int szerokoscOkna);
+	float losPozycjeY(int wysokoscOkna);
+	void rysuj(sf::RenderWindow& okno);
+};

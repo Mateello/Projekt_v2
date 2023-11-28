@@ -10,3 +10,7 @@ sf::Sprite Gracz::getGracz()
 {
 	return Pacman;
 }
+void Gracz::update()
+{
+
+}

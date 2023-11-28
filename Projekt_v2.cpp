@@ -3,8 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include "gracz.h" //osobny folder z klasą i jej metodami - lda przejrzystości kodu
+#include "wrogowie.h"//osobny plik z klasą z wrogami
 //#include"okno.h" --- będzie odkomentowane jak naprawię
-//#include "gra.h" - próba zrobienia osobnego folderu z "silnikiem" gry 
+//#include "gra.h" - próba zrobienia osobnego folderu z "silnikiem" gry
 
 int main() 
 {
@@ -49,9 +50,15 @@ int main()
 	sf::Text tekst[3];*/
 
 	//WROGOWIE - DOCELOWO ZROBIĆ Z TEGO OSOBNĄ KLASĘ
-	sf::CircleShape wrog_1(100.f);
+	/*sf::CircleShape wrog_1(100.f);
 	sf::CircleShape wrog_2(100.f, 3);
-	sf::RectangleShape wrog_3(sf::Vector2f(100.f, 100.f));
+	sf::RectangleShape wrog_3(sf::Vector2f(100.f, 100.f));*/
+	float width = menu.getSize().x;
+	float height = menu.getSize().y;
+
+	wrog *w_1= new wrog(50,0, width, height);
+	wrog *w_2=new wrog(50, 3, width, height);
+	wrog *w_3=new wrog(50, 4, width, height);
 	sf::ConvexShape wrog_4;
 
 	wrog_4.setPointCount(8);
@@ -71,10 +78,7 @@ int main()
 	sf::Vector2f przesuniecie; 
 
 	sf::Color wr_kl (sf::Color::Red);//kolor wrogów
-	wrog_1.setFillColor(wr_kl); wrog_2.setFillColor(wr_kl); wrog_3.setFillColor(wr_kl); wrog_4.setFillColor(wr_kl);
-	sf::Color wr_outline(sf::Color(00, 0, 255));//kolor otoczki
-	wrog_1.setOutlineColor(wr_outline); wrog_2.setOutlineColor(wr_outline); wrog_3.setOutlineColor(wr_outline);
-	wrog_1.setOutlineThickness(-5.f); wrog_2.setOutlineThickness(-5.f); wrog_3.setOutlineThickness(-5.f);
+	wrog_4.setFillColor(wr_kl);
 
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
@@ -107,11 +111,14 @@ int main()
 		}
 		menu.clear(sf::Color::Black);
 		//MenuGlowne.rysuj(menu);//obiekt MenuGlowne rysuje okno menu - a dokładniej na nim to co jest zawarte w obiekcie
-		menu.draw(wrog_4);
-		menu.draw(P1.getGracz());
+		//menu.draw(wrog_4);
+		w_1->rysuj(menu);
+		w_2->rysuj(menu);
+		w_3->rysuj(menu);
+		//menu.draw(P1.getGracz());
 		for (int i = 0; i < 3/*maksymalna ilość wierszy*/; i++)
 		{
-			menu.draw(tekst[i]);//rysowanie po koleji linijek tekstu
+			//menu.draw(tekst[i]);//rysowanie po koleji linijek tekstu
 		}
 		menu.display();
 		if (zegar.getElapsedTime().asMilliseconds() > 10.0f)//-----------------nieregularny wróg porusza się i obraca 
@@ -134,5 +141,6 @@ int main()
 			zegar.restart();
 		}
 	}
+	delete w_1;delete w_2;delete w_3;
 	return 0;
-}
+}

@@ -11,4 +11,5 @@ class Gracz
 public:
 	Gracz(float x_in, float y_in, float okno_x, float okno_y);
 	sf::Sprite getGracz();
+	void update();
 };
