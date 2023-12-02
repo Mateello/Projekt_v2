@@ -6,6 +6,7 @@ class wrog
 {
 	sf::Vector2f position;
 	float xVel = 1, yVel = 1;
+	sf::Vector2f wymiar_okna;
 	float promien;
 	int wierzcholki;//ilosc wierzcholkow wrogów
 	sf::CircleShape krztalt;

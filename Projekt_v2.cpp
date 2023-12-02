@@ -14,6 +14,7 @@ int main()
 
 	//OKNA - OBIEKTY -------------------------------------------------------------DOCELOWO WSZYSTKO ZWIĄZANE Z OKNAMI ZOSTANIE PRZERZUCONE DO INNYCH PLIKÓW
 	sf::RenderWindow menu(sf::VideoMode(600.f,600.f),"Menu");
+	menu.setFramerateLimit(60);
 	//Menu MenuGlowne(menu.getSize().x, menu.getSize().y);
 	sf::Font czcionka;
 	sf::Text tekst[3];
@@ -44,21 +45,15 @@ int main()
 	sf::Clock zegar;//tworzymy obiekt mierzący czas
 	float obrot = 0.f;
 
-	Gracz P1(100, 100, 250, 250);
+	float width = menu.getSize().x;//szerokość okna
+	float height = menu.getSize().y;//wysokość okna
 
-	/*sf::Font czcionka;
-	sf::Text tekst[3];*/
+	Gracz P1(100, 100, width, height);
 
-	//WROGOWIE - DOCELOWO ZROBIĆ Z TEGO OSOBNĄ KLASĘ
-	/*sf::CircleShape wrog_1(100.f);
-	sf::CircleShape wrog_2(100.f, 3);
-	sf::RectangleShape wrog_3(sf::Vector2f(100.f, 100.f));*/
-	float width = menu.getSize().x;
-	float height = menu.getSize().y;
+	wrog *w_1; w_1= new wrog(50,0, width, height);
+	wrog *w_2; w_2 = new wrog(50, 3, width, height);
+	wrog *w_3; w_3 = new wrog(50, 4, width, height);
 
-	wrog *w_1= new wrog(50,0, width, height);
-	wrog *w_2=new wrog(50, 3, width, height);
-	wrog *w_3=new wrog(50, 4, width, height);
 	sf::ConvexShape wrog_4;
 
 	wrog_4.setPointCount(8);
@@ -109,13 +104,15 @@ int main()
 			}*/
 			
 		}
+		P1.update();
 		menu.clear(sf::Color::Black);
 		//MenuGlowne.rysuj(menu);//obiekt MenuGlowne rysuje okno menu - a dokładniej na nim to co jest zawarte w obiekcie
-		//menu.draw(wrog_4);
-		w_1->rysuj(menu);
+		menu.draw(wrog_4);
+		//w_1->rysuj(menu);
+		//menu.draw(*test);
 		w_2->rysuj(menu);
-		w_3->rysuj(menu);
-		//menu.draw(P1.getGracz());
+		//w_3->rysuj(menu);
+		menu.draw(P1.getGracz());
 		for (int i = 0; i < 3/*maksymalna ilość wierszy*/; i++)
 		{
 			//menu.draw(tekst[i]);//rysowanie po koleji linijek tekstu
@@ -141,6 +138,6 @@ int main()
 			zegar.restart();
 		}
 	}
-	delete w_1;delete w_2;delete w_3;
+	delete w_1; delete w_2; delete w_3;
 	return 0;
 }

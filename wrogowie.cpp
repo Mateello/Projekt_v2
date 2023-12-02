@@ -14,9 +14,11 @@ int getRandomNumber(std::mt19937& gen, int min, int max)
 wrog::wrog(float r, int w, float szerokoscOkna, float wysokoscOkna)
 {
 	promien = r; wierzcholki = w;
+	wymiar_okna.x = szerokoscOkna; wymiar_okna.y = wysokoscOkna;
 	std::mt19937 gen = generateRandomEngine();
-	sf::Color kolor = sf::Color(getRandomNumber(gen,0,255), getRandomNumber(gen, 0, 255), getRandomNumber(gen, 0, 255));
-	sf::CircleShape krztalt(r, w); 
+	//sf::Color kolor = sf::Color(getRandomNumber(gen,0,255), getRandomNumber(gen, 0, 255), getRandomNumber(gen, 0, 255));
+	sf::Color kolor = sf::Color(128,128,128);
+	sf::CircleShape krztalt(promien, wierzcholki); 
 	krztalt.setFillColor(kolor);
 }
 wrog::~wrog()
