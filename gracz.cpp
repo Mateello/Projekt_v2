@@ -15,20 +15,18 @@ sf::Sprite Gracz::getGracz()
 void Gracz::update()
 {
 	//kolizje z œcianami
-	pozycja.x = Pacman.getPosition().x; pozycja.y = Pacman.getPosition().y;
-	//zmienne odpowiadaj¹ce pozycji pacmana drugiej wspó³rzêdnej przy dotkniêciu œciany
 
 	if (Pacman.getGlobalBounds().left < 0.f){//œciana z lewej
-		Pacman.setPosition(0.f, pozycja.y);
+		Pacman.setPosition(0.f, Pacman.getGlobalBounds().top);
 	}
 	else if (Pacman.getGlobalBounds().left+Pacman.getGlobalBounds().width > window.x){//œciana z prawej
-		Pacman.setPosition(window.x- Pacman.getGlobalBounds().width, pozycja.y);
+		Pacman.setPosition(window.x- Pacman.getGlobalBounds().width, Pacman.getGlobalBounds().top);
 	}
 	if (Pacman.getGlobalBounds().top < 0.f){//œciana z góry
-		Pacman.setPosition(pozycja.x, 0.f);
+		Pacman.setPosition(Pacman.getGlobalBounds().left, 0.f);
 	}
 	else if (Pacman.getGlobalBounds().top + Pacman.getGlobalBounds().height > window.y){//œciana z do³u
-		Pacman.setPosition(pozycja.x, window.y- Pacman.getGlobalBounds().height);
+		Pacman.setPosition(Pacman.getGlobalBounds().left, window.y- Pacman.getGlobalBounds().height);
 	}
 
 	//poruszanie graczem

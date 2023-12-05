@@ -4,7 +4,6 @@
 
 class wrog
 {
-	sf::Vector2f position;
 	float xVel = 1, yVel = 1;
 	sf::Vector2f wymiar_okna;
 	float promien;
@@ -18,5 +17,5 @@ public:
 	sf::CircleShape getWrog();
 	float losPozycjeX(int szerokoscOkna);
 	float losPozycjeY(int wysokoscOkna);
-	void rysuj(sf::RenderWindow& okno);
+	void rysuj(sf::RenderWindow &okno);
 };

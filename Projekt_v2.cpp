@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include<iostream>
+#include<vector>
 #include "gracz.h" //osobny folder z klasą i jej metodami - lda przejrzystości kodu
 #include "wrogowie.h"//osobny plik z klasą z wrogami
 //#include"okno.h" --- będzie odkomentowane jak naprawię
@@ -47,12 +48,13 @@ int main()
 
 	float width = menu.getSize().x;//szerokość okna
 	float height = menu.getSize().y;//wysokość okna
+	float rozmiar_wrogow = 15;
 
 	Gracz P1(100, 100, width, height);
 
-	wrog *w_1; w_1= new wrog(50,0, width, height);
-	wrog *w_2; w_2 = new wrog(50, 3, width, height);
-	wrog *w_3; w_3 = new wrog(50, 4, width, height);
+	wrog* w_1; w_1 = new wrog(rozmiar_wrogow, 3, width, height);//coś nie działa - nie rysuje się wróg
+	wrog* w_2; w_2 = new wrog(rozmiar_wrogow, 4, width, height);
+	wrog* w_3; w_3 = new wrog(rozmiar_wrogow, 5, width, height);
 
 	sf::ConvexShape wrog_4;
 
@@ -108,10 +110,9 @@ int main()
 		menu.clear(sf::Color::Black);
 		//MenuGlowne.rysuj(menu);//obiekt MenuGlowne rysuje okno menu - a dokładniej na nim to co jest zawarte w obiekcie
 		menu.draw(wrog_4);
-		//w_1->rysuj(menu);
-		//menu.draw(*test);
+		w_1->rysuj(menu);
 		w_2->rysuj(menu);
-		//w_3->rysuj(menu);
+		w_3->rysuj(menu);
 		menu.draw(P1.getGracz());
 		for (int i = 0; i < 3/*maksymalna ilość wierszy*/; i++)
 		{
