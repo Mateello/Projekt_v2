@@ -1,16 +1,26 @@
 #include "gracz.h"
+#include "wrogowie.h"
 
-Gracz::Gracz(float x_in, float y_in, float okno_x, float okno_y)
+Gracz::Gracz(sf::RenderWindow& okno)
 {
+	punkty = 0;
 	Pacman_t.loadFromFile("pokeball.png");//ze wzglêdu na problem z pacman.png - na razie porzyczê pokeball'a
 	Pacman.setTexture(Pacman_t);
 	Pacman.setPosition(250,250);
-	window.x = okno_x; window.y = okno_y;
+	window.x = okno.getSize().x; window.y = okno.getSize().y;
 	przesuniecie = 5.f;
 }
 sf::Sprite Gracz::getGracz()
 {
 	return Pacman;
+}
+void Gracz::getPunkty(int &pkt)//dostajemy iloœæ punktów danego gracza
+{
+	pkt = punkty;
+}
+void Gracz::setPunkty(int pkt)//zmiana iloœci punktów gracza
+{
+	punkty+=pkt;
 }
 void Gracz::update()
 {

@@ -1,16 +1,19 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
-#include <random>
+#include <vector>
 
 class Gracz
 {
+	int punkty;
 	sf::Vector2f pozycja;
 	sf::Vector2f window;
 	sf::Texture Pacman_t;
 	sf::Sprite Pacman;
 	float przesuniecie;
 public:
-	Gracz(float x_in, float y_in, float okno_x, float okno_y);
+	Gracz(sf::RenderWindow& okno);
 	sf::Sprite getGracz();
 	void update();
+	void getPunkty(int &pkt);
+	void setPunkty(int pkt);
 };
