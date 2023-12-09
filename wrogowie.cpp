@@ -11,30 +11,30 @@ int getRandomNumber(std::mt19937& gen, int min, int max)
 	std::uniform_int_distribution<> distribution(min, max);
 	return distribution(gen);
 }
-Wrog::Wrog(float r, int w, sf::RenderWindow& okno)
+Wrog::Wrog(int liczbaWrogow, float r, int w, sf::RenderWindow& okno)
 {
-	promien = r; wierzcholki = w;
+	promien = r; wierzcholki = w; ilosc = liczbaWrogow;
 	//wymiar_okna.x = szerokoscOkna; wymiar_okna.y = wysokoscOkna;
 	wymiar_okna.x=okno.getSize().x;; wymiar_okna.y= okno.getSize().y;
 	std::mt19937 gen = generateRandomEngine();
-	sf::Color kolor = sf::Color(getRandomNumber(gen,0,255), getRandomNumber(gen, 0, 255), getRandomNumber(gen, 0, 255));
-	krztalt.setRadius(promien);
-	krztalt.setPointCount(wierzcholki);
-	krztalt.setFillColor(kolor);
-	krztalt.setPosition(losPozycjeX(wymiar_okna.x)-krztalt.getGlobalBounds().left, losPozycjeY(wymiar_okna.y - krztalt.getGlobalBounds().top));//obecnie losowa pozycja 
+	//sf::Color kolor = sf::Color(getRandomNumber(gen,0,255), getRandomNumber(gen, 0, 255), getRandomNumber(gen, 0, 255));
+	for (int i = 0; i < ilosc; i++)
+	{
+		krztalt.setRadius(promien);
+		krztalt.setPointCount(wierzcholki);
+		krztalt.setFillColor(sf::Color::Red);//wrogowie bêd¹ mieæ czerwony
+		krztalt.setPosition(losPozycjeX(wymiar_okna.x), losPozycjeY(wymiar_okna.y));//obecnie losowa pozycja 
+		wrogowie.push_back(krztalt);
+	}
 }
 Wrog::~Wrog()
 {
 	;
 }
-sf::CircleShape Wrog::getWrog()
-{
-	return krztalt;
-}
 float Wrog::losPozycjeX(int szerokoscOkna)
 {
 	std::mt19937 gen = generateRandomEngine();
-	int szerokosc = szerokoscOkna;
+	int szerokosc = (szerokoscOkna-krztalt.getGlobalBounds().left);
 	float x;
 
 	x = getRandomNumber(gen, 0, szerokosc);
@@ -44,7 +44,7 @@ float Wrog::losPozycjeX(int szerokoscOkna)
 float Wrog::losPozycjeY(int wysokoscOkna)
 {
 	std::mt19937 gen = generateRandomEngine();
-	int wysokosc = wysokoscOkna;
+	int wysokosc = (wysokoscOkna - krztalt.getGlobalBounds().top);
 	float y;
 
 	y = getRandomNumber(gen, 0, wysokosc);
@@ -53,21 +53,36 @@ float Wrog::losPozycjeY(int wysokoscOkna)
 }
 void Wrog::rysuj(sf::RenderWindow& okno)
 {
-	okno.draw(getWrog());
+	//okno.draw(krztalt);
+	for (const auto& krztalt : wrogowie) {
+		okno.draw(krztalt);
+	}
 }
 //------------------------------------------------------------- Punkty -------------------------------
-Ziarna::Ziarna(float promien, int wartosc, sf::RenderWindow& okno)//domyslny konstruktor-najwiêksze ziarno - najmniej pkt
+Ziarna::Ziarna(int liczbaziaren, float promien, int wartosc, sf::RenderWindow& okno)//domyslny konstruktor-najwiêksze ziarno - najmniej pkt
 {
-	this->wartosc = wartosc; this->promien = promien;
+	this->wartosc = wartosc; this->promien = promien; ilosc = liczbaziaren;
 	wymiar_okna.x = okno.getSize().x;; wymiar_okna.y = okno.getSize().y;
 	std::mt19937 gen = generateRandomEngine();
-	krztalt.setRadius(promien);
-	krztalt.setPosition(losPozycjeX(wymiar_okna.x) - krztalt.getGlobalBounds().left, losPozycjeY(wymiar_okna.y - krztalt.getGlobalBounds().top));
+	for (int i=0;i< ilosc;i++)
+	{
+		sf::Color kolor = sf::Color(getRandomNumber(gen, 0, 255), getRandomNumber(gen, 0, 255), getRandomNumber(gen, 0, 255));
+		krztalt.setFillColor(kolor);
+		krztalt.setRadius(promien);
+		krztalt.setPosition(losPozycjeX(wymiar_okna.x), losPozycjeY(wymiar_okna.y));
+		ziarna.push_back(krztalt);
+	}
+}
+void Ziarna::rysuj(sf::RenderWindow& okno)//rysowanie wektora ziaren
+{
+	for (const auto& krztalt : ziarna) {
+		okno.draw(krztalt);
+	}
 }
 Ziarna::~Ziarna()
 {
 	;
-}
+}	
 int Ziarna::getWartosc()
 {
 	return wartosc;

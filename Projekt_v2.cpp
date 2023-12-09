@@ -25,14 +25,14 @@ int main()
 	float obrot = 0.f;
 	float width = menu.getSize().x;//szerokość okna
 	float height = menu.getSize().y;//wysokość okna
-	float rozmiar_wrogow = 15;
 
 	Gracz P1(menu);
 
-	Wrog* w_1; w_1 = new Wrog(rozmiar_wrogow, 3,menu);//coś nie działa - nie rysuje się wróg
-	Wrog* w_2; w_2 = new Wrog(rozmiar_wrogow, 4,menu);
+	Wrog *w_1=new Wrog(3,15, 4,menu);//ilość, rozmiar,ilość wierzchołków, okno
 
-	Ziarna ziarenka(50,15,menu);
+	Ziarna *male = new Ziarna(5, 5, 15, menu);//dynamiczna alkoacja ziaren
+		//,sr(5,10,10,menu),
+		//duze(10,15,5,menu);//ilość,średnica,wartość punktowa, okno w którym rysujemy
 
 	sf::ConvexShape wrog_4;
 
@@ -68,11 +68,13 @@ int main()
 		}
 		P1.update();
 		menu.clear(sf::Color::Black);
-		menu.draw(wrog_4);
-		ziarenka.rysuj(menu);
-		w_1->rysuj(menu);
-		w_2->rysuj(menu);
-		menu.draw(P1.getGracz());
+
+		male->rysuj(menu); //sr.rysuj(menu); duze.rysuj(menu);//rysowanie zairen
+
+		w_1->rysuj(menu);menu.draw(wrog_4);//rysowanie wrogów
+
+		menu.draw(P1.getGracz());//rysowanie gracza
+
 		menu.display();
 		if (zegar.getElapsedTime().asMilliseconds() > 10.0f)//-----------------nieregularny wróg porusza się i obraca 
 		{
@@ -95,6 +97,6 @@ int main()
 			zegar.restart();
 		}
 	}
-	delete w_1; delete w_2;
+	delete male; delete w_1;
 	return 0;
 }

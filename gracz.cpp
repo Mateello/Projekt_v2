@@ -22,6 +22,10 @@ void Gracz::setPunkty(int pkt)//zmiana iloœci punktów gracza
 {
 	punkty+=pkt;
 }
+void Gracz::getPozycja(sf::Sprite Gracz)
+{
+
+}
 void Gracz::update()
 {
 	//kolizje z œcianami

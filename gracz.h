@@ -16,4 +16,5 @@ public:
 	void update();
 	void getPunkty(int &pkt);
 	void setPunkty(int pkt);
+	void getPozycja(sf::Sprite Gracz);
 };
