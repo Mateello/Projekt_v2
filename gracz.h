@@ -15,8 +15,7 @@ public:
 	}
 	Gracz(sf::RenderWindow& okno);
 	sf::Sprite getGracz();
-	sf::FloatRect NastepnaPoz;//zmienna przechowuj¹ca wartoœæ nastêpnej pozycji
-	sf::FloatRect ZawOtoczka;//zmienna przechowuj¹ca wartoœci getGlobalBounds
+	sf::FloatRect getBounds();
 	sf::Vector2f predkosc;
 	sf::Vector2f pozycja;
 	void update();

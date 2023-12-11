@@ -41,12 +41,11 @@ int main()
 	wrog_4.setPoint(7, sf::Vector2f(-30.f, 10.f));
 
 	wrog_4.setPosition(sf::Vector2f((width + wrog_4.getGlobalBounds().left)/2, - wrog_4.getGlobalBounds().top));
-
 	sf::Vector2f przesuniecie;
+	sf::Vector2f pozycjaw4;
 	wrog_4.setFillColor(sf::Color::Red);
-	std::cout <<"\n" << p1.ZawOtoczka.left << "\n" << p1.ZawOtoczka.top << "\n\n";
-	//Kolizje
 
+	bool deadPlayer=true;//zmienna odpowowiadająca za to czy gracz "żyje" czy nie
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
@@ -60,27 +59,30 @@ int main()
 		}
 		p1.update();
 		menu.clear(sf::Color::Black);
-
 		male->rysuj(menu); //sr.rysuj(menu); duze.rysuj(menu);//rysowanie zairen menu.rysuj(sr);
 		w_1->rysuj(menu);menu.draw(wrog_4);//rysowanie wrogów
-		sr.rysuj(menu);
+		if(deadPlayer!=false)
 		menu.draw(p1.getGracz());//rysowanie gracza
+
 		menu.display();
+
 		if (zegar.getElapsedTime().asMilliseconds() > 10.0f)//-----------------nieregularny wróg porusza się i obraca 
 		{
-			float V_w4 = rand()%7+3;//prędkość niereguralnego wroga - pseudolosowa
-			wrog_4.setRotation(obrot+=7.5f);
+			float V_w4 = rand() % 3;//prędkość niereguralnego wroga - pseudolosowa
+			wrog_4.setRotation(obrot += 7.5f);
+			pozycjaw4.x = wrog_4.getPosition().x; pozycjaw4.y = wrog_4.getPosition().y;
 
-			sf::Vector2f pozycja;
-			pozycja.x = wrog_4.getPosition().x; pozycja.y = wrog_4.getPosition().y;
+			//Kolizje------------------------------------
+			if (wrog_4.getGlobalBounds().intersects(p1.getBounds()))//nie działa - getGlobalbounds zwraca 0 0
+			deadPlayer = false;
 
-			if (pozycja.x > (width + wrog_4.getGlobalBounds().left)/2)
+			if (pozycjaw4.x > (width + wrog_4.getGlobalBounds().left)/2)
 			przesuniecie.x = -2.f;
-			if (pozycja.x < (width - wrog_4.getGlobalBounds().left)/2)
+			if (pozycjaw4.x < (width - wrog_4.getGlobalBounds().left)/2)
 			przesuniecie.x = 3.f;
-			if (pozycja.y > (height - wrog_4.getGlobalBounds().top/12))//liczba 12 dobrana eksperymentalnie
+			if (pozycjaw4.y > (height - wrog_4.getGlobalBounds().top/12))//liczba 12 dobrana eksperymentalnie
 			przesuniecie.y = -1*V_w4;
-			if(pozycja.y < (height + wrog_4.getGlobalBounds().top)/12)//liczba 12 dobrana eksperymentalnie
+			if(pozycjaw4.y < (height + wrog_4.getGlobalBounds().top)/12)//liczba 12 dobrana eksperymentalnie
 			przesuniecie.y = V_w4;
 
 			wrog_4.move(sf::Vector2f(przesuniecie));
