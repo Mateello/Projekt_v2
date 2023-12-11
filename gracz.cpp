@@ -1,63 +1,82 @@
 #include "gracz.h"
-#include "wrogowie.h"
 
 Gracz::Gracz(sf::RenderWindow& okno)
 {
 	punkty = 0;
-	Pacman_t.loadFromFile("pokeball.png");//ze wzglêdu na problem z pacman.png - na razie porzyczê pokeball'a
-	Pacman.setTexture(Pacman_t);
-	Pacman.setPosition(250,250);
+	ZawOtoczka = Zawodnik.getGlobalBounds();
+
 	window.x = okno.getSize().x; window.y = okno.getSize().y;
-	przesuniecie = 5.f;
+	tekstura.loadFromFile("pokeball.png");//ze wzglêdu na problem z pacman.png - na razie porzyczê pokeball'a
+	Zawodnik.setTexture(tekstura);
+	Zawodnik.setScale(sf::Vector2f(0.5f,0.5f));
+	Zawodnik.setPosition(window.x / 2, window.y/2 );
+	predkosc.x = 0.3f;//niestety na razie dobrae w taki sposób
+	predkosc.y = 0.3f;
+
+	std::cout << Zawodnik.getLocalBounds().left;//czemu getGlobalBounds daje 0 ??? ------------------------------
 }
-sf::Sprite Gracz::getGracz()
+sf::Sprite Gracz::getGracz()//funckja zwraca nam sprite'a
 {
-	return Pacman;
+	return this->Zawodnik;
 }
 void Gracz::getPunkty(int &pkt)//dostajemy iloœæ punktów danego gracza
 {
-	pkt = punkty;
+	pkt = this->punkty;
 }
 void Gracz::setPunkty(int pkt)//zmiana iloœci punktów gracza
 {
-	punkty+=pkt;
+	this->punkty+=pkt;
 }
-void Gracz::getPozycja(sf::Sprite Gracz)
-{
-
+void Gracz::kolizja()
+{	
+	Wrog w; Gracz p;
+	/*float dx = (p.pozycja.x + (p.ZawOtoczka.width / 2) - (w.pozycja.x + (w.wrogOtoczka.width / 2))); --------- wersja 2
+	float dy = (p.pozycja.y + (p.ZawOtoczka.height / 2) - (w.pozycja.y + (w.wrogOtoczka.height / 2)));
+	//dx - szerokoœæ miêdzy œrodkami kó³, dy - wysokoœæ miêdzy œrodkami kó³
+	float odleglosc = sqrt((dx * dx) + (dy * dy));//twierdzenie pitagorasa - sprawdzimy odleg³œæ miêdzy okrêgami
+	if (odleglosc <= (p.ZawOtoczka.width / 2 + w.wrogOtoczka.width / 2))
+	{
+		std::cout << "Dzia³a!";
+	}*/
+	for ( auto& i: w.wrogowie)
+	{p.NastepnaPoz = p.ZawOtoczka;
+		p.NastepnaPoz.left += p.predkosc.x;
+		p.NastepnaPoz.top += p.predkosc.y;
+	}
 }
 void Gracz::update()
 {
+	kolizja();
+	pozycja.x = Zawodnik.getPosition().x; pozycja.y = Zawodnik.getPosition().y;
 	//kolizje z œcianami
-
-	if (Pacman.getGlobalBounds().left < 0.f){//œciana z lewej
-		Pacman.setPosition(0.f, Pacman.getGlobalBounds().top);
+	if (Zawodnik.getGlobalBounds().left < 0.f){//œciana z lewej
+		Zawodnik.setPosition(0.f, Zawodnik.getGlobalBounds().top);
 	}
-	else if (Pacman.getGlobalBounds().left+Pacman.getGlobalBounds().width > window.x){//œciana z prawej
-		Pacman.setPosition(window.x- Pacman.getGlobalBounds().width, Pacman.getGlobalBounds().top);
+	else if (Zawodnik.getGlobalBounds().left+ Zawodnik.getGlobalBounds().width > window.x){//œciana z prawej
+		Zawodnik.setPosition(window.x- Zawodnik.getGlobalBounds().width, Zawodnik.getGlobalBounds().top);
 	}
-	if (Pacman.getGlobalBounds().top < 0.f){//œciana z góry
-		Pacman.setPosition(Pacman.getGlobalBounds().left, 0.f);
+	if (Zawodnik.getGlobalBounds().top < 0.f){//œciana z góry
+		Zawodnik.setPosition(Zawodnik.getGlobalBounds().left, 0.f);
 	}
-	else if (Pacman.getGlobalBounds().top + Pacman.getGlobalBounds().height > window.y){//œciana z do³u
-		Pacman.setPosition(Pacman.getGlobalBounds().left, window.y- Pacman.getGlobalBounds().height);
+	else if (Zawodnik.getGlobalBounds().top + Zawodnik.getGlobalBounds().height > window.y){//œciana z do³u
+		Zawodnik.setPosition(Zawodnik.getGlobalBounds().left, window.y- Zawodnik.getGlobalBounds().height);
 	}
 
 	//poruszanie graczem
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		Pacman.move(-przesuniecie,0.f);
+		Zawodnik.move(-predkosc.x,0.f);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		Pacman.move(przesuniecie, 0.f);
+		Zawodnik.move(predkosc.x, 0.f);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		Pacman.move(0.f, -przesuniecie);
+		Zawodnik.move(0.f, -predkosc.y);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		Pacman.move(0.f, przesuniecie);
+		Zawodnik.move(0.f, predkosc.y);
 	}
 }

@@ -5,20 +5,16 @@
 #include<ctime>
 #include<vector>
 #include "gracz.h" //osobny folder z klasą i jej metodami - lda przejrzystości kodu
-#include "wrogowie.h"//osobny plik z klasą z wrogami
 //#include"okno.h" --- będzie odkomentowane jak naprawię
 //#include "gra.h" - próba zrobienia osobnego folderu z "silnikiem" gry
-
 int main()
 {
 	srand(time(NULL));//dla odmiany taki generator liczb pseudolosowych
-
 	//INICJALIZACJA SILNIKA GRY (KLASY Gra)
 	//Gra gra;//obiekt klasy Gra
 
 	//OKNA - OBIEKTY -------------------------------------------------------------DOCELOWO WSZYSTKO ZWIĄZANE Z OKNAMI ZOSTANIE PRZERZUCONE DO INNYCH PLIKÓW
 	sf::RenderWindow menu(sf::VideoMode(600.f, 600.f), "Menu");
-	menu.setFramerateLimit(60);
 	//Menu MenuGlowne(menu.getSize().x, menu.getSize().y);
 
 	sf::Clock zegar;//tworzymy obiekt mierzący czas
@@ -26,14 +22,12 @@ int main()
 	float width = menu.getSize().x;//szerokość okna
 	float height = menu.getSize().y;//wysokość okna
 
-	Gracz P1(menu);
+	Gracz p1(menu);
 
 	Wrog *w_1=new Wrog(3,15, 4,menu);//ilość, rozmiar,ilość wierzchołków, okno
 
-	Ziarna *male = new Ziarna(5, 5, 15, menu);//dynamiczna alkoacja ziaren
-		//,sr(5,10,10,menu),
-		//duze(10,15,5,menu);//ilość,średnica,wartość punktowa, okno w którym rysujemy
-
+	Ziarna *male = new Ziarna(5, 5, 15, menu);//dynamiczna alkoacja ziaren, ilość,średnica,wartość punktowa, okno w którym rysujemy
+	Ziarna sr(3,10,5,menu);
 	sf::ConvexShape wrog_4;
 
 	wrog_4.setPointCount(8);
@@ -46,14 +40,12 @@ int main()
 	wrog_4.setPoint(6, sf::Vector2f(0.f, 20.f));
 	wrog_4.setPoint(7, sf::Vector2f(-30.f, 10.f));
 
-	wrog_4.setPosition(sf::Vector2f(width/2,50.f));
+	wrog_4.setPosition(sf::Vector2f((width + wrog_4.getGlobalBounds().left)/2, - wrog_4.getGlobalBounds().top));
 
-	sf::Vector2f pozycja;
-	pozycja.x = wrog_4.getPosition().x; pozycja.y = wrog_4.getPosition().y;
-	sf::Vector2f przesuniecie; 
-
-	sf::Color wr_kl (sf::Color::Red);//kolor wrogów
-	wrog_4.setFillColor(wr_kl);
+	sf::Vector2f przesuniecie;
+	wrog_4.setFillColor(sf::Color::Red);
+	std::cout <<"\n" << p1.ZawOtoczka.left << "\n" << p1.ZawOtoczka.top << "\n\n";
+	//Kolizje
 
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
@@ -66,30 +58,29 @@ int main()
 				menu.close();
 			}
 		}
-		P1.update();
+		p1.update();
 		menu.clear(sf::Color::Black);
 
-		male->rysuj(menu); //sr.rysuj(menu); duze.rysuj(menu);//rysowanie zairen
-
+		male->rysuj(menu); //sr.rysuj(menu); duze.rysuj(menu);//rysowanie zairen menu.rysuj(sr);
 		w_1->rysuj(menu);menu.draw(wrog_4);//rysowanie wrogów
-
-		menu.draw(P1.getGracz());//rysowanie gracza
-
+		sr.rysuj(menu);
+		menu.draw(p1.getGracz());//rysowanie gracza
 		menu.display();
 		if (zegar.getElapsedTime().asMilliseconds() > 10.0f)//-----------------nieregularny wróg porusza się i obraca 
 		{
 			float V_w4 = rand()%7+3;//prędkość niereguralnego wroga - pseudolosowa
 			wrog_4.setRotation(obrot+=7.5f);
 
-			pozycja = wrog_4.getPosition();
+			sf::Vector2f pozycja;
+			pozycja.x = wrog_4.getPosition().x; pozycja.y = wrog_4.getPosition().y;
 
-			if (pozycja.x > width/2+100.f)
+			if (pozycja.x > (width + wrog_4.getGlobalBounds().left)/2)
 			przesuniecie.x = -2.f;
-			if (pozycja.x < width / 2 - 100.f)
+			if (pozycja.x < (width - wrog_4.getGlobalBounds().left)/2)
 			przesuniecie.x = 3.f;
-			if (pozycja.y > height-50.f)
+			if (pozycja.y > (height - wrog_4.getGlobalBounds().top/12))//liczba 12 dobrana eksperymentalnie
 			przesuniecie.y = -1*V_w4;
-			if(pozycja.y <60.f)
+			if(pozycja.y < (height + wrog_4.getGlobalBounds().top)/12)//liczba 12 dobrana eksperymentalnie
 			przesuniecie.y = V_w4;
 
 			wrog_4.move(sf::Vector2f(przesuniecie));

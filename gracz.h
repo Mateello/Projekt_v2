@@ -1,20 +1,26 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include <vector>
+#include "wrogowie.h"
 
 class Gracz
 {
 	int punkty;
-	sf::Vector2f pozycja;
 	sf::Vector2f window;
-	sf::Texture Pacman_t;
-	sf::Sprite Pacman;
-	float przesuniecie;
+	sf::Texture tekstura;
+	sf::Sprite Zawodnik;
 public:
+	Gracz() {//konstruktor domyœlny
+		punkty = 0; pozycja.x = 0; pozycja.y = 0;
+	}
 	Gracz(sf::RenderWindow& okno);
 	sf::Sprite getGracz();
+	sf::FloatRect NastepnaPoz;//zmienna przechowuj¹ca wartoœæ nastêpnej pozycji
+	sf::FloatRect ZawOtoczka;//zmienna przechowuj¹ca wartoœci getGlobalBounds
+	sf::Vector2f predkosc;
+	sf::Vector2f pozycja;
 	void update();
 	void getPunkty(int &pkt);
 	void setPunkty(int pkt);
-	void getPozycja(sf::Sprite Gracz);
+	void kolizja();
 };

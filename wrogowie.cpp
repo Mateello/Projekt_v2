@@ -20,16 +20,18 @@ Wrog::Wrog(int liczbaWrogow, float r, int w, sf::RenderWindow& okno)
 	//sf::Color kolor = sf::Color(getRandomNumber(gen,0,255), getRandomNumber(gen, 0, 255), getRandomNumber(gen, 0, 255));
 	for (int i = 0; i < ilosc; i++)
 	{
+		wrogOtoczka=krztalt.getGlobalBounds();//ustalanie "otoczki" wroga
 		krztalt.setRadius(promien);
 		krztalt.setPointCount(wierzcholki);
 		krztalt.setFillColor(sf::Color::Red);//wrogowie bêd¹ mieæ czerwony
 		krztalt.setPosition(losPozycjeX(wymiar_okna.x), losPozycjeY(wymiar_okna.y));//obecnie losowa pozycja 
 		wrogowie.push_back(krztalt);
+		pozycja.x = krztalt.getPosition().x; pozycja.y = krztalt.getPosition().y;
 	}
 }
 Wrog::~Wrog()
 {
-	;
+	delete okno;
 }
 float Wrog::losPozycjeX(int szerokoscOkna)
 {
@@ -66,17 +68,12 @@ Ziarna::Ziarna(int liczbaziaren, float promien, int wartosc, sf::RenderWindow& o
 	std::mt19937 gen = generateRandomEngine();
 	for (int i=0;i< ilosc;i++)
 	{
+		wrogOtoczka = krztalt.getGlobalBounds();//ustalanie "otoczki" wroga
 		sf::Color kolor = sf::Color(getRandomNumber(gen, 0, 255), getRandomNumber(gen, 0, 255), getRandomNumber(gen, 0, 255));
 		krztalt.setFillColor(kolor);
 		krztalt.setRadius(promien);
 		krztalt.setPosition(losPozycjeX(wymiar_okna.x), losPozycjeY(wymiar_okna.y));
-		ziarna.push_back(krztalt);
-	}
-}
-void Ziarna::rysuj(sf::RenderWindow& okno)//rysowanie wektora ziaren
-{
-	for (const auto& krztalt : ziarna) {
-		okno.draw(krztalt);
+		wrogowie.push_back(krztalt);
 	}
 }
 Ziarna::~Ziarna()
