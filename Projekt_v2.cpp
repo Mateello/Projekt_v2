@@ -3,8 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include<ctime>
-#include<vector>
 #include "gracz.h" //osobny folder z klasą i jej metodami - lda przejrzystości kodu
+#include "wrogowie.h"
 //#include"okno.h" --- będzie odkomentowane jak naprawię
 //#include "gra.h" - próba zrobienia osobnego folderu z "silnikiem" gry
 int main()
@@ -13,22 +13,22 @@ int main()
 	//INICJALIZACJA SILNIKA GRY (KLASY Gra)
 	//Gra gra;//obiekt klasy Gra
 
-	//OKNA - OBIEKTY -------------------------------------------------------------DOCELOWO WSZYSTKO ZWIĄZANE Z OKNAMI ZOSTANIE PRZERZUCONE DO INNYCH PLIKÓW
+	//OKNA - Interfejsy OBIEKTY -------------------------------------------------------------DOCELOWO WSZYSTKO ZWIĄZANE Z OKNAMI ZOSTANIE PRZERZUCONE DO INNYCH PLIKÓW
 	sf::RenderWindow menu(sf::VideoMode(600.f, 600.f), "Menu");
 	//Menu MenuGlowne(menu.getSize().x, menu.getSize().y);
 
 	sf::Clock zegar;//tworzymy obiekt mierzący czas
-	float obrot = 0.f;
-	float width = menu.getSize().x;//szerokość okna
-	float height = menu.getSize().y;//wysokość okna
 
-	Gracz p1(menu);
+	Gracz p1(&menu);
 
-	Wrog *w_1=new Wrog(3,15, 4,menu);//ilość, rozmiar,ilość wierzchołków, okno
+	sf::Vector2f wrog_wym(30.f,15.f);
+	Wrog *w_1=new Wrog(1,wrog_wym,&menu);//ilość, wymiary, okno ------------- wrogowie będą prostokątami
 
-	Ziarna *male = new Ziarna(5, 5, 15, menu);//dynamiczna alkoacja ziaren, ilość,średnica,wartość punktowa, okno w którym rysujemy
-	Ziarna sr(3,10,5,menu);
-	sf::ConvexShape wrog_4;
+	sf::Vector2f ziar_wym(15.f, 15.f);
+	Ziarna* male = new Ziarna(3, ziar_wym, & menu);//ilość,wartość punktowa, wymiart ,okno ---------------------- ziarna będą kwadratami
+
+	float obrot = 0;//obrót ConvexShape'a
+	sf::ConvexShape wrog_4;//-------------------docelowo zrobić z tego osobną klasę
 
 	wrog_4.setPointCount(8);
 	wrog_4.setPoint(0, sf::Vector2f(0.f, 0.f));
@@ -40,12 +40,12 @@ int main()
 	wrog_4.setPoint(6, sf::Vector2f(0.f, 20.f));
 	wrog_4.setPoint(7, sf::Vector2f(-30.f, 10.f));
 
-	wrog_4.setPosition(sf::Vector2f((width + wrog_4.getGlobalBounds().left)/2, - wrog_4.getGlobalBounds().top));
+	wrog_4.setPosition(sf::Vector2f((menu.getSize().x + wrog_4.getGlobalBounds().left)/2, - wrog_4.getGlobalBounds().top));
 	sf::Vector2f przesuniecie;
 	sf::Vector2f pozycjaw4;
 	wrog_4.setFillColor(sf::Color::Red);
 
-	bool deadPlayer=true;//zmienna odpowowiadająca za to czy gracz "żyje" czy nie
+	bool deadPlayer = true;
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
@@ -59,10 +59,11 @@ int main()
 		}
 		p1.update();
 		menu.clear(sf::Color::Black);
-		male->rysuj(menu); //sr.rysuj(menu); duze.rysuj(menu);//rysowanie zairen menu.rysuj(sr);
-		w_1->rysuj(menu);menu.draw(wrog_4);//rysowanie wrogów
-		if(deadPlayer!=false)
-		menu.draw(p1.getGracz());//rysowanie gracza
+		male->draw();
+		w_1->draw();
+		menu.draw(wrog_4);//rysowanie wrogów
+		if (deadPlayer != false)
+		p1.draw();//rysowanie gracza
 
 		menu.display();
 
@@ -76,13 +77,13 @@ int main()
 			if (wrog_4.getGlobalBounds().intersects(p1.getBounds()))//nie działa - getGlobalbounds zwraca 0 0
 			deadPlayer = false;
 
-			if (pozycjaw4.x > (width + wrog_4.getGlobalBounds().left)/2)
+			if (pozycjaw4.x > (menu.getSize().x + wrog_4.getGlobalBounds().left)/2)
 			przesuniecie.x = -2.f;
-			if (pozycjaw4.x < (width - wrog_4.getGlobalBounds().left)/2)
+			if (pozycjaw4.x < (menu.getSize().x - wrog_4.getGlobalBounds().left)/2)
 			przesuniecie.x = 3.f;
-			if (pozycjaw4.y > (height - wrog_4.getGlobalBounds().top/12))//liczba 12 dobrana eksperymentalnie
+			if (pozycjaw4.y > (menu.getSize().y - wrog_4.getGlobalBounds().top/12))//liczba 12 dobrana eksperymentalnie
 			przesuniecie.y = -1*V_w4;
-			if(pozycjaw4.y < (height + wrog_4.getGlobalBounds().top)/12)//liczba 12 dobrana eksperymentalnie
+			if(pozycjaw4.y < (menu.getSize().y + wrog_4.getGlobalBounds().top)/12)//liczba 12 dobrana eksperymentalnie
 			przesuniecie.y = V_w4;
 
 			wrog_4.move(sf::Vector2f(przesuniecie));
@@ -90,6 +91,6 @@ int main()
 			zegar.restart();
 		}
 	}
-	delete male; delete w_1;
+	delete w_1;delete male;
 	return 0;
 }

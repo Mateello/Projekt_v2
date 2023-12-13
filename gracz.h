@@ -1,25 +1,19 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include <vector>
-#include "wrogowie.h"
 
 class Gracz
 {
-	int punkty;
-	sf::Vector2f window;
-	sf::Texture tekstura;
-	sf::Sprite Zawodnik;
-public:
-	Gracz() {//konstruktor domyœlny
-		punkty = 0; pozycja.x = 0; pozycja.y = 0;
-	}
-	Gracz(sf::RenderWindow& okno);
-	sf::Sprite getGracz();
-	sf::FloatRect getBounds();
+	sf::RenderWindow *window;
+	sf::Texture *tekstura;
+	sf::Sprite *zawodnik;
 	sf::Vector2f predkosc;
 	sf::Vector2f pozycja;
+public:
+	Gracz(sf::RenderWindow *okno);
+	~Gracz();
 	void update();
-	void getPunkty(int &pkt);
-	void setPunkty(int pkt);
-	void kolizja();
+	void init();
+	void draw();//zmienna odpowowiadaj¹ca za to czy gracz "¿yje" czy nie
+	sf::FloatRect getBounds();
 };
