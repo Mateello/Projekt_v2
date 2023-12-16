@@ -2,50 +2,23 @@
 
 #include <SFML/Graphics.hpp>
 #include<iostream>
-#include<ctime>
-#include "gracz.h" //osobny folder z klasą i jej metodami - lda przejrzystości kodu
 #include "wrogowie.h"
-//#include"okno.h" --- będzie odkomentowane jak naprawię
-//#include "gra.h" - próba zrobienia osobnego folderu z "silnikiem" gry
+#include "gracz.h"
 int main()
 {
-	srand(time(NULL));//dla odmiany taki generator liczb pseudolosowych
-	//INICJALIZACJA SILNIKA GRY (KLASY Gra)
-	//Gra gra;//obiekt klasy Gra
-
 	//OKNA - Interfejsy OBIEKTY -------------------------------------------------------------DOCELOWO WSZYSTKO ZWIĄZANE Z OKNAMI ZOSTANIE PRZERZUCONE DO INNYCH PLIKÓW
 	sf::RenderWindow menu(sf::VideoMode(600.f, 600.f), "Menu");
-	//Menu MenuGlowne(menu.getSize().x, menu.getSize().y);
+	menu.setFramerateLimit(60);
 
 	sf::Clock zegar;//tworzymy obiekt mierzący czas
 
-	Gracz p1(&menu);
+	Gracz p1(&menu);//obiekt typu gracz, argumentem jest okno w którym jest rysowany
 
-	sf::Vector2f wrog_wym(30.f,15.f);
-	Wrog *w_1=new Wrog(1,wrog_wym,&menu);//ilość, wymiary, okno ------------- wrogowie będą prostokątami
+	int max_ilosc_wrogow;
+	std::vector<Wrog> wrogowie;//wektor z klasy Wrog 
 
-	sf::Vector2f ziar_wym(15.f, 15.f);
-	Ziarna* male = new Ziarna(3, ziar_wym, & menu);//ilość,wartość punktowa, wymiart ,okno ---------------------- ziarna będą kwadratami
+	WrogCS ConSh(&menu);
 
-	float obrot = 0;//obrót ConvexShape'a
-	sf::ConvexShape wrog_4;//-------------------docelowo zrobić z tego osobną klasę
-
-	wrog_4.setPointCount(8);
-	wrog_4.setPoint(0, sf::Vector2f(0.f, 0.f));
-	wrog_4.setPoint(1, sf::Vector2f(10.f, -30.f));
-	wrog_4.setPoint(2, sf::Vector2f(20.f, 0.f));
-	wrog_4.setPoint(3, sf::Vector2f(50.f, 10.f));
-	wrog_4.setPoint(4, sf::Vector2f(20.f, 20.f));
-	wrog_4.setPoint(5, sf::Vector2f(10.f, 50.f));
-	wrog_4.setPoint(6, sf::Vector2f(0.f, 20.f));
-	wrog_4.setPoint(7, sf::Vector2f(-30.f, 10.f));
-
-	wrog_4.setPosition(sf::Vector2f((menu.getSize().x + wrog_4.getGlobalBounds().left)/2, - wrog_4.getGlobalBounds().top));
-	sf::Vector2f przesuniecie;
-	sf::Vector2f pozycjaw4;
-	wrog_4.setFillColor(sf::Color::Red);
-
-	bool deadPlayer = true;
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
@@ -59,38 +32,28 @@ int main()
 		}
 		p1.update();
 		menu.clear(sf::Color::Black);
-		male->draw();
-		w_1->draw();
-		menu.draw(wrog_4);//rysowanie wrogów
-		if (deadPlayer != false)
-		p1.draw();//rysowanie gracza
+		ConSh.draw();//rysowanie wroga typu ConvexShape
+
+		if (p1.deadPlayer != false){
+			p1.draw();//rysowanie gracza,jeśli "żyje"
+		}
+		if (p1.deadPlayer == true)
+
+		//p1.deadPlayer=p1.kolizje(w_1.wrogowie);//to samo wychodzi 
+		/**p1.deadPlayer = w_1.kolizje(p1.getBounds());
+		if (pkt.kolizje(p1.getBounds())==false)
+		p1.punkty++;*/
 
 		menu.display();
 
 		if (zegar.getElapsedTime().asMilliseconds() > 10.0f)//-----------------nieregularny wróg porusza się i obraca 
 		{
-			float V_w4 = rand() % 3;//prędkość niereguralnego wroga - pseudolosowa
-			wrog_4.setRotation(obrot += 7.5f);
-			pozycjaw4.x = wrog_4.getPosition().x; pozycjaw4.y = wrog_4.getPosition().y;
+			if (ConSh.getBounds().intersects(p1.getBounds()))//Kolizja z convexShapem
+			p1.deadPlayer = false;
 
-			//Kolizje------------------------------------
-			if (wrog_4.getGlobalBounds().intersects(p1.getBounds()))//nie działa - getGlobalbounds zwraca 0 0
-			deadPlayer = false;
-
-			if (pozycjaw4.x > (menu.getSize().x + wrog_4.getGlobalBounds().left)/2)
-			przesuniecie.x = -2.f;
-			if (pozycjaw4.x < (menu.getSize().x - wrog_4.getGlobalBounds().left)/2)
-			przesuniecie.x = 3.f;
-			if (pozycjaw4.y > (menu.getSize().y - wrog_4.getGlobalBounds().top/12))//liczba 12 dobrana eksperymentalnie
-			przesuniecie.y = -1*V_w4;
-			if(pozycjaw4.y < (menu.getSize().y + wrog_4.getGlobalBounds().top)/12)//liczba 12 dobrana eksperymentalnie
-			przesuniecie.y = V_w4;
-
-			wrog_4.move(sf::Vector2f(przesuniecie));
-
+			ConSh.ruch();
 			zegar.restart();
 		}
 	}
-	delete w_1;delete male;
 	return 0;
 }

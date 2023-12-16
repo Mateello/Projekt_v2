@@ -10,13 +10,15 @@ Gracz::~Gracz()
 }
 void Gracz::init()
 {
+	deadPlayer = true; punkty = 0;
 	tekstura = new sf::Texture;
 	tekstura->loadFromFile("pokeball.png");//ze wzglêdu na problem z pacman.png - na razie porzyczê pokeball'a
 	zawodnik = new sf::Sprite;
 	zawodnik->setTexture(*tekstura);zawodnik->setScale(sf::Vector2f(0.5f, 0.5f));
 	zawodnik->setPosition(window->getSize().x / 2, window->getSize().y / 2);
 	predkosc.x = 0.25f;//niestety na razie dobrae w taki sposób
-	predkosc.y = 0.25f;
+	predkosc.y = 0.25f; 
+	bounds = zawodnik->getGlobalBounds();
 }
 sf::FloatRect Gracz::getBounds()
 {
@@ -59,5 +61,15 @@ void Gracz::update()
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
 		zawodnik->move(0.f, predkosc.y);
+	}
+}
+bool Gracz::kolizje(std::vector<sf::RectangleShape> W)
+{
+	for (int i = 0; i < W.size(); i++)//std::vector<sf::RectangleShape>::iterator i = wrogowie.begin(); i != wrogowie.end();i++
+	{
+		if (W[i].getGlobalBounds().intersects(zawodnik->getGlobalBounds()))
+			return false;
+		else
+			return true;
 	}
 }

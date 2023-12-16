@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-class Interfejs
+class Interfejs//zastosowaæ poliformiz ???
 {
 
 public:
