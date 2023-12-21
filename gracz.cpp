@@ -16,8 +16,8 @@ void Gracz::init()
 	zawodnik = new sf::Sprite;
 	zawodnik->setTexture(*tekstura);zawodnik->setScale(sf::Vector2f(0.5f, 0.5f));
 	zawodnik->setPosition(window->getSize().x / 2, window->getSize().y / 2);
-	predkosc.x = 0.25f;//niestety na razie dobrae w taki sposób
-	predkosc.y = 0.25f; 
+	predkosc.x = 5.f;//niestety na razie dobrae w taki sposób
+	predkosc.y = 5.f; 
 	bounds = zawodnik->getGlobalBounds();
 }
 sf::FloatRect Gracz::getBounds()
