@@ -9,16 +9,17 @@ void Wrog::init()
 {
 	for (int i = 0; i < this->ilosc; i++)
 	{
+		przesuniecie = new sf::Vector2f[ilosc];
 		krztalt.setSize(sf::Vector2f(30.f, 15.f));
 		krztalt.setFillColor(sf::Color::Red);//wrogowie bêd¹ mieæ czerwony
-		krztalt.setPosition(losPozycjeX(window->getSize().x-krztalt.getGlobalBounds().left), losPozycjeY(window->getSize().y- krztalt.getGlobalBounds().top));//obecnie losowa pozycja 
+		krztalt.setPosition(rand() % 29, rand() % 29);//losPozycjeY(window->getSize().y- krztalt.getGlobalBounds().top));//obecnie losowa pozycja 
 		pozycja.x = krztalt.getPosition().x; pozycja.y = krztalt.getPosition().y;
 		wrogowie.push_back(krztalt);
 	}
 }
 Wrog::~Wrog()
 {
-	delete window;
+	delete window; delete[] przesuniecie;
 }
 float Wrog::losPozycjeX(int szerokoscOkna)
 {
@@ -36,10 +37,26 @@ void Wrog::draw()
 		window->draw(krztalt);
 	}
 }
+void Wrog::ruch()
+{
+	float losV = rand()%5+3;
+	for (int i = 0; i < wrogowie.size(); i++) {
+		if (wrogowie[i].getPosition().x > (window->getSize().x - (i+1)*wrogowie[i].getSize().x))
+			przesuniecie[i].x = -3.f;
+		if (wrogowie[i].getPosition().x < (i+1)*wrogowie[i].getSize().x)
+			przesuniecie[i].x = 2;
+		if (wrogowie[i].getPosition().y > (window->getSize().y - (i+1)*wrogowie[i].getSize().y))
+			przesuniecie[i].y = -2 * losV;
+		if (wrogowie[i].getPosition().y < (i+1)*wrogowie[i].getSize().y)
+			przesuniecie[i].y = 1 * losV;
+		
+		wrogowie[i].move(sf::Vector2f(przesuniecie[i]));
+	}
+}
 //------------------------------------------------------------- Punkty -------------------------------------------------------------
 Ziarno::Ziarno(int ilosc, sf::RenderWindow* okno)//:Wrog(okno)//---powielalo mi iloœæ punktów
 {	
-	this->window = okno; init();
+	this->window = okno; this->ilosc = ilosc; init();
 }
 Ziarno::~Ziarno()
 {
@@ -47,7 +64,7 @@ Ziarno::~Ziarno()
 }
 void Ziarno::init()
 {
-	for (int i = 0; i < this->ilosc+3; i++){
+	for (int i = 0; i < this->ilosc; i++){
 		krztalt.setSize(sf::Vector2f(15.f, 15.f));
 		krztalt.setRotation(45.f);
 		krztalt.setFillColor(sf::Color::Magenta);//wrogowie bêd¹ mieæ czerwony
@@ -82,7 +99,7 @@ void WrogCS::init() {
 }
 void WrogCS::ruch()
 {
-	float vCS = rand() % 4 + 1;//losowanie prêdkoœci z przedzia³u 1 do 4
+	float vCS = rand() % 5 + 1;//losowanie prêdkoœci z przedzia³u 1 do 4
 	gwiazda.setRotation(obrot += 7.5f);
 
 	if (gwiazda.getPosition().x > (window->getSize().x + gwiazda.getGlobalBounds().left) / 2)

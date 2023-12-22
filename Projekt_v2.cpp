@@ -27,9 +27,9 @@ int main()
 
 	Wrog w_1(3,&menu);
 	int kolizja = -1;
-	Ziarno pkt(5,&menu);
+	Ziarno pkt(4,&menu);
 
-	//WrogCS ConSh(&menu);
+	WrogCS ConSh(&menu);
 
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
@@ -83,7 +83,7 @@ int main()
 			break;
 		}
 
-		//ConSh.draw();//rysowanie wroga typu ConvexShape
+		ConSh.draw();//rysowanie wroga typu ConvexShape
 
 		if (p1.deadPlayer != false)
 			p1.draw();//rysowanie gracza,jeśli "żyje"
@@ -96,9 +96,10 @@ int main()
 
 		if (zegar.getElapsedTime().asMilliseconds() > 10.0f)//-----------------nieregularny wróg porusza się i obraca 
 		{
-			//if (ConSh.getBounds().intersects(p1.getBounds()))//Kolizja z convexShapem ]
-			//p1.deadPlayer = false;
-			//ConSh.ruch();
+			if (ConSh.getBounds().intersects(p1.getBounds()))//Kolizja z convexShapem ]
+			p1.deadPlayer = false;
+			ConSh.ruch();
+			w_1.ruch();
 
 			zegar.restart();
 		}

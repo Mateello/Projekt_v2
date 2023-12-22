@@ -12,6 +12,7 @@ protected:
 	sf::RenderWindow *window;
 	sf::RectangleShape krztalt;//tej zmiennej nie usuwam poniewa¿ na niej bazowuj¹ funckje pushback dla wektorów wrogów i ziaren
 	sf::Vector2f pozycja;
+	sf::Vector2f *przesuniecie;
 
 	float losPozycjeX(int szerokoscOkna);
 	float losPozycjeY(int wysokoscOkna);
@@ -22,6 +23,7 @@ public:
 	}
 	~Wrog();
 	void draw();
+	void ruch();
 	std::vector<sf::RectangleShape> wrogowie;
 };
 class Ziarno:public Wrog //zbierane przez gracza, zwiêkszaj¹ iloœæ punktów
