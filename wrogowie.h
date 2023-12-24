@@ -3,7 +3,6 @@
 #include <random>
 #include<ctime>
 #include<cmath>
-#include"gracz.h"
 
 class Wrog
 {

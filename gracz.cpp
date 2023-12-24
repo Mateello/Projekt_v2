@@ -6,18 +6,16 @@ Gracz::Gracz(sf::RenderWindow *window)
 }
 Gracz::~Gracz()
 {
-	delete zawodnik; delete tekstura; delete window;
+	delete tekst; delete czcionka; delete name; delete zawodnik; delete tekstura; delete window;
 }
 void Gracz::init()
 {
-	deadPlayer = true; punkty = 0;
-	tekstura = new sf::Texture;
+	deadPlayer = true; name = new sf::String; czcionka = new sf::Font; tekst = new sf::Text;tekstura = new sf::Texture; zawodnik = new sf::Sprite;
 	tekstura->loadFromFile("pokeball.png");//ze wzglêdu na problem z pacman.png - na razie porzyczê pokeball'a
-	zawodnik = new sf::Sprite;
 	zawodnik->setTexture(*tekstura);zawodnik->setScale(sf::Vector2f(0.5f, 0.5f));
 	zawodnik->setPosition(window->getSize().x / 2, window->getSize().y / 2);
-	predkosc.x = 5.f;//niestety na razie dobrae w taki sposób
-	predkosc.y = 5.f; 
+	czcionka->loadFromFile("Arial.ttf"); tekst->setString(*name);
+	predkosc.x = 5.f;predkosc.y = 5.f;//niestety na razie dobrae w taki sposób
 	bounds = zawodnik->getGlobalBounds();
 }
 sf::FloatRect Gracz::getBounds()
@@ -63,13 +61,11 @@ void Gracz::update()
 		zawodnik->move(0.f, predkosc.y);
 	}
 }
-bool Gracz::kolizje(std::vector<sf::RectangleShape> W)
+sf::String Gracz::setName(sf::Event e)//przed tym bêdzie if który wywo³a funckjê czyli - if(wpisujemy text) to wywo³a siê ta funkcja
 {
-	for (int i = 0; i < W.size(); i++)//std::vector<sf::RectangleShape>::iterator i = wrogowie.begin(); i != wrogowie.end();i++
+	if (e.text.unicode < 128)
 	{
-		if (W[i].getGlobalBounds().intersects(zawodnik->getGlobalBounds()))
-			return false;
-		else
-			return true;
+		*name += e.text.unicode;
 	}
+	return *name;
 }

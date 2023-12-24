@@ -72,7 +72,7 @@ void Ziarno::init()
 		pozycja.x = krztalt.getPosition().x; pozycja.y = krztalt.getPosition().y;
 		wrogowie.push_back(krztalt);
 	}
-}
+}	
 //------------------------------------------------------------- ConvexShape -------------------------------------------------------------
 WrogCS::WrogCS(sf::RenderWindow* okno)
 {
