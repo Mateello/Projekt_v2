@@ -6,12 +6,12 @@ Interfejs::Interfejs(sf::RenderWindow* okno)
 }
 Interfejs::~Interfejs()
 {
-	 delete okno; delete czcionka; delete t1; delete t2; delete t3; delete t4; delete t_bounds; delete tlo; delete narysowany; delete wybor;
+	delete narysowany; delete wybor; delete okno; delete czcionka; delete t1; delete t2; delete t3; delete t4; delete t_bounds; delete tlo;
 }
 void Interfejs::init()
 {
 	sf::Color t³o = sf::Color(80, 80, 80);
-	otoczkat.x = 130.f; otoczkat.y = 40.f;
+	wym_obr.x = 130.f; wym_obr.y = 40.f; otoczkat.x = wym_obr.x -20.f; otoczkat.y = wym_obr.y -15;
 	tlo = new sf::RectangleShape; t_bounds = new sf::RectangleShape; wybor = new int; narysowany = new bool;
 	tlo->setFillColor(t³o);
 	tlo->setPosition(0.f,0.f); tlo->setSize(sf::Vector2f(okno->getSize().x, okno->getSize().y));
@@ -26,55 +26,65 @@ void Interfejs::init()
 	t4 = new sf::Text; t4->setFont(*czcionka); t4->setCharacterSize(25); t4->setString("Czwarty");
 	t4->setPosition(250.f, 400.f);
 
-	t_bounds->setSize(otoczkat);//docelowo ma rysowaæ otoczki gdy najedzie sie na to myszk¹
+	t_bounds->setSize(wym_obr);//docelowo ma rysowaæ otoczki gdy najedzie sie na to myszk¹
 	t_bounds->setFillColor(t³o); t_bounds->setOutlineColor(sf::Color::White); t_bounds->setOutlineThickness(1.f);
 }
 void Interfejs::rysuj()//rysowanie napisów, wokó³ napisu przy którym jest myszka rysuje sie otoczka
 {
-	okno->draw(*tlo);
-	if ((mousePos.x > t1->getPosition().x && (mousePos.x < (t1->getPosition().x + otoczkat.x)) &&
-		(mousePos.y > t1->getPosition().y) && (mousePos.y < (t1->getPosition().y + otoczkat.y)))){
+	if (*narysowany == true)
+	{
+		okno->draw(*tlo);
+		if ((mousePos.x > t1->getPosition().x && (mousePos.x < (t1->getPosition().x + otoczkat.x)) &&
+			(mousePos.y > t1->getPosition().y) && (mousePos.y < (t1->getPosition().y + otoczkat.y)))) {
 
-		t_bounds->setPosition(t1->getPosition()); okno->draw(*t_bounds); okno->draw(*t1); setIntIndeks(1);
-	}
-	else{
-		okno->draw(*t1);
-	}
-	if ((mousePos.x > t2->getPosition().x && (mousePos.x < (t2->getPosition().x + otoczkat.x)) &&
-		(mousePos.y > t2->getPosition().y) && (mousePos.y < (t2->getPosition().y + otoczkat.y)))){
+			t_bounds->setPosition(t1->getPosition()+sf::Vector2f(-5.f,0.f)); okno->draw(*t_bounds); okno->draw(*t1); setIntIndeks(1);
+		}
+		else {
+			okno->draw(*t1);
+		}
+		if ((mousePos.x > t2->getPosition().x && (mousePos.x < (t2->getPosition().x + otoczkat.x)) &&
+			(mousePos.y > t2->getPosition().y) && (mousePos.y < (t2->getPosition().y + otoczkat.y)))) {
 
-		t_bounds->setPosition(t2->getPosition());okno->draw(*t_bounds); okno->draw(*t2); setIntIndeks(2);
-	}
-	else{ 
-		okno->draw(*t2);
-	}
-	if ((mousePos.x > t3->getPosition().x && (mousePos.x < (t3->getPosition().x + otoczkat.x)) &&
-		(mousePos.y > t3->getPosition().y) && (mousePos.y < (t3->getPosition().y + otoczkat.y)))) {
+			t_bounds->setPosition(t2->getPosition() + sf::Vector2f(-5.f, 0.f)); okno->draw(*t_bounds); okno->draw(*t2); setIntIndeks(2);
+		}
+		else {
+			okno->draw(*t2);
+		}
+		if ((mousePos.x > t3->getPosition().x && (mousePos.x < (t3->getPosition().x + otoczkat.x)) &&
+			(mousePos.y > t3->getPosition().y) && (mousePos.y < (t3->getPosition().y + otoczkat.y)))) {
 
-		t_bounds->setPosition(t3->getPosition()); okno->draw(*t_bounds); okno->draw(*t3); setIntIndeks(3);
-	}
-	else {
-		okno->draw(*t3);
-	}
-	if ((mousePos.x > t4->getPosition().x && (mousePos.x < (t4->getPosition().x + otoczkat.x)) &&
-		(mousePos.y > t4->getPosition().y) && (mousePos.y < (t4->getPosition().y + otoczkat.y)))) {
+			t_bounds->setPosition(t3->getPosition() + sf::Vector2f(-5.f, 0.f)); okno->draw(*t_bounds); okno->draw(*t3); setIntIndeks(3);
+		}
+		else {
+			okno->draw(*t3);
+		}
+		if ((mousePos.x > t4->getPosition().x && (mousePos.x < (t4->getPosition().x + otoczkat.x)) &&
+			(mousePos.y > t4->getPosition().y) && (mousePos.y < (t4->getPosition().y + otoczkat.y)))) {
 
-		t_bounds->setPosition(t4->getPosition()); okno->draw(*t_bounds); okno->draw(*t4); setIntIndeks(4);
+			t_bounds->setPosition(t4->getPosition() + sf::Vector2f(-5.f, 0.f)); okno->draw(*t_bounds); okno->draw(*t4); setIntIndeks(4);
+		}
+		else {
+			okno->draw(*t4);
+		}
 	}
-	else {
-		okno->draw(*t4);
-	}
+	else
+		setIntIndeks(NULL);
 }
 void Interfejs::rysuj(bool obw){
-	okno->draw(*tlo); okno->draw(*t1); okno->draw(*t2); okno->draw(*t3); 
-	if ((mousePos.x > t4->getPosition().x && (mousePos.x < (t4->getPosition().x + otoczkat.x)) &&
-		(mousePos.y > t4->getPosition().y) && (mousePos.y < (t4->getPosition().y + otoczkat.y)))) {
+	if (*narysowany == true)
+	{
+		okno->draw(*tlo); okno->draw(*t1); okno->draw(*t2); okno->draw(*t3);
+		if ((mousePos.x > t4->getPosition().x && (mousePos.x < (t4->getPosition().x + otoczkat.x)) &&
+			(mousePos.y > t4->getPosition().y) && (mousePos.y < (t4->getPosition().y + otoczkat.y)))) {
 
-		t_bounds->setPosition(t4->getPosition()); okno->draw(*t_bounds); okno->draw(*t4); setIntIndeks(4);
+			t_bounds->setPosition(t4->getPosition()); okno->draw(*t_bounds); okno->draw(*t4); setIntIndeks(4);
+		}
+		else {
+			okno->draw(*t4);
+		}
 	}
-	else {
-		okno->draw(*t4);
-	}
+	else
+		setIntIndeks(NULL);
 }
 void Interfejs::setCharSize(int size){
 	t1->setCharacterSize(size); t2->setCharacterSize(size); t3->setCharacterSize(size); t4->setCharacterSize(size);

@@ -6,7 +6,7 @@
 class Interfejs
 {
 protected:
-	sf::Vector2f otoczkat;
+	sf::Vector2f otoczkat,wym_obr;//otoczka to prostok¹t w którym musi znaleŸæ siê kursor by wybraæ opcje, wym to wymiar rysowanego prostok¹tu
 	sf::RectangleShape* tlo, *t_bounds ;
 	sf::Text* t1, * t2 , * t3, * t4;
 	sf::Font* czcionka; 
@@ -26,6 +26,5 @@ public:
 	void setCharSize(int size);
 	void setString(std::string napis1, std::string napis2, std::string napis3, std::string napis4);
 	void setPosition(float przesuniecie_x, float przesuniecie_y);
-	int podtrzymanie;
 	sf::Vector2i mousePos;//pozycja myszy
 };
