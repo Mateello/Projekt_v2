@@ -23,7 +23,7 @@ public:
 	void draw();
 	void addPunkty();
 	int getPunkty();
-	float getCzas();
+	int getCzas();
 	sf::FloatRect getBounds();
 	sf::FloatRect bounds;
 };

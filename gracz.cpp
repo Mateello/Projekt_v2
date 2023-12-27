@@ -60,6 +60,6 @@ void Gracz::addPunkty() {
 int Gracz::getPunkty(){
 	return punkty;
 }
-float Gracz::getCzas(){//pobieram iloœæ cykli procesora od narysowania gracza i aktualizuje a¿ do jego œmierci
-	float czas = (t_stop - t_start) / CLOCKS_PER_SEC; return czas;
+int Gracz::getCzas(){//pobieram iloœæ cykli procesora od narysowania gracza i aktualizuje a¿ do jego œmierci
+	float czas = (int)(t_stop - t_start) / CLOCKS_PER_SEC; return czas;
 }//jako ¿e typ t_clock pobiera iloœæ cykli procesora w Hz, musimy to podzieliæ przez sta³¹ dla danego urz¹dzenia

@@ -34,17 +34,23 @@ int main(){
 	std::vector<Dane> zapis;//wektro który będzie przechowywał i zapisywał do pliku dane o grze - czas,nazwe,indeks,punkty
 
 	Gracz p1(gridSizeF,&menu);//obiekt typu gracz, argumentem jest okno w którym jest rysowany
-	Wrog w_1(3,gridSizeF,&menu);int kolizja = -1;Ziarno pkt(30,gridSizeF,&menu);WrogCS ConSh(&menu);
+	//Wrog w_1(3,gridSizeF,&menu);
+	int kolizja = -1;Ziarno pkt(30,gridSizeF,&menu);WrogCS ConSh(&menu);
 
-	int scores;//zmienna przechowująca aktualną ilość punktów gracza
 	sf::Text napisy; sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
 	napisy.setCharacterSize(20); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(gridSizeF, gridSizeF);
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
-		std::stringstream ss; scores = p1.getPunkty();
-		ss << "Punkty: " << scores << "\n" << "Czas: "<<p1.getCzas();
+		std::stringstream ss; ss << "Punkty: " << p1.getPunkty() << "\n"<<"Czas: ";
+		if (p1.getCzas() < 60) {
+			ss << p1.getCzas();
+		}
+		else if (p1.getCzas() >= 59) {
+			; ss << p1.getCzas() / 60 % 60 << p1.getCzas() % 60;
+		}
 		napisy.setString(ss.str());
+
 		glowne_menu.mousePos = sf::Mouse::getPosition(menu);wybor_poziomu.mousePos = sf::Mouse::getPosition(menu);
 		tab_wynikow.mousePos = sf::Mouse::getPosition(menu);o_grze.mousePos = sf::Mouse::getPosition(menu);
 		//zmnienne aktualizujące pozycję myszki
@@ -95,12 +101,12 @@ int main(){
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (o_grze.getIntState() == true) && (o_grze.getIntIndeks() == 4)){
 			glowne_menu.setIntState(true); o_grze.setIntState(false);}
 		//kolizje
-		for (int i = 0; i < w_1.wrogowie.size(); i++) {
+		/**for (int i = 0; i < w_1.wrogowie.size(); i++) {
 			if (w_1.wrogowie[i].getGlobalBounds().intersects(p1.getBounds()))
 				kolizja = i;
 		}
 		if (kolizja != -1)//byłoby zero ale wektory są zapisywane od 0
-			p1.deadPlayer = false;
+			p1.deadPlayer = false;*/
 
 		for (int i = 0; i < pkt.wrogowie.size(); i++) {
 			if (pkt.wrogowie[i].getGlobalBounds().intersects(p1.getBounds())) {
@@ -109,8 +115,7 @@ int main(){
 			if (pkt.wrogowie.size() == 0)
 				std::cout << "Wygrana!";
 		}
-
-		//menu.draw(updateText(gridSizeF,p1.getPunkty(), p1.getCzas()));
+		float time = p1.getCzas();
 		p1.update();
 
 		if (p1.deadPlayer != false)
@@ -118,7 +123,8 @@ int main(){
 		else
 			std::cout << "F";//tu coś damy
 		
-		w_1.draw(); pkt.draw(); ConSh.draw();//rysowanie wroga typu ConvexShape
+		//w_1.draw(); 
+		pkt.draw(); ConSh.draw();//rysowanie wroga typu ConvexShape
 		menu.draw(napisy);
 		menu.display();
 		//-----------------nieregularny wróg porusza się i obraca 
@@ -126,7 +132,7 @@ int main(){
 			if (ConSh.getBounds().intersects(p1.getBounds()))//Kolizja z convexShapem ]
 			p1.deadPlayer = false;
 			ConSh.ruch();
-			w_1.ruch();
+			//w_1.ruch();
 			zegar.restart();}
 	}
 	return 0;
