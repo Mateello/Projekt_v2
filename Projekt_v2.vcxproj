@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="gra.cpp" />
     <ClCompile Include="gracz.cpp" />
+    <ClCompile Include="Mapa.cpp" />
     <ClCompile Include="okno.cpp" />
     <ClCompile Include="Projekt_v2.cpp" />
     <ClCompile Include="wrogowie.cpp" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="gra.h" />
     <ClInclude Include="gracz.h" />
+    <ClInclude Include="Mapa.h" />
     <ClInclude Include="okno.h" />
     <ClInclude Include="wrogowie.h" />
   </ItemGroup>

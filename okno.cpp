@@ -16,15 +16,14 @@ void Interfejs::init()
 	tlo->setFillColor(t³o);
 	tlo->setPosition(0.f,0.f); tlo->setSize(sf::Vector2f(okno->getSize().x, okno->getSize().y));
 	czcionka = new sf::Font; czcionka->loadFromFile("Agbalumo-Regular.ttf");
-
 	t1 = new sf::Text; t1->setFont(*czcionka); t1->setCharacterSize(25); t1->setString("Pierwszy");
-	t1->setPosition(250.f, 100.f);
+	t1->setPosition(sf::Vector2f(okno->getSize().x/2-50.f, okno->getSize().y/6));
 	t2 = new sf::Text; t2->setFont(*czcionka); t2->setCharacterSize(25); t2->setString("Drugi");
-	t2->setPosition(250.f, 200.f);
+	t2->setPosition(sf::Vector2f(okno->getSize().x/2 - 50.f, okno->getSize().y / 3));
 	t3 = new sf::Text; t3->setFont(*czcionka); t3->setCharacterSize(25); t3->setString("Trzeci");
-	t3->setPosition(250.f, 300.f);
+	t3->setPosition(sf::Vector2f(okno->getSize().x/2 - 50.f, okno->getSize().y / 2));
 	t4 = new sf::Text; t4->setFont(*czcionka); t4->setCharacterSize(25); t4->setString("Czwarty");
-	t4->setPosition(250.f, 400.f);
+	t4->setPosition(sf::Vector2f(okno->getSize().x/2 - 50.f, okno->getSize().y / 3 *2));
 
 	t_bounds->setSize(wym_obr);//docelowo ma rysowaæ otoczki gdy najedzie sie na to myszk¹
 	t_bounds->setFillColor(t³o); t_bounds->setOutlineColor(sf::Color::White); t_bounds->setOutlineThickness(1.f);

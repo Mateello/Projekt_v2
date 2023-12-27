@@ -1,38 +1,30 @@
 #include "wrogowie.h"
 //-------------------------------------------------------------- Klasa Wrog --------------------------------------------------------------
-Wrog::Wrog(int ilosc, sf::RenderWindow* okno)
-{
-	this->ilosc = ilosc;
-	this->window = okno; init();
+Wrog::Wrog(int ilosc,float grid, sf::RenderWindow* okno){
+	this->ilosc = ilosc; this->grid = grid; this->window = okno; init();
 }
-void Wrog::init()
-{
-	for (int i = 0; i < this->ilosc; i++)
-	{
+void Wrog::init(){
+	for (int i = 0; i < this->ilosc; i++){
 		przesuniecie = new sf::Vector2f[ilosc];
-		krztalt.setSize(sf::Vector2f(30.f, 15.f));
+		krztalt.setSize(sf::Vector2f(grid, grid/2));
 		krztalt.setFillColor(sf::Color::Red);//wrogowie bêd¹ mieæ czerwony
 		krztalt.setPosition(rand() % 29, rand() % 29);//losPozycjeY(window->getSize().y- krztalt.getGlobalBounds().top));//obecnie losowa pozycja 
 		pozycja.x = krztalt.getPosition().x; pozycja.y = krztalt.getPosition().y;
 		wrogowie.push_back(krztalt);
 	}
 }
-Wrog::~Wrog()
-{
+Wrog::~Wrog(){
 	delete window; delete[] przesuniecie;
 }
-float Wrog::losPozycjeX(int szerokoscOkna)
-{
+float Wrog::losPozycjeX(int szerokoscOkna){
 	int szerokosc = (szerokoscOkna-krztalt.getGlobalBounds().left);
 	return rand() % szerokosc + 1;
 }
-float Wrog::losPozycjeY(int wysokoscOkna)
-{
+float Wrog::losPozycjeY(int wysokoscOkna){
 	int wysokosc = (wysokoscOkna - krztalt.getGlobalBounds().top);
 	return rand() % wysokosc + 1;
 }
-void Wrog::draw()
-{
+void Wrog::draw(){
 	for (const auto& krztalt : wrogowie) {
 		window->draw(krztalt);
 	}
@@ -54,9 +46,9 @@ void Wrog::ruch()
 	}
 }
 //------------------------------------------------------------- Punkty -------------------------------------------------------------
-Ziarno::Ziarno(int ilosc, sf::RenderWindow* okno)//:Wrog(okno)//---powielalo mi iloœæ punktów
+Ziarno::Ziarno(int ilosc,float grid, sf::RenderWindow* okno)//:Wrog(okno)//---powielalo mi iloœæ punktów
 {	
-	this->window = okno; this->ilosc = ilosc; init();
+	this->window = okno; this->ilosc = ilosc; this->grid = grid; init();
 }
 Ziarno::~Ziarno()
 {
@@ -65,7 +57,7 @@ Ziarno::~Ziarno()
 void Ziarno::init()
 {
 	for (int i = 0; i < this->ilosc; i++){
-		krztalt.setSize(sf::Vector2f(15.f, 15.f));
+		krztalt.setSize(sf::Vector2f(grid/2, grid/2));
 		krztalt.setRotation(45.f);
 		krztalt.setFillColor(sf::Color::Magenta);//wrogowie bêd¹ mieæ czerwony
 		krztalt.setPosition(losPozycjeX(window->getSize().x), losPozycjeY(window->getSize().y));//obecnie losowa pozycja 

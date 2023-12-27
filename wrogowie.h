@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
-#include <random>
 #include<ctime>
 #include<cmath>
 
@@ -12,12 +11,12 @@ protected:
 	sf::RectangleShape krztalt;//tej zmiennej nie usuwam poniewa¿ na niej bazowuj¹ funckje pushback dla wektorów wrogów i ziaren
 	sf::Vector2f pozycja;
 	sf::Vector2f *przesuniecie;
-
+	float grid;
 	float losPozycjeX(int szerokoscOkna);
 	float losPozycjeY(int wysokoscOkna);
 	void init();	
 public:
-	Wrog(int ilosc, sf::RenderWindow* okno);//wrogowie bêd¹ prostok¹tami
+	Wrog(int ilosc,float grid, sf::RenderWindow* okno);//wrogowie bêd¹ prostok¹tami
 	Wrog() { ilosc = 1; 
 	}
 	~Wrog();
@@ -30,7 +29,7 @@ class Ziarno:public Wrog //zbierane przez gracza, zwiêkszaj¹ iloœæ punktów
 	//za ka¿de ziarno bêdzie +1 punkt dla gracza
 	void init();
 public:
-	Ziarno(int ilosc, sf::RenderWindow* okno);
+	Ziarno(int ilosc, float grid, sf::RenderWindow* okno);
 	~Ziarno();
 };
 

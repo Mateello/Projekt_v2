@@ -1,7 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <random>
-//#include "Tlo.cpp"
 
 class Interfejs
 {

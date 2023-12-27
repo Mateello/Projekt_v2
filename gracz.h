@@ -11,14 +11,19 @@ class Gracz{
 	sf::String *name;
 	sf::Font* czcionka;
 	sf::Text* tekst;
+	float grid, czas_gry;
+	clock_t t_start, t_stop;//zmienne przechowuj¹ce iloœæ cykli procesora od narysowania do usuniecia gracza
+	int punkty;
 public:
-	bool deadPlayer;//zmienna odpowowiadaj¹ca za to czy gracz "¿yje" czy nie
-	Gracz(sf::RenderWindow *okno);
+	bool deadPlayer,narysowany;//zmienna odpowowiadaj¹ca za to czy gracz "¿yje" czy nie
+	Gracz(float grid,sf::RenderWindow *okno);
 	~Gracz();
 	void update();
 	void init();
 	void draw();
-	sf::String setName(sf::Event e);
+	void addPunkty();
+	int getPunkty();
+	float getCzas();
 	sf::FloatRect getBounds();
 	sf::FloatRect bounds;
 };

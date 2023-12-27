@@ -2,18 +2,21 @@
 
 #include <SFML/Graphics.hpp>
 #include<iostream>
+#include<sstream>//string stream, do wyświetlania czasu gry, punktów, nazwy gracza
 #include "wrogowie.h"
 #include "gracz.h"
 #include "okno.h"
 void Help();
 void Esc(sf::RenderWindow*okno);
-int main()
-{
+sf::Text updateText(float grid,int pkt,float czas);
+int main(){
 	srand(time(NULL));
-	sf::RenderWindow menu(sf::VideoMode(600.f, 600.f), "Menu");
+	float gridSizeF=30.f;//zmienna przechowująca zmienną "siatki" gry od niej będą zależeć wielkość okna, mapy itd
+	unsigned gridSizeU=static_cast<unsigned>(gridSizeF);//ta sama wartość zmiennej ale jako typ unsinged - napewno dodatni
+	sf::RenderWindow menu(sf::VideoMode(gridSizeF*30, gridSizeF * 25), "PacMan");
 	menu.setFramerateLimit(60);
 
-	Interfejs glowne_menu(&menu); glowne_menu.setIntState(true); glowne_menu.setPosition(-100.f,0);
+	Interfejs glowne_menu(&menu); glowne_menu.setIntState(true); glowne_menu.setPosition(-3*gridSizeF,0);
 	glowne_menu.setString("Nowa gra","Wyniki","O grze","Wyjscie");//poziomy trudności zmieniają prędkość wrogów i mape
 
 	Interfejs wybor_poziomu(&menu);// wybor_poziomu.setPosition(100.f, 0);
@@ -23,22 +26,25 @@ int main()
 	tab_wynikow.setString(" 1 ", " 2 ", " 3 ", " Powrot ");
 
 	Interfejs o_grze(&menu); bool obw = false; o_grze.setCharSize(20);
-	o_grze.setString(" Gra zostala stworzona na podstawie PACMAN'a. ", " Fajna jest dobrze dziala ", " Gra na 5 ", " Powrot ");
-	o_grze.setPosition(-200.f,-50.f);
+	o_grze.setString(" Gra zostala stworzona na podstawie PACMAN'a ", " Fajna jest dobrze dziala ", " Gra na 5 ", " Powrot ");
+	o_grze.setPosition(-7*gridSizeF,-2*gridSizeF);
 
 	sf::Clock zegar;//tworzymy obiekt mierzący czas
 
 	std::vector<Dane> zapis;//wektro który będzie przechowywał i zapisywał do pliku dane o grze - czas,nazwe,indeks,punkty
 
-	Gracz p1(&menu);//obiekt typu gracz, argumentem jest okno w którym jest rysowany
-	Wrog w_1(3,&menu);
-	int kolizja = -1;
-	Ziarno pkt(4,&menu);
-	WrogCS ConSh(&menu);
+	Gracz p1(gridSizeF,&menu);//obiekt typu gracz, argumentem jest okno w którym jest rysowany
+	Wrog w_1(3,gridSizeF,&menu);int kolizja = -1;Ziarno pkt(30,gridSizeF,&menu);WrogCS ConSh(&menu);
 
+	int scores;//zmienna przechowująca aktualną ilość punktów gracza
+	sf::Text napisy; sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
+	napisy.setCharacterSize(20); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(gridSizeF, gridSizeF);
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
+		std::stringstream ss; scores = p1.getPunkty();
+		ss << "Punkty: " << scores << "\n" << "Czas: "<<p1.getCzas();
+		napisy.setString(ss.str());
 		glowne_menu.mousePos = sf::Mouse::getPosition(menu);wybor_poziomu.mousePos = sf::Mouse::getPosition(menu);
 		tab_wynikow.mousePos = sf::Mouse::getPosition(menu);o_grze.mousePos = sf::Mouse::getPosition(menu);
 		//zmnienne aktualizujące pozycję myszki
@@ -49,16 +55,17 @@ int main()
 				menu.close();
 			
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-				Esc(&menu);
-			
+				;//Esc(&menu);
+
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
-				Help();
+					;//Help();
 		}
 		menu.clear(sf::Color::Black);
-		glowne_menu.rysuj();
-		wybor_poziomu.rysuj();
-		tab_wynikow.rysuj();
-		o_grze.rysuj();
+
+		//glowne_menu.rysuj();
+		//wybor_poziomu.rysuj(); 
+		//tab_wynikow.rysuj(); 
+		//o_grze.rysuj(); 
 		//------------------------------------przy mapce 600x600 zastosować ścianki z kwadratów 30x30 ?????
 		//docelowo ziarna wrzucić w tablicae - array, połozyć je na całej mapie równomiernie i przykryć ścianami/usunąć
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (glowne_menu.getIntState() == true)){
@@ -73,7 +80,7 @@ int main()
 				  glowne_menu.setIntState(false);  o_grze.setIntState(true); }
 				  break;
 			case 4: {
-				Help(); glowne_menu.setIntState(false); }
+				glowne_menu.setIntState(false); }// menu.close(); }//działa ale zakomentowane jest żeby wyjatek nie wyskakiwał
 				  break;
 			}
 		}
@@ -85,12 +92,10 @@ int main()
 					break;
 				}
 			}
-		//WybInter(glowne_menu,wybor_poziomu,tab_wynikow,o_grze);
-		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (o_grze.getIntState() == true) && (o_grze.getIntIndeks() == 4)) {
-			glowne_menu.setIntState(true); o_grze.setIntState(false);
-		}
+		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (o_grze.getIntState() == true) && (o_grze.getIntIndeks() == 4)){
+			glowne_menu.setIntState(true); o_grze.setIntState(false);}
 		//kolizje
-		/**for (int i = 0; i < w_1.wrogowie.size(); i++) {
+		for (int i = 0; i < w_1.wrogowie.size(); i++) {
 			if (w_1.wrogowie[i].getGlobalBounds().intersects(p1.getBounds()))
 				kolizja = i;
 		}
@@ -99,38 +104,32 @@ int main()
 
 		for (int i = 0; i < pkt.wrogowie.size(); i++) {
 			if (pkt.wrogowie[i].getGlobalBounds().intersects(p1.getBounds())) {
-				pkt.wrogowie.erase(pkt.wrogowie.begin() + i);
+				pkt.wrogowie.erase(pkt.wrogowie.begin() + i); p1.addPunkty();
 			}
 			if (pkt.wrogowie.size() == 0)
 				std::cout << "Wygrana!";
-		}*/
+		}
 
-		/**p1.update();
+		//menu.draw(updateText(gridSizeF,p1.getPunkty(), p1.getCzas()));
+		p1.update();
 
 		if (p1.deadPlayer != false)
 			p1.draw();//rysowanie gracza,jeśli "żyje"
-		else{
-			menu.close();
-			GameOver();
-		}*/
-		//w_1.draw(); pkt.draw(); ConSh.draw();//rysowanie wroga typu ConvexShape
-
+		else
+			std::cout << "F";//tu coś damy
+		
+		w_1.draw(); pkt.draw(); ConSh.draw();//rysowanie wroga typu ConvexShape
+		menu.draw(napisy);
 		menu.display();
 		//-----------------nieregularny wróg porusza się i obraca 
-		/**if (zegar.getElapsedTime().asMilliseconds() > 10.0f) {
+		if (zegar.getElapsedTime().asMilliseconds() > 10.0f) {
 			if (ConSh.getBounds().intersects(p1.getBounds()))//Kolizja z convexShapem ]
 			p1.deadPlayer = false;
 			ConSh.ruch();
 			w_1.ruch();
-			zegar.restart();}*/
+			zegar.restart();}
 	}
 	return 0;
-}
-void WybInter(Interfejs &wybrane, Interfejs& opcja_1, Interfejs& opcja_2, Interfejs& opcja_3 )//będzie zwracać indeks interfejsu który będzie do narysowania
-{
-		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (wybrane.getIntState() == true) && (wybrane.getIntIndeks() == 4)) {
-		opcja_3.setIntState(true); wybrane.setIntState(false);
-		}
 }
 void Help(){
 	float obr = 0;
@@ -203,10 +202,20 @@ void Esc(sf::RenderWindow *okno){
 			Esc.draw(tak); Esc.draw(nie);
 		}
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left) == true && (wyjdz == true))) {
-			Esc.close();}//okno->close();}---------------------- ogólnie działa ale wywala instrukcje pinktu przerwania 
+			Esc.close();
+		}//, okno->close();}//---------------------- ogólnie działa ale wywala instrukcje pinktu przerwania 
 		else if ((sf::Mouse::isButtonPressed(sf::Mouse::Left) == true && (zostan == true)))
 		Esc.close();
 		
 		Esc.display();
 	}
+}
+sf::Text updateText(float grid, int pkt, float czas) {// nie działa :(
+	float time = czas;
+	sf::Text napisy; sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
+	napisy.setCharacterSize(20); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(grid, grid);
+	std::stringstream ss;
+	ss << "Punkty: " << pkt << "\n" << "Czas: " << time;
+	napisy.setString(ss.str());
+	return napisy;
 }
