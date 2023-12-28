@@ -3,9 +3,11 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include<sstream>//string stream, do wyświetlania czasu gry, punktów, nazwy gracza
+#include<array>
 #include "wrogowie.h"
 #include "gracz.h"
 #include "okno.h"
+#include "Mapa.h"
 void Help();
 void Esc(sf::RenderWindow*okno);
 sf::Text updateText(float grid,int pkt,float czas);
@@ -15,6 +17,9 @@ int main(){
 	unsigned gridSizeU=static_cast<unsigned>(gridSizeF);//ta sama wartość zmiennej ale jako typ unsinged - napewno dodatni
 	sf::RenderWindow menu(sf::VideoMode(gridSizeF*30, gridSizeF * 25), "PacMan");
 	menu.setFramerateLimit(60);
+
+	float map_size = menu.getSize().y;//mapa będzie kwadratowa dlatego tylko jeden wymiar
+	int walls_max = 30;//(int)(map_size/gridSizeF);//maksymalna ilość ścian - w obu wymiarach bo mapa jest wkadratowa
 
 	Interfejs glowne_menu(&menu); glowne_menu.setIntState(true); glowne_menu.setPosition(-3*gridSizeF,0);
 	glowne_menu.setString("Nowa gra","Wyniki","O grze","Wyjscie");//poziomy trudności zmieniają prędkość wrogów i mape
@@ -32,15 +37,18 @@ int main(){
 	sf::Clock zegar;//tworzymy obiekt mierzący czas
 
 	std::vector<Dane> zapis;//wektro który będzie przechowywał i zapisywał do pliku dane o grze - czas,nazwe,indeks,punkty
+	
+	Gracz p1(&gridSizeF,&menu);//obiekt typu gracz, argumentem jest okno w którym jest rysowany
+	Wrog w_1(3,&gridSizeF,&menu);
+	int kolizja = -1;Ziarno pkt(30,&gridSizeF,&menu);WrogCS ConSh(&menu);
 
-	Gracz p1(gridSizeF,&menu);//obiekt typu gracz, argumentem jest okno w którym jest rysowany
-	Wrog w_1(3,gridSizeF,&menu);
-	int kolizja = -1;Ziarno pkt(30,gridSizeF,&menu);WrogCS ConSh(&menu);
+	Mapa mapka(&gridSizeF,&walls_max,&walls_max,&menu);
 
 	sf::Text napisy,gameover; sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
 	napisy.setCharacterSize(20); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(gridSizeF, gridSizeF);
 	gameover.setFont(czcionka); gameover.setCharacterSize(50); gameover.setStyle(sf::Text::Underlined);gameover.setFillColor(sf::Color(255, 0, 0, 128));
 	gameover.setPosition(0, 0); gameover.setString("YOU'RE DEAD");
+
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
@@ -69,7 +77,6 @@ int main(){
 					;//Help();
 		}
 		menu.clear(sf::Color::Black);
-
 		//glowne_menu.rysuj();
 		//wybor_poziomu.rysuj(); 
 		//tab_wynikow.rysuj(); 
@@ -108,7 +115,7 @@ int main(){
 				kolizja = i;
 		}
 		if (kolizja != -1)//byłoby zero ale wektory są zapisywane od 0
-			p1.deadPlayer = false;
+			;//p1.deadPlayer = false;
 
 		for (int i = 0; i < pkt.wrogowie.size(); i++) {
 			if (pkt.wrogowie[i].getGlobalBounds().intersects(p1.getBounds())) {
@@ -123,20 +130,20 @@ int main(){
 		if (p1.deadPlayer != false){
 			p1.draw(); w_1.draw();pkt.draw(); ConSh.draw();
 		}//rysowanie gracza,jeśli "żyje"
-		else{
+		else
 			 menu.draw(gameover);
-		}//tu coś damy
+		mapka.draw();
 		menu.draw(napisy);
 		menu.display();
 		//-----------------nieregularny wróg porusza się i obraca 
 		if (zegar.getElapsedTime().asMilliseconds() > 10.0f) {
 			if (ConSh.getBounds().intersects(p1.getBounds()))//Kolizja z convexShapem ]
-			p1.deadPlayer = false;
+				;//p1.deadPlayer = false;
 			ConSh.ruch();
 			w_1.ruch();
 			if ((gameover.getPosition().x < menu.getSize().x) && 
 				(gameover.getPosition().y < (menu.getSize().y -2*gameover.getGlobalBounds().top))) 
-				gameover.move(0.5f, 1.f), gameover.setRotation(obr+=3.5f);
+				gameover.move(0.5f, 1.f), gameover.setRotation(obr+=2.f);
 			else
 				gameover.move(0.f, 0.f),gameover.setScale(2,2);
 			zegar.restart();}

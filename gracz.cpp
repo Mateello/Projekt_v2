@@ -1,6 +1,6 @@
 #include "gracz.h"
 
-Gracz::Gracz(float grid, sf::RenderWindow* window){
+Gracz::Gracz(float *grid, sf::RenderWindow* window){
 	this->window = window; this->grid = grid; init();
 }
 Gracz::~Gracz(){
