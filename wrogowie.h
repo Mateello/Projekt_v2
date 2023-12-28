@@ -28,8 +28,10 @@ class Ziarno:public Wrog //zbierane przez gracza, zwiêkszaj¹ iloœæ punktów
 {
 	//za ka¿de ziarno bêdzie +1 punkt dla gracza
 	void init();
+	int * wysokosc, * szerokosc;//s¹ to inty bo okreœlaj¹ iloœæ œcian
+	int licznik;//licznik rzêdów
 public:
-	Ziarno(int ilosc, float *grid, sf::RenderWindow* okno);
+	Ziarno(int* wysokosc,int *szerokosc, float *grid, sf::RenderWindow* okno);
 	~Ziarno();
 };
 

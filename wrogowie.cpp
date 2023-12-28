@@ -46,22 +46,22 @@ void Wrog::ruch()
 	}
 }
 //------------------------------------------------------------- Punkty -------------------------------------------------------------
-Ziarno::Ziarno(int ilosc,float *grid, sf::RenderWindow* okno)//:Wrog(okno)//---powielalo mi iloœæ punktów
+Ziarno::Ziarno(int* wysokosc, int* szerokosc, float *grid, sf::RenderWindow* okno)//:Wrog(okno)//---powielalo mi iloœæ punktów
 {	
-	this->window = okno; this->ilosc = ilosc; this->grid = grid; init();
+	this->wysokosc = wysokosc; this->szerokosc = szerokosc; this->window = okno; this->grid = grid; init();
 }
-Ziarno::~Ziarno()
-{
-	delete window;
+Ziarno::~Ziarno(){
+	delete window; delete grid; delete wysokosc; delete szerokosc;
 }
-void Ziarno::init()
-{
+void Ziarno::init(){
+	ilosc = (*szerokosc) * (*wysokosc); licznik = 0;
 	for (int i = 0; i < this->ilosc; i++){
 		krztalt.setSize(sf::Vector2f(*grid/2, *grid/2));
 		krztalt.setRotation(45.f);
 		krztalt.setFillColor(sf::Color::Magenta);//wrogowie bêd¹ mieæ czerwony
-		krztalt.setPosition(losPozycjeX(window->getSize().x), losPozycjeY(window->getSize().y));//obecnie losowa pozycja 
-		pozycja.x = krztalt.getPosition().x; pozycja.y = krztalt.getPosition().y;
+		krztalt.setPosition((*grid)*(i% (*szerokosc)), (*grid) * licznik);//obecnie losowa pozycja 
+		if (i % (*szerokosc)== (*szerokosc)-1)
+			licznik++;
 		wrogowie.push_back(krztalt);
 	}
 }	

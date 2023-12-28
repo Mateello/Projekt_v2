@@ -18,8 +18,8 @@ int main(){
 	sf::RenderWindow menu(sf::VideoMode(gridSizeF*30, gridSizeF * 25), "PacMan");
 	menu.setFramerateLimit(60);
 
-	float map_size = menu.getSize().y;//mapa będzie kwadratowa dlatego tylko jeden wymiar
-	int walls_max = 30;//(int)(map_size/gridSizeF);//maksymalna ilość ścian - w obu wymiarach bo mapa jest wkadratowa
+	int map_height = (int)menu.getSize().y / gridSizeF;//mapa będzie kwadratowa dlatego tylko jeden wymiar
+	int map_width = (int)menu.getSize().x / gridSizeF;
 
 	Interfejs glowne_menu(&menu); glowne_menu.setIntState(true); glowne_menu.setPosition(-3*gridSizeF,0);
 	glowne_menu.setString("Nowa gra","Wyniki","O grze","Wyjscie");//poziomy trudności zmieniają prędkość wrogów i mape
@@ -40,9 +40,9 @@ int main(){
 	
 	Gracz p1(&gridSizeF,&menu);//obiekt typu gracz, argumentem jest okno w którym jest rysowany
 	Wrog w_1(3,&gridSizeF,&menu);
-	int kolizja = -1;Ziarno pkt(30,&gridSizeF,&menu);WrogCS ConSh(&menu);
+	int kolizja = -1;Ziarno pkt(&map_height, &map_width,&gridSizeF,&menu);WrogCS ConSh(&menu);
 
-	Mapa mapka(&gridSizeF,&walls_max,&walls_max,&menu);
+	Mapa mapka(&gridSizeF,&map_height, &map_width,&menu);
 
 	sf::Text napisy,gameover; sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
 	napisy.setCharacterSize(20); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(gridSizeF, gridSizeF);
@@ -71,10 +71,10 @@ int main(){
 				menu.close();
 			
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-				;//Esc(&menu);
+				Esc(&menu);
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
-					;//Help();
+					Help();
 		}
 		menu.clear(sf::Color::Black);
 		//glowne_menu.rysuj();
@@ -132,13 +132,13 @@ int main(){
 		}//rysowanie gracza,jeśli "żyje"
 		else
 			 menu.draw(gameover);
-		mapka.draw();
-		menu.draw(napisy);
+
+		menu.draw(napisy); mapka.draw();
 		menu.display();
 		//-----------------nieregularny wróg porusza się i obraca 
 		if (zegar.getElapsedTime().asMilliseconds() > 10.0f) {
 			if (ConSh.getBounds().intersects(p1.getBounds()))//Kolizja z convexShapem ]
-				;//p1.deadPlayer = false;
+				;// p1.deadPlayer = false;
 			ConSh.ruch();
 			w_1.ruch();
 			if ((gameover.getPosition().x < menu.getSize().x) && 
