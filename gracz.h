@@ -23,10 +23,13 @@ public:
 	void draw();
 	void setPunkty(int ilosc, int pkt);
 	void killPlayer();
-	sf::Vector2f getVelocity();
-	void setVelocity(float x,float y);
+	void setPosition(float x, float y);
+	void wall_collision(std::vector< sf::RectangleShape > &sciany);//kolizje ze scianami
+	void enemy_collision(std::vector< sf::RectangleShape >&wrog);//kolizje z wrogami
+	void scores_collision(std::vector< sf::RectangleShape >&pkt);//kolizje z punktami
 	int getPunkty();
 	int getCzas();
+	bool Win();
 	bool getPlayerState();
 	sf::FloatRect getBounds();
 	sf::FloatRect bounds;

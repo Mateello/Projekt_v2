@@ -3,27 +3,24 @@
 #include<ctime>
 #include<cmath>
 
-class Wrog
-{
+class Wrog{
+	int poziom;//poziom trudnoœci
 protected:
 	int ilosc;
 	sf::RenderWindow *window;
 	sf::RectangleShape krztalt;//tej zmiennej nie usuwam poniewa¿ na niej bazowuj¹ funckje pushback dla wektorów wrogów i ziaren
 	sf::Vector2f pozycja;
-	sf::Vector2f *przesuniecie;
 	float *grid;
-	float losPozycjeX(int szerokoscOkna);
-	float losPozycjeY(int wysokoscOkna);
 	void init();	
 public:
-	Wrog(int ilosc,float *grid, sf::RenderWindow* okno);//wrogowie bêd¹ prostok¹tami
+	Wrog(int poziom,int ilosc,float *grid, sf::RenderWindow* okno);//wrogowie bêd¹ prostok¹tami
 	Wrog() { ilosc = 1; 
 	}
+	sf::Vector2f* przesuniecie;
 	~Wrog();
 	void draw();
 	void ruch();
 	std::vector<sf::RectangleShape> wrogowie;
-	sf::Vector2f getVelocity(int i);
 	void setVelocity(int i,float x, float y);
 };
 class Ziarno:public Wrog //zbierane przez gracza, zwiêkszaj¹ iloœæ punktów
@@ -40,9 +37,11 @@ public:
 };
 class Mapa :public Ziarno{
 	void test();//w przysz³oœci zrobiæ 3 funkcje tego typu które maj¹ ró¿ne ustawienia map?
+	int poziom;
 public:
-	Mapa(int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno);
+	Mapa(int poziom,int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno);
 	~Mapa();
+	void setPoints(std::vector< sf::RectangleShape >& pkt);//usuwanie punktów pokrywaj¹cych siê z œcianami
 };
 //---------------------------------------------------------------------------ConvexShape------------------------------------------------
 class WrogCS

@@ -69,9 +69,53 @@ void Gracz::killPlayer(){
 bool Gracz::getPlayerState(){
 	return alivePlayer;
 }
-sf::Vector2f Gracz::getVelocity() {
-	return predkosc;
+void Gracz::setPosition(float x,float y) {
+	zawodnik->setPosition(x, y);
 }
-void Gracz::setVelocity(float x, float y) {
-	predkosc.x = x; predkosc.y = y;
+void Gracz::wall_collision(std::vector< sf::RectangleShape >& sciany) {
+	for (int i = 0; i < sciany.size(); i++) {
+		if (sciany[i].getGlobalBounds().intersects(zawodnik->getGlobalBounds())) {
+			if ((zawodnik->getGlobalBounds().left < sciany[i].getGlobalBounds().left)
+				&& (zawodnik->getGlobalBounds().left + zawodnik->getGlobalBounds().width < sciany[i].getGlobalBounds().left + sciany[i].getGlobalBounds().width)
+				&& (zawodnik->getGlobalBounds().top < sciany[i].getGlobalBounds().top + sciany[i].getGlobalBounds().height)
+				&& (zawodnik->getGlobalBounds().top + zawodnik->getGlobalBounds().height > sciany[i].getGlobalBounds().top))
+				zawodnik->setPosition(sciany[i].getGlobalBounds().left - zawodnik->getGlobalBounds().width, zawodnik->getGlobalBounds().top);//kolizja z prawej
+
+			else if ((zawodnik->getGlobalBounds().left > sciany[i].getGlobalBounds().left)
+				&& (zawodnik->getGlobalBounds().left + zawodnik->getGlobalBounds().width > sciany[i].getGlobalBounds().left + sciany[i].getGlobalBounds().width)
+				&& (zawodnik->getGlobalBounds().top < sciany[i].getGlobalBounds().top + sciany[i].getGlobalBounds().height)
+				&& (zawodnik->getGlobalBounds().top + zawodnik->getGlobalBounds().height > sciany[i].getGlobalBounds().top))
+				zawodnik->setPosition(sciany[i].getGlobalBounds().left + zawodnik->getGlobalBounds().width, zawodnik->getGlobalBounds().top);//kolizja z lewej
+
+			if ((zawodnik->getGlobalBounds().top > sciany[i].getGlobalBounds().top)
+				&& (zawodnik->getGlobalBounds().top + zawodnik->getGlobalBounds().height > sciany[i].getGlobalBounds().top + sciany[i].getGlobalBounds().height)
+				&& (zawodnik->getGlobalBounds().left < sciany[i].getGlobalBounds().left + sciany[i].getGlobalBounds().width)
+				&& (zawodnik->getGlobalBounds().left + zawodnik->getGlobalBounds().width > sciany[i].getGlobalBounds().left))
+				zawodnik->setPosition(zawodnik->getGlobalBounds().left, sciany[i].getGlobalBounds().top + zawodnik->getGlobalBounds().height );//kolizja z góry
+
+			if ((zawodnik->getGlobalBounds().top < sciany[i].getGlobalBounds().top)
+				&& (zawodnik->getGlobalBounds().top + zawodnik->getGlobalBounds().height < sciany[i].getGlobalBounds().top + sciany[i].getGlobalBounds().height)
+				&& (zawodnik->getGlobalBounds().left < sciany[i].getGlobalBounds().left + sciany[i].getGlobalBounds().width)
+				&& (zawodnik->getGlobalBounds().left + zawodnik->getGlobalBounds().width > sciany[i].getGlobalBounds().left))
+				zawodnik->setPosition(zawodnik->getGlobalBounds().left, sciany[i].getGlobalBounds().top - zawodnik->getGlobalBounds().height);
+		}
+	}
+}
+void Gracz::enemy_collision(std::vector< sf::RectangleShape >& wrog) {
+	for (int i = 0; i < wrog.size(); i++) {
+		if (wrog[i].getGlobalBounds().intersects(zawodnik->getGlobalBounds()))
+			alivePlayer = false;
+	}
+}
+void Gracz::scores_collision(std::vector< sf::RectangleShape >& pkt) {
+	for (int i = 0; i < pkt.size(); i++) {
+		if (pkt[i].getGlobalBounds().intersects(zawodnik->getGlobalBounds())) {
+			pkt.erase(pkt.begin() + i); punkty++;
+		}
+	}
+	if (pkt.size() == 0)
+		wygrana = true;
+}
+bool Gracz::Win() {
+	return wygrana;
 }
