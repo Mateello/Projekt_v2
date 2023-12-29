@@ -23,18 +23,28 @@ public:
 	void draw();
 	void ruch();
 	std::vector<sf::RectangleShape> wrogowie;
+	sf::Vector2f getVelocity(int i);
+	void setVelocity(int i,float x, float y);
 };
 class Ziarno:public Wrog //zbierane przez gracza, zwiêkszaj¹ iloœæ punktów
 {
 	//za ka¿de ziarno bêdzie +1 punkt dla gracza
+protected:
 	void init();
 	int * wysokosc, * szerokosc;//s¹ to inty bo okreœlaj¹ iloœæ œcian
 	int licznik;//licznik rzêdów
 public:
 	Ziarno(int* wysokosc,int *szerokosc, float *grid, sf::RenderWindow* okno);
+	Ziarno() { ilosc = 1; }
 	~Ziarno();
 };
-
+class Mapa :public Ziarno{
+	void test();//w przysz³oœci zrobiæ 3 funkcje tego typu które maj¹ ró¿ne ustawienia map?
+public:
+	Mapa(int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno);
+	~Mapa();
+};
+//---------------------------------------------------------------------------ConvexShape------------------------------------------------
 class WrogCS
 {
 	float obrot = 0;

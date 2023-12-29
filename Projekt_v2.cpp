@@ -7,10 +7,13 @@
 #include "wrogowie.h"
 #include "gracz.h"
 #include "okno.h"
-#include "Mapa.h"
+
+int kolizje_w(std::vector<sf::RectangleShape> &w, sf::FloatRect b);//kolizje z wrogami
+int kolizje_pkt(std::vector<sf::RectangleShape> &p, sf::FloatRect b);//kolizje z punktami
+void kolizje_walls(std::vector<sf::RectangleShape>& sciany,std::vector<sf::RectangleShape> &wrog, sf::FloatRect b);//kolizje gracza i wrogów z ścianami
+std::stringstream infoGracza(int pkt,int czas);
 void Help();
 void Esc(sf::RenderWindow*okno);
-sf::Text updateText(float grid,int pkt,float czas);
 int main(){
 	srand(time(NULL));
 	float gridSizeF=30.f,obr=0;//zmienna przechowująca zmienną "siatki" gry od niej będą zależeć wielkość okna, mapy itd
@@ -24,10 +27,10 @@ int main(){
 	Interfejs glowne_menu(&menu); glowne_menu.setIntState(true); glowne_menu.setPosition(-3*gridSizeF,0);
 	glowne_menu.setString("Nowa gra","Wyniki","O grze","Wyjscie");//poziomy trudności zmieniają prędkość wrogów i mape
 
-	Interfejs wybor_poziomu(&menu);// wybor_poziomu.setPosition(100.f, 0);
+	Interfejs wybor_poziomu(&menu);
 	wybor_poziomu.setString("Poziom 1", "Poziom 2", "Poziom 3", "Powrot");
 
-	Interfejs tab_wynikow(&menu); //tab_wynikow.setPosition(50.f,50.f);
+	Interfejs tab_wynikow(&menu);
 	tab_wynikow.setString(" 1 ", " 2 ", " 3 ", " Powrot ");
 
 	Interfejs o_grze(&menu); bool obw = false; o_grze.setCharSize(20);
@@ -40,27 +43,19 @@ int main(){
 	
 	Gracz p1(&gridSizeF,&menu);//obiekt typu gracz, argumentem jest okno w którym jest rysowany
 	Wrog w_1(3,&gridSizeF,&menu);
-	int kolizja = -1;Ziarno pkt(&map_height, &map_width,&gridSizeF,&menu);WrogCS ConSh(&menu);
+	Ziarno pkt(&map_height, &map_width,&gridSizeF,&menu);
+	Mapa test(&map_height, &map_width, &gridSizeF, &menu);
+	WrogCS ConSh(&menu);
+	int ilosc = pkt.wrogowie.size();//początkowa ilość punktów (i maksymalna) ------------------------------------------------------------
 
-	Mapa mapka(&gridSizeF,&map_height, &map_width,&menu);
-
-	sf::Text napisy,gameover; sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
+	sf::Text napisy,koniec; sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
 	napisy.setCharacterSize(20); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(gridSizeF, gridSizeF);
-	gameover.setFont(czcionka); gameover.setCharacterSize(50); gameover.setStyle(sf::Text::Underlined);gameover.setFillColor(sf::Color(255, 0, 0, 128));
-	gameover.setPosition(0, 0); gameover.setString("YOU'RE DEAD");
+	koniec.setFont(czcionka); koniec.setCharacterSize(50); koniec.setStyle(sf::Text::Underlined); koniec.setFillColor(sf::Color(255, 0, 0, 128));
+	koniec.setPosition(0, 0); koniec.setString("YOU'RE DEAD");
 
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
-		std::stringstream ss; ss << "Punkty: " << p1.getPunkty() << "\n"<<"Czas: ";
-		if (p1.getCzas() < 60) {
-			ss << p1.getCzas();
-		}
-		else if (p1.getCzas() >= 59) {
-			; ss << p1.getCzas() / 60 % 60 << p1.getCzas() % 60;
-		}
-		napisy.setString(ss.str());
-
 		glowne_menu.mousePos = sf::Mouse::getPosition(menu);wybor_poziomu.mousePos = sf::Mouse::getPosition(menu);
 		tab_wynikow.mousePos = sf::Mouse::getPosition(menu);o_grze.mousePos = sf::Mouse::getPosition(menu);
 		//zmnienne aktualizujące pozycję myszki
@@ -81,8 +76,6 @@ int main(){
 		//wybor_poziomu.rysuj(); 
 		//tab_wynikow.rysuj(); 
 		//o_grze.rysuj(); 
-		//------------------------------------przy mapce 600x600 zastosować ścianki z kwadratów 30x30 ?????
-		//docelowo ziarna wrzucić w tablicae - array, połozyć je na całej mapie równomiernie i przykryć ścianami/usunąć
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (glowne_menu.getIntState() == true)){
 			switch (glowne_menu.getIntIndeks()) {
 			case 1: {
@@ -109,46 +102,71 @@ int main(){
 			}
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (o_grze.getIntState() == true) && (o_grze.getIntIndeks() == 4)){
 			glowne_menu.setIntState(true); o_grze.setIntState(false);}
+		//aktualnie wyświetlane napisy
+		napisy.setString(infoGracza(p1.getPunkty(), p1.getCzas()).str());
 		//kolizje
-		for (int i = 0; i < w_1.wrogowie.size(); i++) {
-			if (w_1.wrogowie[i].getGlobalBounds().intersects(p1.getBounds()))
-				kolizja = i;
-		}
-		if (kolizja != -1)//byłoby zero ale wektory są zapisywane od 0
-			;//p1.deadPlayer = false;
-
-		for (int i = 0; i < pkt.wrogowie.size(); i++) {
-			if (pkt.wrogowie[i].getGlobalBounds().intersects(p1.getBounds())) {
-				pkt.wrogowie.erase(pkt.wrogowie.begin() + i); p1.addPunkty();
-			}
-			if (pkt.wrogowie.size() == 0)
-				std::cout << "Wygrana!";
-		}
-		float time = p1.getCzas();
+		if (kolizje_w(w_1.wrogowie, p1.getBounds()) != -1)
+			;// p1.killPlayer();
 		p1.update();
+		
 
-		if (p1.deadPlayer != false){
-			p1.draw(); w_1.draw();pkt.draw(); ConSh.draw();
-		}//rysowanie gracza,jeśli "żyje"
-		else
-			 menu.draw(gameover);
-
-		menu.draw(napisy); mapka.draw();
+		if ((p1.getPlayerState() != false) && (kolizje_pkt(pkt.wrogowie, p1.getBounds())==false)) {
+			koniec.setString("Wygrales!"); koniec.setFillColor(sf::Color::Green); menu.draw(koniec);
+		}
+		else if (p1.getPlayerState() != false) {
+			p1.draw(); w_1.draw(); pkt.draw(); ConSh.draw();
+			if (kolizje_pkt(pkt.wrogowie, p1.getBounds()) >0)
+				p1.setPunkty(ilosc, pkt.wrogowie.size());
+		}//rysowanie gracza (oraz elemetnów gry),jeśli gracz "żyje"
+		else if ((p1.getPlayerState() == 0))
+			menu.draw(koniec);
+		test.draw();
+		menu.draw(napisy);
 		menu.display();
 		//-----------------nieregularny wróg porusza się i obraca 
 		if (zegar.getElapsedTime().asMilliseconds() > 10.0f) {
-			if (ConSh.getBounds().intersects(p1.getBounds()))//Kolizja z convexShapem ]
-				;// p1.deadPlayer = false;
+			if (ConSh.getBounds().intersects(p1.getBounds()))//Kolizja z convexShapem 
+				;// p1.killPlayer();
 			ConSh.ruch();
 			w_1.ruch();
-			if ((gameover.getPosition().x < menu.getSize().x) && 
-				(gameover.getPosition().y < (menu.getSize().y -2*gameover.getGlobalBounds().top))) 
-				gameover.move(0.5f, 1.f), gameover.setRotation(obr+=2.f);
+			if ((koniec.getPosition().x < menu.getSize().x) &&
+				(koniec.getPosition().y < (menu.getSize().y -2* koniec.getGlobalBounds().top)))
+				koniec.move(0.5f, 1.f), koniec.setRotation(obr+=2.f);
 			else
-				gameover.move(0.f, 0.f),gameover.setScale(2,2);
+				koniec.move(0.f, 0.f), koniec.setScale(2,2);
 			zegar.restart();}
 	}
 	return 0;
+}
+int kolizje_w(std::vector<sf::RectangleShape> &w,sf::FloatRect b){
+	int kolizja = -1;
+	for (int i = 0; i < w.size(); i++) {
+		if (w[i].getGlobalBounds().intersects(b))
+			kolizja = i;}
+	return kolizja;
+}
+int kolizje_pkt( std::vector<sf::RectangleShape> &p, sf::FloatRect b) {
+	for (int i = 0; i < p.size(); i++) {
+		if (p[i].getGlobalBounds().intersects(b)) {
+			p.erase(p.begin() + i); return 1;}
+	}
+	if (p.size() == 0) {
+		 return 0;}
+}
+void kolizje_walls(std::vector<sf::RectangleShape>& sciany, std::vector<sf::RectangleShape>& wrog, sf::FloatRect b) {
+
+}
+std::stringstream infoGracza(int pkt, int czas) {std::stringstream ss;
+
+	if (czas < 10) {
+		ss << "Punkty: " << pkt << "\n" << "Czas: " << "00:0" << czas;}
+	else if (czas < 60) {
+		ss << "Punkty: " << pkt << "\n" << "Czas: "<<"00:" << czas;}
+	else if ((czas > 59)&&(czas % 60<10)) {
+		ss << "Punkty: " << pkt << "\n" << "Czas: " << czas / 60 % 60 << ":0" << czas % 60;}
+	else {
+		ss << "Punkty: " << pkt << "\n" << "Czas: " << czas / 60 % 60 << ":" << czas % 60;}
+	return ss;
 }
 void Help(){
 	float obr = 0;
@@ -228,13 +246,4 @@ void Esc(sf::RenderWindow *okno){
 		
 		Esc.display();
 	}
-}
-sf::Text updateText(float grid, int pkt, float czas) {// nie działa :(
-	float time = czas;
-	sf::Text napisy; sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
-	napisy.setCharacterSize(20); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(grid, grid);
-	std::stringstream ss;
-	ss << "Punkty: " << pkt << "\n" << "Czas: " << time;
-	napisy.setString(ss.str());
-	return napisy;
 }

@@ -45,6 +45,12 @@ void Wrog::ruch()
 		wrogowie[i].move(sf::Vector2f(przesuniecie[i]));
 	}
 }
+sf::Vector2f Wrog::getVelocity(int i) {
+	return przesuniecie[i];
+}
+void Wrog::setVelocity(int i,float x, float y) {
+	przesuniecie[i].x = x; przesuniecie[i].y = y;
+}
 //------------------------------------------------------------- Punkty -------------------------------------------------------------
 Ziarno::Ziarno(int* wysokosc, int* szerokosc, float *grid, sf::RenderWindow* okno)//:Wrog(okno)//---powielalo mi iloœæ punktów
 {	
@@ -54,17 +60,39 @@ Ziarno::~Ziarno(){
 	delete window; delete grid; delete wysokosc; delete szerokosc;
 }
 void Ziarno::init(){
-	ilosc = (*szerokosc) * (*wysokosc); licznik = 0;
+	ilosc = (*szerokosc) * (*wysokosc); 
+	licznik = 0;
 	for (int i = 0; i < this->ilosc; i++){
 		krztalt.setSize(sf::Vector2f(*grid/2, *grid/2));
 		krztalt.setRotation(45.f);
 		krztalt.setFillColor(sf::Color::Magenta);//wrogowie bêd¹ mieæ czerwony
-		krztalt.setPosition((*grid)*(i% (*szerokosc)), (*grid) * licznik);//obecnie losowa pozycja 
+		krztalt.setPosition(((*grid) * (i % (*szerokosc))) + krztalt.getSize().x, (*grid) * licznik);//obecnie losowa pozycja 
 		if (i % (*szerokosc)== (*szerokosc)-1)
 			licznik++;
 		wrogowie.push_back(krztalt);
 	}
-}	
+}
+//------------------------------------------------------------- Mapa -------------------------------------------------------------
+Mapa::Mapa(int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno)//:Ziarno(wysokosc, szerokosc, grid,okno)
+{//mo¿e bêdzie trzeba dodaæ jako argument konstruktora inta - który bedzie wybiera³ poziom 
+	this->wysokosc = wysokosc; this->szerokosc = szerokosc; this->window = okno; this->grid = grid; test();
+}
+Mapa::~Mapa() {
+	delete window; delete grid; delete wysokosc; delete szerokosc;
+}
+void Mapa::test() {
+	ilosc = ((*wysokosc) * (*szerokosc));
+	for (int i = 0; i < this->ilosc; i++) {
+		krztalt.setSize(sf::Vector2f(*grid, *grid)); krztalt.setRotation(0.f);
+		krztalt.setFillColor(sf::Color(33, 33, 222));
+		krztalt.setOutlineColor(sf::Color::Black); krztalt.setOutlineThickness(1.f);
+		krztalt.setPosition((*grid) * (i % (*szerokosc)), (*grid) * licznik);
+		if (i % (*szerokosc) == (*szerokosc) - 1)
+			licznik++;
+		if((i<*szerokosc)||(i>ilosc-*szerokosc-1)||(i%(*szerokosc)<1) || (i % (*szerokosc) ==*szerokosc-1))
+		wrogowie.push_back(krztalt);
+	}
+}
 //------------------------------------------------------------- ConvexShape -------------------------------------------------------------
 WrogCS::WrogCS(sf::RenderWindow* okno)
 {

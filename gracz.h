@@ -14,16 +14,20 @@ class Gracz{
 	float *grid, czas_gry;
 	clock_t t_start, t_stop;//zmienne przechowuj¹ce iloœæ cykli procesora od narysowania do usuniecia gracza
 	int punkty;
+	bool alivePlayer,wygrana;//zmienna odpowowiadaj¹ca za to czy gracz "¿yje" czy nie
 public:
-	bool deadPlayer,narysowany;//zmienna odpowowiadaj¹ca za to czy gracz "¿yje" czy nie
 	Gracz(float *grid,sf::RenderWindow *okno);
 	~Gracz();
 	void update();
 	void init();
 	void draw();
-	void addPunkty();
+	void setPunkty(int ilosc, int pkt);
+	void killPlayer();
+	sf::Vector2f getVelocity();
+	void setVelocity(float x,float y);
 	int getPunkty();
 	int getCzas();
+	bool getPlayerState();
 	sf::FloatRect getBounds();
 	sf::FloatRect bounds;
 };
