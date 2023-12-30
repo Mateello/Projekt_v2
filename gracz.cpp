@@ -4,13 +4,14 @@ Gracz::Gracz(float *grid, sf::RenderWindow* window){
 	this->window = window; this->grid = grid; init();
 }
 Gracz::~Gracz(){
-	t_stop = clock(); delete tekst; delete czcionka; delete name; delete zawodnik; delete tekstura; delete window;
+	delete nazwa; delete grid; delete tekst; delete czcionka; delete name; delete zawodnik; delete tekstura; delete window;
 }
 void Gracz::init(){
-	t_start = clock();//rozpoczynam odliczanie czasu -- obecnie odliczanie zacznie siê od inicjalizacji gracza ---------------------------- DO POPRAWY
+	t_start = clock();//rozpoczynam odliczanie czasu
+	nazwa = new char[20];
 	alivePlayer = true; name = new sf::String; czcionka = new sf::Font; tekst = new sf::Text; tekstura = new sf::Texture; zawodnik = new sf::Sprite;
 	tekstura->loadFromFile("pokeball.png");//ze wzglêdu na problem z pacman.png - na razie porzyczê pokeball'a
-	zawodnik->setTexture(*tekstura);zawodnik->setScale(sf::Vector2f((*grid)/ tekstura->getSize().x, (*grid)/ tekstura->getSize().y ));
+	zawodnik->setTexture(*tekstura);zawodnik->setScale(sf::Vector2f((*grid)/ tekstura->getSize().x, (*grid)/tekstura->getSize().y ));
 	zawodnik->setPosition(window->getSize().x / 2, window->getSize().y / 2);
 	czcionka->loadFromFile("Arial.ttf"); tekst->setString(*name);
 	predkosc.x = *grid/8;predkosc.y = *grid/8; punkty = 0;
@@ -50,7 +51,7 @@ void Gracz::update(){
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
 		zawodnik->move(0.f, predkosc.y);
 	}
-	if(alivePlayer!=false)
+	if (alivePlayer != false)
 	t_stop = clock();
 }
 int Gracz::getPunkty(){
@@ -115,4 +116,7 @@ void Gracz::ConSh_collision(sf::FloatRect bounds) {
 }
 bool Gracz::Win() {
 	return wygrana;
+}
+void Gracz::setName() {
+
 }

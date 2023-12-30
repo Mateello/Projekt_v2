@@ -12,6 +12,7 @@ class Gracz{
 	sf::Font* czcionka;
 	sf::Text* tekst;
 	float *grid, czas_gry;
+	char *nazwa;
 	clock_t t_start, t_stop;//zmienne przechowuj¹ce iloœæ cykli procesora od narysowania do usuniecia gracza
 	int punkty;
 	bool alivePlayer,wygrana;//zmienna odpowowiadaj¹ca za to czy gracz "¿yje" czy nie
@@ -30,6 +31,7 @@ public:
 	int getCzas();
 	bool Win();
 	bool getPlayerState();
+	void setName();
 	sf::FloatRect getBounds();
 };
 //-------------------------------------------------------------- Zapis do pliku ----------------------------------------------------

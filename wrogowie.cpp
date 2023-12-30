@@ -49,9 +49,9 @@ void Wrog::ruch()
 	float losV = (rand()%5+3)*poziom*1.f;
 	for (int i = 0; i < wrogowie.size(); i++) {
 		if (wrogowie[i].getPosition().x > (window->getSize().x-2*(*grid)))
-			przesuniecie[i].x = -3.f;
+			przesuniecie[i].x = -2.f*poziom;
 		if (wrogowie[i].getPosition().x< (*grid)+wrogowie[i].getGlobalBounds().width)
-			przesuniecie[i].x = 2.f;
+			przesuniecie[i].x = 2.f*poziom;
 		if (wrogowie[i].getPosition().y > (window->getSize().y - 2*(*grid)))
 			przesuniecie[i].y = -1.f*losV;
 		if (wrogowie[i].getPosition().y < 2*(*grid))
@@ -86,14 +86,14 @@ void Ziarno::init(){
 	}
 }
 //------------------------------------------------------------- Mapa -------------------------------------------------------------
-Mapa::Mapa(int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno)
+Mapa::Mapa(int poziom,int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno)
 {
-	this->poziom = poziom; this->wysokosc = wysokosc; this->szerokosc = szerokosc; this->window = okno; this->grid = grid; test();
+	this->poziom = poziom; this->wysokosc = wysokosc; this->szerokosc = szerokosc; this->window = okno; this->grid = grid; init();
 }
 Mapa::~Mapa() {
-	delete window; delete grid; delete wysokosc; delete szerokosc; //delete[] bounds;
+	delete window; delete grid; delete wysokosc; delete szerokosc;
 }
-void Mapa::test() {
+void Mapa::init() {
 	ilosc = ((*wysokosc) * (*szerokosc));
 	for (int i = 0; i < this->ilosc; i++) {
 		krztalt.setSize(sf::Vector2f(*grid, *grid)); krztalt.setRotation(0.f);
@@ -104,8 +104,8 @@ void Mapa::test() {
 			licznik++;
 		if ((i < *szerokosc) || (i > ilosc - *szerokosc - 1) || (i % (*szerokosc) < 1) || (i % (*szerokosc) == *szerokosc - 1))
 			wrogowie.push_back(krztalt);
-		else if((poziom == 0) && (i % 8 == 0)) {
-			//wrogowie.push_back(krztalt);
+		else if((poziom != 0) && (i % (10-poziom) == 0)) {
+			wrogowie.push_back(krztalt);
 		}
 	}
 }

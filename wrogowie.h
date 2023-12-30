@@ -35,10 +35,9 @@ public:
 	~Ziarno();
 };
 class Mapa :public Ziarno{
-	void test();//w przysz³oœci zrobiæ 3 funkcje tego typu które maj¹ ró¿ne ustawienia map?
-	int poziom;
+	void init();//w przysz³oœci zrobiæ 3 funkcje tego typu które maj¹ ró¿ne ustawienia map?
 public:
-	Mapa(int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno);
+	Mapa(int poziom, int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno);
 	~Mapa();
 	void setPoints(std::vector< sf::RectangleShape >& pkt);//usuwanie punktów pokrywaj¹cych siê z œcianami
 };

@@ -10,9 +10,8 @@
 
 std::stringstream infoGracza(int pkt,int czas);
 void Help();
-void Esc(sf::RenderWindow*okno);
-void animacja(sf::Text* koniec, sf::Vector2u size);
-sf::Text setText(bool end);
+void Esc(sf::RenderWindow *okno);
+void animacja(sf::Text* koniec, float* grid, sf::Vector2u size);
 int main(){
 	srand(time(NULL));
 	float gridSizeF=30.f;//zmienna przechowująca zmienną "siatki" gry od niej będą zależeć wielkość okna, mapy itd
@@ -33,7 +32,8 @@ int main(){
 	tab_wynikow.setString(" 1 ", " 2 ", " 3 ", " Powrot ");
 
 	Interfejs o_grze(&menu); bool obw = false; o_grze.setCharSize(20);
-	o_grze.setString(" Gra zostala stworzona na podstawie PACMAN'a\n ale idzie ", " Fajna jest dobrze dziala ", " Gra na 5 ", " Powrot ");
+	o_grze.setString(" Gra zostala stworzona jako podobienstwo PACMAN'a.\n Zasady sa takie same jak w PacMan'ie.\nUnikaj wrogow,zbieraj punkty.",
+		" Czas jest ograniczony, na skonczenie gry jest 5 minut ", " Gra na 5 ", " Powrot ");
 	o_grze.setPosition(-7*gridSizeF,-2*gridSizeF);
 
 	sf::Clock zegar;//tworzymy obiekt mierzący czas
@@ -45,14 +45,19 @@ int main(){
 	Wrog w_1(4,&gridSizeF,&menu);
 	//----------------------------------------- liczbe która jest poziomem trudności zrobić jako wskaźnik --------------------
 	Ziarno pkt(&map_height, &map_width,&gridSizeF,&menu);
-	Mapa test(&map_height, &map_width, &gridSizeF, &menu);//0 to testowy
+	Mapa mapka(0,&map_height, &map_width, &gridSizeF, &menu);//0 to testowy
+	Mapa poziom1(1,&map_height, &map_width, &gridSizeF, &menu);
+	Mapa poziom2(2,&map_height, &map_width, &gridSizeF, &menu);
+	Mapa poziom3(3,&map_height, &map_width, &gridSizeF, &menu);
+	int poziom = 0;
 	WrogCS ConSh(&menu);
 
 	sf::Text napisy,*koniec;
 	koniec = new sf::Text;
 	sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
 	napisy.setCharacterSize(20); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(0, 0);
-	koniec->setFont(czcionka); koniec->setCharacterSize(50); koniec->setStyle(sf::Text::Underlined); koniec->setPosition(0, 0);
+	koniec->setFont(czcionka); koniec->setCharacterSize(50); koniec->setStyle(sf::Text::Underlined); 
+	koniec->setPosition(koniec->getGlobalBounds().width, menu.getSize().y /2-2*gridSizeF);
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
@@ -76,7 +81,7 @@ int main(){
 		glowne_menu.rysuj();
 		wybor_poziomu.rysuj(); 
 		tab_wynikow.rysuj(); 
-		o_grze.rysuj();
+		o_grze.rysuj(false);
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (glowne_menu.getIntState() == true)) {
 			switch (glowne_menu.getIntIndeks()) {
 			case 1: {
@@ -89,47 +94,59 @@ int main(){
 				glowne_menu.setIntState(false);  o_grze.setIntState(true); }
 				  break;
 			case 4: {
-				glowne_menu.setIntState(false); }// menu.close(); }//działa ale zakomentowane jest żeby wyjatek nie wyskakiwał
+				glowne_menu.setIntState(false);menu.close(); }//działa ale zakomentowane jest żeby wyjatek nie wyskakiwał
 				  break;
 			}
 		}
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (wybor_poziomu.getIntState() == true)) {
 			switch (wybor_poziomu.getIntIndeks())
 			{
-			case 1:w_1.setPoziom(1), test.setPoziom(1); gra = true;
-				break;
-			case 2:w_1.setPoziom(2), test.setPoziom(2); gra = true;
-				break;
-			case 3:w_1.setPoziom(3), test.setPoziom(3); gra = true;
-				break;
+			case 1:w_1.setPoziom(1); gra = true; poziom = 1;break;
+			case 2:w_1.setPoziom(2); gra = true; poziom = 2;break;
+			case 3:w_1.setPoziom(3); gra = true; poziom = 3;break;
 			case 4: {
 				wybor_poziomu.setIntState(false); glowne_menu.setIntState(true); }
-				  break;
+					break;
 			}
 		}
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (o_grze.getIntState() == true) && (o_grze.getIntIndeks() == 4)) {
 			glowne_menu.setIntState(true); o_grze.setIntState(false);
 		}
-		if (gra == true)
-		{
+		if (gra == true) {
 			menu.clear(sf::Color::Black);
 			//aktualnie wyświetlane napisy
 			napisy.setString(infoGracza(p1.getPunkty(), p1.getCzas()).str());
 			//kolizje
-			p1.wall_collision(test.wrogowie);
+			switch (poziom) {
+			case 0:p1.wall_collision(mapka.wrogowie);break;
+			case 1:p1.wall_collision(poziom1.wrogowie);break;
+			case 2:p1.wall_collision(poziom2.wrogowie);break;
+			case 3:p1.wall_collision(poziom3.wrogowie);break;
+			}
 			p1.enemy_collision(w_1.wrogowie);
 			p1.scores_collision(pkt.wrogowie);
 			p1.ConSh_collision(ConSh.getBounds());
-			test.setPoints(pkt.wrogowie);
+			switch (poziom) {
+			case 0:mapka.setPoints(pkt.wrogowie); break;
+			case 1:poziom1.setPoints(pkt.wrogowie); break;
+			case 2:poziom2.setPoints(pkt.wrogowie); break;
+			case 3:poziom3.setPoints(pkt.wrogowie); break;
+			}
 			p1.update();
 			if ((p1.getPlayerState() != false) && (p1.Win() == true)) {//koniec gry - gracz wygrywa
 				koniec->setString("Wygrales!"); koniec->setFillColor(sf::Color::Green);
 				menu.draw(*koniec);
 			}
 			else if (p1.getPlayerState() != false) {
-				p1.draw(); w_1.draw(); test.draw(); pkt.draw(); ConSh.draw();
+				switch (poziom) {
+				case 0:mapka.draw(); break;
+				case 1:poziom1.draw(); break;
+				case 2:poziom2.draw(); break;
+				case 3:poziom3.draw(); break;
+				}
+				p1.draw(); w_1.draw(); pkt.draw(); ConSh.draw();
 			}//rysowanie gracza (oraz elemetnów gry),jeśli gracz "żyje"
-			else if ((p1.getPlayerState() == false)) {
+			else if ((p1.getPlayerState() == false)) {//gra się kończy po śmierci gracza
 				koniec->setString("YOU'RE DEAD!"); koniec->setFillColor(sf::Color(255, 0, 0, 128));
 				menu.draw(*koniec);
 			}//koniec gry - gracz przegrywa
@@ -139,7 +156,7 @@ int main(){
 				ConSh.ruch();
 				w_1.ruch();
 				if ((p1.Win() == true) || (p1.getPlayerState() == false))
-					animacja(koniec, menu.getSize());
+					animacja(koniec,&gridSizeF,menu.getSize());
 				zegar.restart();
 			}
 		}
@@ -149,7 +166,6 @@ int main(){
 	return 0;
 }
 std::stringstream infoGracza(int pkt, int czas) {std::stringstream ss;
-
 	if (czas < 10) {
 		ss << "Czas: " << "00:0" << czas <<"\t" << "Punkty: " << pkt ; }
 	else if (czas < 60) {
@@ -223,7 +239,7 @@ void Esc(sf::RenderWindow *okno){
 			(sf::Mouse::getPosition(Esc).y > nie.getPosition().y) && (sf::Mouse::getPosition(Esc).y < nie.getPosition().y + zakres.y)){
 			nie.setFillColor(sf::Color::Green); nie.setStyle(sf::Text::Underlined || sf::Text::Bold);
 			linia.setPosition(tak.getPosition().x - 15.f, tak.getPosition().y + 25.f); zostan = true;
-			Esc.draw(tak); Esc.draw(nie); Esc.draw(linia);
+			Esc.draw(tak); Esc.draw(nie); Esc.draw(linia); 
 		}
 		else{
 			tak.setFillColor(sf::Color::White); tak.setStyle(sf::Text::Regular); 
@@ -231,29 +247,17 @@ void Esc(sf::RenderWindow *okno){
 			Esc.draw(tak); Esc.draw(nie);
 		}
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left) == true && (wyjdz == true))) {
-			Esc.close();
-		}//, okno->close();}//---------------------- ogólnie działa ale wywala instrukcje pinktu przerwania 
+			Esc.close(); okno->close();}//---------------------- ogólnie działa ale wywala instrukcje pinktu przerwania 
 		else if ((sf::Mouse::isButtonPressed(sf::Mouse::Left) == true && (zostan == true)))
 		Esc.close();
 		
 		Esc.display();
 	}
 }
-sf::Text setText(bool end) {
-	sf::Font font; font.loadFromFile("Arial.ttf");
-	sf::Text koniec; koniec.setFont(font); koniec.setCharacterSize(20); koniec.setStyle(sf::Text::Underlined); koniec.setPosition(0.f, 0.f);
-	if (end == true) {
-		koniec.setString("Wygrales!"); koniec.setFillColor(sf::Color::Green);}
-	else {
-		koniec.setString("YOU'RE DEAD!"); koniec.setFillColor(sf::Color(255, 0, 0, 128));}
-	return koniec;
-}
-void animacja(sf::Text* koniec, sf::Vector2u size) {float obr = 0;
-
-	if ((koniec->getPosition().x < size.x) && (koniec->getPosition().y < size.y - 2 * koniec->getGlobalBounds().top)) {
-		koniec->move(0.5f, 1.f); koniec->setRotation(obr += 5.f);
-	}
-	else {
-		koniec->move(0.f, 0.f), koniec->setScale(2, 2);
-	}
+void animacja(sf::Text* koniec, float *grid,sf::Vector2u size) {
+	sf::Vector2f wymiar =sf::Vector2f(size);
+	if ((koniec->getPosition().x < wymiar.x))// && (koniec->getPosition().y < size.y - 2 * koniec->getGlobalBounds().top)) {
+		koniec->move(5.f, 0.f);
+	else 
+		koniec->setPosition(-koniec->getGlobalBounds().width, wymiar.y/2-2*(*grid));
 }
