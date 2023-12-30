@@ -13,8 +13,7 @@ void Gracz::init(){
 	zawodnik->setTexture(*tekstura);zawodnik->setScale(sf::Vector2f((*grid)/ tekstura->getSize().x, (*grid)/ tekstura->getSize().y ));
 	zawodnik->setPosition(window->getSize().x / 2, window->getSize().y / 2);
 	czcionka->loadFromFile("Arial.ttf"); tekst->setString(*name);
-	predkosc.x = *grid/8;predkosc.y = *grid/8;
-	bounds = zawodnik->getGlobalBounds(); punkty = 0;
+	predkosc.x = *grid/8;predkosc.y = *grid/8; punkty = 0;
 }
 sf::FloatRect Gracz::getBounds(){
 	return zawodnik->getGlobalBounds();
@@ -54,18 +53,12 @@ void Gracz::update(){
 	if(alivePlayer!=false)
 	t_stop = clock();
 }
-void Gracz::setPunkty(int ilosc,int pkt) {
-	punkty=(ilosc-pkt);
-}
 int Gracz::getPunkty(){
 	return punkty;
 }
 int Gracz::getCzas(){//pobieram iloœæ cykli procesora od narysowania gracza i aktualizuje a¿ do jego œmierci
 	float czas = (int)(t_stop - t_start) / CLOCKS_PER_SEC; return czas;
 }//jako ¿e typ t_clock pobiera iloœæ cykli procesora w Hz, musimy to podzieliæ przez sta³¹ dla danego urz¹dzenia
-void Gracz::killPlayer(){
-	alivePlayer = false;
-}
 bool Gracz::getPlayerState(){
 	return alivePlayer;
 }
@@ -115,6 +108,10 @@ void Gracz::scores_collision(std::vector< sf::RectangleShape >& pkt) {
 	}
 	if (pkt.size() == 0)
 		wygrana = true;
+}
+void Gracz::ConSh_collision(sf::FloatRect bounds) {
+	if (bounds.intersects(zawodnik->getGlobalBounds()))
+		alivePlayer = false;
 }
 bool Gracz::Win() {
 	return wygrana;

@@ -4,24 +4,23 @@
 #include<cmath>
 
 class Wrog{
-	int poziom;//poziom trudnoœci
 protected:
-	int ilosc;
+	int ilosc,poziom;
 	sf::RenderWindow *window;
 	sf::RectangleShape krztalt;//tej zmiennej nie usuwam poniewa¿ na niej bazowuj¹ funckje pushback dla wektorów wrogów i ziaren
 	sf::Vector2f pozycja;
+	sf::Vector2f* przesuniecie;
 	float *grid;
 	void init();	
 public:
-	Wrog(int poziom,int ilosc,float *grid, sf::RenderWindow* okno);//wrogowie bêd¹ prostok¹tami
+	Wrog(int ilosc,float *grid, sf::RenderWindow* okno);//wrogowie bêd¹ prostok¹tami
 	Wrog() { ilosc = 1; 
 	}
-	sf::Vector2f* przesuniecie;
 	~Wrog();
 	void draw();
 	void ruch();
 	std::vector<sf::RectangleShape> wrogowie;
-	void setVelocity(int i,float x, float y);
+	void setPoziom(int p);
 };
 class Ziarno:public Wrog //zbierane przez gracza, zwiêkszaj¹ iloœæ punktów
 {
@@ -39,7 +38,7 @@ class Mapa :public Ziarno{
 	void test();//w przysz³oœci zrobiæ 3 funkcje tego typu które maj¹ ró¿ne ustawienia map?
 	int poziom;
 public:
-	Mapa(int poziom,int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno);
+	Mapa(int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno);
 	~Mapa();
 	void setPoints(std::vector< sf::RectangleShape >& pkt);//usuwanie punktów pokrywaj¹cych siê z œcianami
 };

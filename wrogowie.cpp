@@ -11,7 +11,7 @@ int getRandomNumber(std::mt19937& gen, int min, int max) {
 	return distribution(gen);
 }
 //-------------------------------------------------------------- Klasa Wrog --------------------------------------------------------------
-Wrog::Wrog(int poziom,int ilosc,float *grid, sf::RenderWindow* okno){
+Wrog::Wrog(int ilosc,float *grid, sf::RenderWindow* okno){
 	this->poziom = poziom; this->ilosc = ilosc; this->grid = grid; this->window = okno; init();
 }
 void Wrog::init(){
@@ -60,8 +60,8 @@ void Wrog::ruch()
 		wrogowie[i].move(sf::Vector2f(przesuniecie[i]));
 	}
 }
-void Wrog::setVelocity(int i,float x, float y) {
-	przesuniecie[i].x = x; przesuniecie[i].y = y;
+void Wrog::setPoziom(int p) {
+	poziom = p;
 }
 //------------------------------------------------------------- Punkty -------------------------------------------------------------
 Ziarno::Ziarno(int* wysokosc, int* szerokosc, float *grid, sf::RenderWindow* okno)//:Wrog(okno)//---powielalo mi iloœæ punktów
@@ -72,7 +72,8 @@ Ziarno::~Ziarno(){
 	delete window; delete grid; delete wysokosc; delete szerokosc;
 }
 void Ziarno::init(){
-	ilosc = (*szerokosc)* (*wysokosc);
+	ilosc =//40;
+		(*szerokosc)* (*wysokosc);
 	licznik = 0;
 	for (int i = 0; i < this->ilosc; i++){
 		krztalt.setSize(sf::Vector2f(*grid/2, *grid/2));
@@ -85,7 +86,7 @@ void Ziarno::init(){
 	}
 }
 //------------------------------------------------------------- Mapa -------------------------------------------------------------
-Mapa::Mapa(int pziom,int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno)
+Mapa::Mapa(int* wysokosc, int* szerokosc, float* grid, sf::RenderWindow* okno)
 {
 	this->poziom = poziom; this->wysokosc = wysokosc; this->szerokosc = szerokosc; this->window = okno; this->grid = grid; test();
 }
@@ -95,8 +96,6 @@ Mapa::~Mapa() {
 void Mapa::test() {
 	ilosc = ((*wysokosc) * (*szerokosc));
 	for (int i = 0; i < this->ilosc; i++) {
-		//bounds = new sf::FloatRect[ilosc];
-		//bounds[i] = wrogowie[i].getGlobalBounds();
 		krztalt.setSize(sf::Vector2f(*grid, *grid)); krztalt.setRotation(0.f);
 		krztalt.setFillColor(sf::Color(33, 33, 222));
 		krztalt.setOutlineColor(sf::Color::Black); krztalt.setOutlineThickness(1.f);

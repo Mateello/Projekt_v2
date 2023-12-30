@@ -21,18 +21,16 @@ public:
 	void update();
 	void init();
 	void draw();
-	void setPunkty(int ilosc, int pkt);
-	void killPlayer();
 	void setPosition(float x, float y);
 	void wall_collision(std::vector< sf::RectangleShape > &sciany);//kolizje ze scianami
 	void enemy_collision(std::vector< sf::RectangleShape >&wrog);//kolizje z wrogami
 	void scores_collision(std::vector< sf::RectangleShape >&pkt);//kolizje z punktami
+	void ConSh_collision(sf::FloatRect bounds);
 	int getPunkty();
 	int getCzas();
 	bool Win();
 	bool getPlayerState();
 	sf::FloatRect getBounds();
-	sf::FloatRect bounds;
 };
 //-------------------------------------------------------------- Zapis do pliku ----------------------------------------------------
 struct Dane{
