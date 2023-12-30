@@ -11,9 +11,10 @@ protected:
 	sf::RenderWindow* okno;
 	int *wybor;//zmienna zawieraj¹ca numer opcji wybranej przez gracza -> do switcha w g³ównym
 	bool *narysowany;//zmienna przechowuj¹ca informacje czy interfejs jest w³aœnie widoczny dla gracza
+	float* grid;
 	void init();
 public:
-	Interfejs(sf::RenderWindow* okno);
+	Interfejs(float *grid,sf::RenderWindow* okno);
 	~Interfejs();
 	void rysuj();
 	void rysuj(bool obw);

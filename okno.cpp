@@ -1,29 +1,27 @@
 #include "okno.h"
 
-Interfejs::Interfejs(sf::RenderWindow* okno)
-{
-	this->okno = okno; init();
+Interfejs::Interfejs(float *grid,sf::RenderWindow* okno){
+	this->grid = grid; this->okno = okno; init();
 }
-Interfejs::~Interfejs()
-{
-	delete narysowany; delete wybor; delete okno; delete czcionka; delete t1; delete t2; delete t3; delete t4; delete t_bounds; delete tlo;
+Interfejs::~Interfejs(){
+	delete grid; delete narysowany; delete wybor; delete okno; delete czcionka; 
+	delete t1; delete t2; delete t3; delete t4; delete t_bounds; delete tlo;
 }
-void Interfejs::init()
-{
+void Interfejs::init(){
 	sf::Color t³o = sf::Color(80, 80, 80);
-	wym_obr.x = 130.f; wym_obr.y = 40.f; otoczkat.x = wym_obr.x -20.f; otoczkat.y = wym_obr.y -15;
+	wym_obr.x = (*grid)*13/3; wym_obr.y = (*grid)*4/3; otoczkat.x = wym_obr.x - ((*grid)*2 / 3); otoczkat.y = wym_obr.y - ((*grid)/2);
 	tlo = new sf::RectangleShape; t_bounds = new sf::RectangleShape; wybor = new int; narysowany = new bool;
 	tlo->setFillColor(t³o);
 	tlo->setPosition(0.f,0.f); tlo->setSize(sf::Vector2f(okno->getSize().x, okno->getSize().y));
 	czcionka = new sf::Font; czcionka->loadFromFile("Agbalumo-Regular.ttf");
-	t1 = new sf::Text; t1->setFont(*czcionka); t1->setCharacterSize(25); t1->setString("Pierwszy");
-	t1->setPosition(sf::Vector2f(okno->getSize().x/2-50.f, okno->getSize().y/6));
-	t2 = new sf::Text; t2->setFont(*czcionka); t2->setCharacterSize(25); t2->setString("Drugi");
-	t2->setPosition(sf::Vector2f(okno->getSize().x/2 - 50.f, okno->getSize().y / 3));
-	t3 = new sf::Text; t3->setFont(*czcionka); t3->setCharacterSize(25); t3->setString("Trzeci");
-	t3->setPosition(sf::Vector2f(okno->getSize().x/2 - 50.f, okno->getSize().y / 2));
-	t4 = new sf::Text; t4->setFont(*czcionka); t4->setCharacterSize(25); t4->setString("Czwarty");
-	t4->setPosition(sf::Vector2f(okno->getSize().x/2 - 50.f, okno->getSize().y / 3 *2));
+	t1 = new sf::Text; t1->setFont(*czcionka); t1->setCharacterSize(*grid); t1->setString("Pierwszy");
+	t1->setPosition(sf::Vector2f(okno->getSize().x/2-2*(*grid), okno->getSize().y / 6));
+	t2 = new sf::Text; t2->setFont(*czcionka); t2->setCharacterSize(*grid); t2->setString("Drugi");
+	t2->setPosition(sf::Vector2f(okno->getSize().x/2 - 2 * (*grid), okno->getSize().y / 3));
+	t3 = new sf::Text; t3->setFont(*czcionka); t3->setCharacterSize(*grid); t3->setString("Trzeci");
+	t3->setPosition(sf::Vector2f(okno->getSize().x/2 - 2 * (*grid), okno->getSize().y / 2));
+	t4 = new sf::Text; t4->setFont(*czcionka); t4->setCharacterSize(*grid); t4->setString("Czwarty");
+	t4->setPosition(sf::Vector2f(okno->getSize().x/2 - 2 * (*grid), okno->getSize().y / 3 *2));
 
 	t_bounds->setSize(wym_obr);//docelowo ma rysowaæ otoczki gdy najedzie sie na to myszk¹
 	t_bounds->setFillColor(t³o); t_bounds->setOutlineColor(sf::Color::White); t_bounds->setOutlineThickness(1.f);

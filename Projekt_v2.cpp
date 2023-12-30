@@ -22,16 +22,16 @@ int main(){
 	int map_height = (int)menu.getSize().y / gridSizeF;//mapa będzie kwadratowa dlatego tylko jeden wymiar
 	int map_width = (int)menu.getSize().x / gridSizeF;
 
-	Interfejs glowne_menu(&menu); glowne_menu.setIntState(true); glowne_menu.setPosition(-3*gridSizeF,0);
-	glowne_menu.setString("Nowa gra","Wyniki","O grze","Wyjscie");//poziomy trudności zmieniają prędkość wrogów i mape
+	Interfejs glowne_menu(&gridSizeF,&menu); glowne_menu.setIntState(true); glowne_menu.setPosition(-3*gridSizeF,0);
+	glowne_menu.setString("Nowa gra", "Wyniki", "O grze", "Wyjscie");
 
-	Interfejs wybor_poziomu(&menu);
+	Interfejs wybor_poziomu(&gridSizeF ,&menu);
 	wybor_poziomu.setString("Poziom 1", "Poziom 2", "Poziom 3", "Powrot");
 
-	Interfejs tab_wynikow(&menu);
+	Interfejs tab_wynikow(&gridSizeF ,&menu);
 	tab_wynikow.setString(" 1 ", " 2 ", " 3 ", " Powrot ");
 
-	Interfejs o_grze(&menu); bool obw = false; o_grze.setCharSize(20);
+	Interfejs o_grze(&gridSizeF ,&menu); bool obw = false; o_grze.setCharSize(gridSizeU * 2 / 3);
 	o_grze.setString(" Gra zostala stworzona jako podobienstwo PACMAN'a.\n Zasady sa takie same jak w PacMan'ie.\nUnikaj wrogow,zbieraj punkty.",
 		" Czas jest ograniczony, na skonczenie gry jest 5 minut ", " Gra na 5 ", " Powrot ");
 	o_grze.setPosition(-7*gridSizeF,-2*gridSizeF);
@@ -55,13 +55,12 @@ int main(){
 	sf::Text napisy,*koniec;
 	koniec = new sf::Text;
 	sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
-	napisy.setCharacterSize(20); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(0, 0);
-	koniec->setFont(czcionka); koniec->setCharacterSize(50); koniec->setStyle(sf::Text::Underlined); 
+	napisy.setCharacterSize(gridSizeU*2/3); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(0, 0);
+	koniec->setFont(czcionka); koniec->setCharacterSize(2*gridSizeU); koniec->setStyle(sf::Text::Underlined); 
 	koniec->setPosition(koniec->getGlobalBounds().width, menu.getSize().y /2-2*gridSizeF);
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
-		//sf::Text koniec = setText(p1.getPlayerState());
 		glowne_menu.mousePos = sf::Mouse::getPosition(menu); wybor_poziomu.mousePos = sf::Mouse::getPosition(menu);
 		tab_wynikow.mousePos = sf::Mouse::getPosition(menu); o_grze.mousePos = sf::Mouse::getPosition(menu);
 		//zmnienne aktualizujące pozycję myszki
@@ -99,8 +98,7 @@ int main(){
 			}
 		}
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (wybor_poziomu.getIntState() == true)) {
-			switch (wybor_poziomu.getIntIndeks())
-			{
+			switch (wybor_poziomu.getIntIndeks()){
 			case 1:w_1.setPoziom(1); gra = true; poziom = 1;break;
 			case 2:w_1.setPoziom(2); gra = true; poziom = 2;break;
 			case 3:w_1.setPoziom(3); gra = true; poziom = 3;break;
@@ -146,13 +144,16 @@ int main(){
 				}
 				p1.draw(); w_1.draw(); pkt.draw(); ConSh.draw();
 			}//rysowanie gracza (oraz elemetnów gry),jeśli gracz "żyje"
-			else if ((p1.getPlayerState() == false)) {//gra się kończy po śmierci gracza
+
+			else if ((p1.getPlayerState() == false)) 
+			{//gra się kończy po śmierci gracza
 				koniec->setString("YOU'RE DEAD!"); koniec->setFillColor(sf::Color(255, 0, 0, 128));
 				menu.draw(*koniec);
-			}//koniec gry - gracz przegrywa
+			}
+
 			menu.draw(napisy);
-			//-----------------nieregularny wróg porusza się i obraca 
-			if (zegar.getElapsedTime().asMilliseconds() > 10.0f) {
+			
+			if (zegar.getElapsedTime().asMilliseconds() > 10.0f) {//nieregularny wróg porusza się i obraca 
 				ConSh.ruch();
 				w_1.ruch();
 				if ((p1.Win() == true) || (p1.getPlayerState() == false))
