@@ -9,7 +9,7 @@ Interfejs::~Interfejs(){
 }
 void Interfejs::init(){
 	sf::Color t³o = sf::Color(80, 80, 80);
-	wym_obr.x = (*grid)*13/3; wym_obr.y = (*grid)*4/3; otoczkat.x = wym_obr.x - ((*grid)*2 / 3); otoczkat.y = wym_obr.y - ((*grid)/2);
+	wym_obr.x = (*grid)*5; wym_obr.y = (*grid)*4/3; otoczkat.x = wym_obr.x - ((*grid)*2/3); otoczkat.y = wym_obr.y - ((*grid)/2);
 	tlo = new sf::RectangleShape; t_bounds = new sf::RectangleShape; wybor = new int; narysowany = new bool;
 	tlo->setFillColor(t³o);
 	tlo->setPosition(0.f,0.f); tlo->setSize(sf::Vector2f(okno->getSize().x, okno->getSize().y));
@@ -33,7 +33,7 @@ void Interfejs::rysuj()//rysowanie napisów, wokó³ napisu przy którym jest myszka
 		okno->draw(*tlo);
 		if ((mousePos.x > t1->getPosition().x && (mousePos.x < (t1->getPosition().x + otoczkat.x)) &&
 			(mousePos.y > t1->getPosition().y) && (mousePos.y < (t1->getPosition().y + otoczkat.y)))) {
-
+	
 			t_bounds->setPosition(t1->getPosition()+sf::Vector2f(-5.f,0.f)); okno->draw(*t_bounds); okno->draw(*t1); setIntIndeks(1);
 		}
 		else {
@@ -70,7 +70,7 @@ void Interfejs::rysuj()//rysowanie napisów, wokó³ napisu przy którym jest myszka
 void Interfejs::rysuj(bool obw){
 	if (*narysowany == true)
 	{
-		okno->draw(*tlo); okno->draw(*t1); okno->draw(*t2); okno->draw(*t3);
+		okno->draw(*tlo); okno->draw(*t1);
 		if ((mousePos.x > t4->getPosition().x && (mousePos.x < (t4->getPosition().x + otoczkat.x)) &&
 			(mousePos.y > t4->getPosition().y) && (mousePos.y < (t4->getPosition().y + otoczkat.y)))) {
 

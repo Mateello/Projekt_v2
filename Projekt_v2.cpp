@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include<sstream>//string stream, do wyświetlania czasu gry, punktów, nazwy gracza
-#include<array>
+#include<fstream>
 #include "wrogowie.h"
 #include "gracz.h"
 #include "okno.h"
@@ -28,18 +28,20 @@ int main(){
 	Interfejs wybor_poziomu(&gridSizeF ,&menu);
 	wybor_poziomu.setString("Poziom 1", "Poziom 2", "Poziom 3", "Powrot");
 
-	Interfejs tab_wynikow(&gridSizeF ,&menu);
-	tab_wynikow.setString(" 1 ", " 2 ", " 3 ", " Powrot ");
+	Interfejs tab_wynikow(&gridSizeF, &menu); tab_wynikow.setCharSize(gridSizeU * 2 / 3);
+	tab_wynikow.setString(" ", " ", " ", " Powrot "); tab_wynikow.setPosition(-7 * gridSizeF, -2 * gridSizeF);
 
 	Interfejs o_grze(&gridSizeF ,&menu); bool obw = false; o_grze.setCharSize(gridSizeU * 2 / 3);
-	o_grze.setString(" Gra zostala stworzona jako podobienstwo PACMAN'a.\n Zasady sa takie same jak w PacMan'ie.\nUnikaj wrogow,zbieraj punkty.",
-		" Czas jest ograniczony, na skonczenie gry jest 5 minut ", " Gra na 5 ", " Powrot ");
+	o_grze.setString(
+	" Gra zostala stworzona jako podobienstwo PACMAN'a.\n Zasady sa takie same jak w PacMan'ie.\nUnikaj wrogow,zbieraj punkty."
+		"\nCzas jest ograniczony, na skonczenie gry jest 5 minut"," ", " ", " Powrot ");
 	o_grze.setPosition(-7*gridSizeF,-2*gridSizeF);
 
 	sf::Clock zegar;//tworzymy obiekt mierzący czas
 
 	bool gra = false;
-	//std::vector<Dane> zapis;//wektro który będzie przechowywał i zapisywał do pliku dane o grze - czas,nazwe,indeks,punkty
+	
+	Dane* dane; dane = new Dane;
 	
 	Gracz p1(&gridSizeF,&menu);//obiekt typu gracz, argumentem jest okno w którym jest rysowany
 	Wrog w_1(4,&gridSizeF,&menu);
@@ -51,13 +53,14 @@ int main(){
 	Mapa poziom3(3,&map_height, &map_width, &gridSizeF, &menu);
 	int poziom = 0;
 	WrogCS ConSh(&menu);
-
-	sf::Text napisy,*koniec;
+	std::string odczytaj;
+	sf::Text napisy,*koniec, odczytane;
 	koniec = new sf::Text;
 	sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
 	napisy.setCharacterSize(gridSizeU*2/3); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(0, 0);
 	koniec->setFont(czcionka); koniec->setCharacterSize(2*gridSizeU); koniec->setStyle(sf::Text::Underlined); 
 	koniec->setPosition(koniec->getGlobalBounds().width, menu.getSize().y /2-2*gridSizeF);
+	odczytane.setCharacterSize(20); odczytane.setFont(czcionka); odczytane.setPosition(150, 50); odczytane.setFillColor(sf::Color::Black);
 	//PĘTLA GRY
 	while (menu.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
@@ -78,9 +81,18 @@ int main(){
 		}
 		menu.clear(sf::Color::Black);
 		glowne_menu.rysuj();
-		wybor_poziomu.rysuj(); 
-		tab_wynikow.rysuj(); 
+		wybor_poziomu.rysuj();
+		tab_wynikow.rysuj(false);
 		o_grze.rysuj(false);
+		std::ifstream odczyt("tab.txt");
+		if (odczyt.good() == false)
+			std::cout << "nie znaleziono pliku";
+		else {
+			while (getline(odczyt, odczytaj))
+				odczytane.setString(odczytaj);
+		}
+		if(tab_wynikow.getIntState()==true)
+			menu.draw(odczytane);
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (glowne_menu.getIntState() == true)) {
 			switch (glowne_menu.getIntIndeks()) {
 			case 1: {
@@ -93,19 +105,22 @@ int main(){
 				glowne_menu.setIntState(false);  o_grze.setIntState(true); }
 				  break;
 			case 4: {
-				glowne_menu.setIntState(false);menu.close(); }//działa ale zakomentowane jest żeby wyjatek nie wyskakiwał
+				glowne_menu.setIntState(false); exit(0); }//menu.close();}//działa ale zakomentowane jest żeby wyjatek nie wyskakiwał
 				  break;
 			}
 		}
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (wybor_poziomu.getIntState() == true)) {
-			switch (wybor_poziomu.getIntIndeks()){
-			case 1:w_1.setPoziom(1); gra = true; poziom = 1;break;
-			case 2:w_1.setPoziom(2); gra = true; poziom = 2;break;
-			case 3:w_1.setPoziom(3); gra = true; poziom = 3;break;
+			switch (wybor_poziomu.getIntIndeks()) {
+			case 1:w_1.setPoziom(1); gra = true; poziom = 1; break;
+			case 2:w_1.setPoziom(2); gra = true; poziom = 2; break;
+			case 3:w_1.setPoziom(3); gra = true; poziom = 3; break;
 			case 4: {
 				wybor_poziomu.setIntState(false); glowne_menu.setIntState(true); }
-					break;
+				  break;
 			}
+		}
+		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (tab_wynikow.getIntState() == true) && (tab_wynikow.getIntIndeks() == 4)) {
+			glowne_menu.setIntState(true); tab_wynikow.setIntState(false);
 		}
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (o_grze.getIntState() == true) && (o_grze.getIntIndeks() == 4)) {
 			glowne_menu.setIntState(true); o_grze.setIntState(false);
@@ -116,10 +131,10 @@ int main(){
 			napisy.setString(infoGracza(p1.getPunkty(), p1.getCzas()).str());
 			//kolizje
 			switch (poziom) {
-			case 0:p1.wall_collision(mapka.wrogowie);break;
-			case 1:p1.wall_collision(poziom1.wrogowie);break;
-			case 2:p1.wall_collision(poziom2.wrogowie);break;
-			case 3:p1.wall_collision(poziom3.wrogowie);break;
+			case 0:p1.wall_collision(mapka.wrogowie); break;
+			case 1:p1.wall_collision(poziom1.wrogowie); break;
+			case 2:p1.wall_collision(poziom2.wrogowie); break;
+			case 3:p1.wall_collision(poziom3.wrogowie); break;
 			}
 			p1.enemy_collision(w_1.wrogowie);
 			p1.scores_collision(pkt.wrogowie);
@@ -145,25 +160,31 @@ int main(){
 				p1.draw(); w_1.draw(); pkt.draw(); ConSh.draw();
 			}//rysowanie gracza (oraz elemetnów gry),jeśli gracz "żyje"
 
-			else if ((p1.getPlayerState() == false)) 
+			else if ((p1.getPlayerState() == false))
 			{//gra się kończy po śmierci gracza
 				koniec->setString("YOU'RE DEAD!"); koniec->setFillColor(sf::Color(255, 0, 0, 128));
 				menu.draw(*koniec);
 			}
 
 			menu.draw(napisy);
-			
+
 			if (zegar.getElapsedTime().asMilliseconds() > 10.0f) {//nieregularny wróg porusza się i obraca 
 				ConSh.ruch();
 				w_1.ruch();
 				if ((p1.Win() == true) || (p1.getPlayerState() == false))
-					animacja(koniec,&gridSizeF,menu.getSize());
+					animacja(koniec, &gridSizeF, menu.getSize());
 				zegar.restart();
 			}
 		}
 		menu.display();
+		if ((p1.getPlayerState() == false) || (p1.Win() == true)) {
+			dane->nazwa = " "; dane->punkty = p1.getPunkty(); dane->czas = p1.getCzas(); dane->poziom = poziom;
+			std::ofstream wpis("tab.txt");
+			wpis << "Nazwa: " << dane->nazwa <<"\tPoziom: "<<dane->poziom << "\tPkt: " << dane->punkty << "\tT: " << dane->czas << "s" << "\n";
+			wpis.close();	
+		}
 	}
-	delete koniec;
+	delete koniec; delete dane;
 	return 0;
 }
 std::stringstream infoGracza(int pkt, int czas) {std::stringstream ss;
@@ -248,7 +269,8 @@ void Esc(sf::RenderWindow *okno){
 			Esc.draw(tak); Esc.draw(nie);
 		}
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left) == true && (wyjdz == true))) {
-			Esc.close(); okno->close();}//---------------------- ogólnie działa ale wywala instrukcje pinktu przerwania 
+			Esc.close(); exit(0);//teraz działa jak marzenie
+		}//okno->close();}//---------------------- ogólnie działa ale wywala instrukcje pinktu przerwania 
 		else if ((sf::Mouse::isButtonPressed(sf::Mouse::Left) == true && (zostan == true)))
 		Esc.close();
 		

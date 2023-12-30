@@ -8,11 +8,7 @@ class Gracz{
 	sf::Sprite *zawodnik;
 	sf::Vector2f predkosc;
 	sf::Vector2f pozycja;
-	sf::String *name;
-	sf::Font* czcionka;
-	sf::Text* tekst;
 	float *grid, czas_gry;
-	char *nazwa;
 	clock_t t_start, t_stop;//zmienne przechowuj¹ce iloœæ cykli procesora od narysowania do usuniecia gracza
 	int punkty;
 	bool alivePlayer,wygrana;//zmienna odpowowiadaj¹ca za to czy gracz "¿yje" czy nie
@@ -32,12 +28,11 @@ public:
 	bool Win();
 	bool getPlayerState();
 	void setName();
+	std::string nazwa;
 	sf::FloatRect getBounds();
 };
 //-------------------------------------------------------------- Zapis do pliku ----------------------------------------------------
 struct Dane{
-	int punkty,id;
-	clock_t start, stop;//zmienne przechowuj¹ce moment rozpoczêcia i zakoñczenia rozgrywki
-	double czas_gry;
-	char nazwa[20];
+	int punkty,czas,poziom;
+	std::string nazwa;
 };
