@@ -8,6 +8,7 @@ class Gracz{
 	sf::Sprite *zawodnik;
 	sf::Vector2f predkosc;
 	sf::Vector2f pozycja;
+	std::string nazwa;
 	float *grid, czas_gry;
 	clock_t t_start, t_stop;//zmienne przechowuj¹ce iloœæ cykli procesora od narysowania do usuniecia gracza
 	int punkty;
@@ -27,8 +28,8 @@ public:
 	int getCzas();
 	bool Win();
 	bool getPlayerState();
-	void setName();
-	std::string nazwa;
+	void setName(std::string s);
+	std::string getName();
 	sf::FloatRect getBounds();
 };
 //-------------------------------------------------------------- Zapis do pliku ----------------------------------------------------

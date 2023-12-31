@@ -4,11 +4,10 @@ Gracz::Gracz(float *grid, sf::RenderWindow* window){
 	this->window = window; this->grid = grid; init();
 }
 Gracz::~Gracz(){
-	 delete grid; delete zawodnik; delete tekstura; delete window;
+	delete grid; delete zawodnik; delete tekstura; delete window;
 }
 void Gracz::init(){
 	t_start = clock();//rozpoczynam odliczanie czasu
-	nazwa = new char[20];
 	alivePlayer = true; tekstura = new sf::Texture; zawodnik = new sf::Sprite;
 	tekstura->loadFromFile("pokeball.png");//ze wzglêdu na problem z pacman.png - na razie porzyczê pokeball'a
 	zawodnik->setTexture(*tekstura);zawodnik->setScale(sf::Vector2f((*grid)/ tekstura->getSize().x, (*grid)/tekstura->getSize().y ));
@@ -116,6 +115,9 @@ void Gracz::ConSh_collision(sf::FloatRect bounds) {
 bool Gracz::Win() {
 	return wygrana;
 }
-void Gracz::setName() {
-
+void Gracz::setName(std::string s) {
+	this->nazwa = s;
+}
+std::string Gracz::getName() {
+	return nazwa;
 }
