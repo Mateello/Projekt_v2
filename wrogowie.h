@@ -44,6 +44,7 @@ public:
 //---------------------------------------------------------------------------ConvexShape------------------------------------------------
 class WrogCS
 {
+	int poziom;
 	float obrot = 0;
 	sf::ConvexShape gwiazda;//nie wiem czemu jak zrobi≥em to na wskaünikach to wskaünik zwraca≥ NULL
 	sf::RenderWindow* window;
@@ -54,4 +55,5 @@ public:
 	void ruch();
 	void draw();
 	sf::FloatRect getBounds();
+	void setPoz(int poz);
 };

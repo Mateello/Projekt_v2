@@ -1,1 +1,6 @@
-Nazwa: asdadwa	Poziom: 3	Pkt: 6		Czas gry: 00:04
+Nazwa: Mateo	Poziom: 1	Pkt: 21		Czas gry: 00:07
+Nazwa: Les GO	Poziom: 1	Pkt: 13		Czas gry: 00:08
+Nazwa: Teest	Poziom: 3	Pkt: 4		Czas gry: 00:09
+Nazwa: sda	Poziom: 2	Pkt: 17		Czas gry: 00:11
+Nazwa: asdasdsada	Poziom: 2	Pkt: 9		Czas gry: 00:04
+Nazwa: asdadwa	Poziom: 2	Pkt: 10		Czas gry: 00:04

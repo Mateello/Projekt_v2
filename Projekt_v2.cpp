@@ -29,7 +29,8 @@ int main() {
 	wybor_poziomu.setString("Poziom 1", "Poziom 2", "Poziom 3", "Powrot");
 
 	Interfejs tab_wynikow(&gridSizeF, &window); tab_wynikow.setCharSize(gridSizeU * 2 / 3);
-	tab_wynikow.setString(" ", " ", " ", " Powrot "); tab_wynikow.setPosition(-7 * gridSizeF, -2 * gridSizeF);
+	tab_wynikow.setString(" ", " ", " ", " Powrot "); tab_wynikow.setPosition(-7 * gridSizeF, 5*gridSizeF);
+	//to set position jest względne do pozycji ustalonej w klasie Interfejs
 
 	Interfejs o_grze(&gridSizeF, &window); bool obw = false; o_grze.setCharSize(gridSizeU * 2 / 3);
 	o_grze.setString(
@@ -51,12 +52,14 @@ int main() {
 	Mapa poziom1(1, &map_height, &map_width, &gridSizeF, &window);
 	Mapa poziom2(2, &map_height, &map_width, &gridSizeF, &window);
 	Mapa poziom3(3, &map_height, &map_width, &gridSizeF, &window);
-	int poziom = 0;
+	int poziom = 0,indeks=0;
 	WrogCS ConSh(&window);
 
-	std::string odczytaj;
-	sf::Text napisy, * koniec, odczytane, nazwa;//machnąć tu wskaźniki
+	std::string linia;
+	sf::Text napisy, * koniec, bufor[20], odczytane, nazwa;//machnąć tu wskaźniki
 	sf::String playerName; playerName.clear();//Łańcuch znaków wpisany przez użytkownika
+
+	std::vector<sf::Text> lista;
 
 	koniec = new sf::Text;
 	sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
@@ -64,7 +67,7 @@ int main() {
 	koniec->setFont(czcionka); koniec->setCharacterSize(2 * gridSizeU); koniec->setStyle(sf::Text::Underlined);
 	koniec->setPosition(koniec->getGlobalBounds().width, window.getSize().y / 2 - 2 * gridSizeF);
 
-	odczytane.setCharacterSize(20); odczytane.setFont(czcionka); odczytane.setPosition(5 * gridSizeF, 2 * gridSizeF); 
+	odczytane.setCharacterSize(20); odczytane.setFont(czcionka); odczytane.setPosition(5 * gridSizeF, 1 * gridSizeF); 
 	odczytane.setFillColor(sf::Color::White);
 
 	nazwa.setFont(czcionka); nazwa.setCharacterSize(gridSizeU); nazwa.setFillColor(sf::Color::White); nazwa.setPosition(3 * gridSizeU, 6 * gridSizeU);
@@ -77,7 +80,7 @@ int main() {
 			if (event.type == sf::Event::Closed)
 				window.close();
 
-			if ((event.type == sf::Event::TextEntered) && (gra != true)) {
+			if ((event.type == sf::Event::TextEntered) && (wybor_poziomu.getIntState() == true)&&(gra!=true)) {
 				playerName += event.text.unicode;
 				nazwa.setString(playerName);
 			}
@@ -104,17 +107,33 @@ int main() {
 
 		p1.setName(nazwa.getString());
 
-		std::ifstream odczyt("tab.txt");
-		if (odczyt.good() == false) {
-			std::cout << "nie znaleziono pliku";
+		bool spr = true; 
+		std::ifstream odczyt;
+		odczyt.open("tab.txt", std::ios::in);
+		if (odczyt.good() == true) {
+			while (getline(odczyt, linia))//(plik z którego odczytujemy, zmienna przechowująca odczytaną linie
+			{
+				odczytane.setString(linia);
+				if(lista.size()<20)
+				lista.push_back(odczytane);//przerzucam do wektora pełną linie z pliku
+			}
 		}
-		else {
-			while (getline(odczyt, odczytaj))
-				odczytane.setString(odczytaj);
-		}
+		odczyt.close();
 
-		if (tab_wynikow.getIntState() == true)
-			window.draw(odczytane);
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
+				if (lista[i].getString() == lista[j].getString())//jeśli wartość w wektorze będzie taka sama jak w buforze zwracam indeks
+					std::cout<< i;
+			}
+		}
+		if (tab_wynikow.getIntState() == true) {
+			for (int i = 0; i < 20; i++) {
+				odczytane = lista[i];
+				odczytane.setPosition(odczytane.getPosition().x, odczytane.getPosition().y + gridSizeF * i);
+				if (odczytane.getPosition().y < window.getSize().y - 4 * gridSizeF)
+					window.draw(odczytane);
+			}
+		}
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (glowne_menu.getIntState() == true)) {
 			switch (glowne_menu.getIntIndeks()) {
 			case 1: {
@@ -167,6 +186,7 @@ int main() {
 			case 2:p1.wall_collision(poziom2.wrogowie); break;
 			case 3:p1.wall_collision(poziom3.wrogowie); break;
 			}
+			ConSh.setPoz(poziom);
 			p1.enemy_collision(w_1.wrogowie);
 			p1.scores_collision(pkt.wrogowie);
 			p1.ConSh_collision(ConSh.getBounds());
@@ -208,21 +228,21 @@ int main() {
 			}
 		}
 		window.display();
-		if ((p1.getPlayerState() == false) || (p1.Win() == true)) {
+		if (((p1.getPlayerState() == false) || (p1.Win() == true))&&(dane->nazwa!= p1.getName())) {
 			dane->nazwa = p1.getName(); dane->punkty = p1.getPunkty(); dane->czas = p1.getCzas(); dane->poziom = poziom;
-			std::ofstream wpis("tab.txt");
-			wpis << "Nazwa: " << dane->nazwa << "\tPoziom: " << dane->poziom << "\tPkt: " << dane->punkty << "\t\tCzas gry: ";
+			std::ofstream wpis;wpis.open("tab.txt",std::ios::out|std::ios::app);
+			wpis << "\nNazwa: " << dane->nazwa << "\tPoziom: " << dane->poziom << "\tPkt: " << dane->punkty << "\t\tCzas gry: ";
 			if (dane->czas < 10) {
-				wpis << "00:0" << dane->czas << "\n";
+				wpis << "00:0" << dane->czas ;
 			}
 			else if (dane->czas < 60) {
-				wpis << "00:" << dane->czas << "\n";
+				wpis << "00:" << dane->czas ;
 			}
 			else if ((dane->czas > 59) && (dane->czas % 60 < 10)) {
-				wpis << dane->czas << ":0 " << dane->czas / 60 % 60 << "\n";
+				wpis << dane->czas << ":0 " << dane->czas / 60 % 60;
 			}
 			else {
-				wpis << dane->czas << ": " << dane->czas / 60 % 60 << "\n";
+				wpis << dane->czas << ": " << dane->czas / 60 % 60;
 			}
 			wpis.close();
 		}
@@ -231,9 +251,9 @@ int main() {
 	return 0;
 }
 std::stringstream infoGracza(int pkt, int czas,int poziom,std::string nazwa) {std::stringstream ss;
-		ss << "Gracz: " << nazwa <<"\tPoziom: "<<poziom;
+		ss << "Gracz: " << nazwa <<"\tPoziom: "<<poziom<<"\t";
 	if (czas < 10) {
-		ss << "\tCzas: " << "00:0" << czas ; }
+		ss << "Czas: " << "00:0" << czas ; }
 	else if (czas < 60) {
 		ss << "Czas: " << "00:" << czas;}
 	else if ((czas > 59)&&(czas % 60<10)) {
@@ -326,7 +346,7 @@ void Esc(){
 void animacja(sf::Text* koniec, float *grid,sf::Vector2u size) {
 	sf::Vector2f wymiar =sf::Vector2f(size);
 	if ((koniec->getPosition().x < wymiar.x))// && (koniec->getPosition().y < size.y - 2 * koniec->getGlobalBounds().top)) {
-		koniec->move(5.f, 0.f);
+		koniec->move(10.f, 0.f);
 	else 
 		koniec->setPosition(-koniec->getGlobalBounds().width, wymiar.y/2-2*(*grid));
 }

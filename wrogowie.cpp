@@ -46,7 +46,7 @@ void Wrog::draw(){
 }
 void Wrog::ruch()
 {
-	float losV = (rand()%5+3)*poziom*1.f;
+	float losV = (rand()%5+3)+poziom*2;
 	for (int i = 0; i < wrogowie.size(); i++) {
 		if (wrogowie[i].getPosition().x > (window->getSize().x-2*(*grid)))
 			przesuniecie[i].x = -2.f*poziom;
@@ -145,7 +145,7 @@ void WrogCS::init() {
 }
 void WrogCS::ruch()
 {
-	float vCS = rand() % 5 + 1;//losowanie prêdkoœci z przedzia³u 1 do 4
+	float vCS = rand() % (5 + poziom)+1;//losowanie prêdkoœci z przedzia³u 1 do 4
 	gwiazda.setRotation(obrot += 7.5f);
 
 	if (gwiazda.getPosition().x > (window->getSize().x + gwiazda.getGlobalBounds().left) / 2)
@@ -166,4 +166,7 @@ void WrogCS::draw()
 sf::FloatRect WrogCS::getBounds()
 {
 	return gwiazda.getGlobalBounds();
+}
+void WrogCS::setPoz(int poz) {
+	poziom = poz;
 }
