@@ -5,7 +5,8 @@ class Interfejs
 {
 protected:
 	sf::Vector2f otoczkat,wym_obr;//otoczka to prostok¹t w którym musi znaleŸæ siê kursor by wybraæ opcje, wym to wymiar rysowanego prostok¹tu
-	sf::RectangleShape* tlo, *t_bounds ;
+	sf::RectangleShape* tlo;
+	sf::Color napisy=sf::Color(242, 135, 5);
 	sf::Text* t1, * t2 , * t3, * t4;
 	sf::Font* czcionka; 
 	sf::RenderWindow* okno;

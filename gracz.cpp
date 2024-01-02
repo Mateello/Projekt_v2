@@ -9,9 +9,9 @@ Gracz::~Gracz(){
 void Gracz::init(){
 	t_start = clock();//rozpoczynam odliczanie czasu
 	alivePlayer = true; tekstura = new sf::Texture; zawodnik = new sf::Sprite;
-	tekstura->loadFromFile("pokeball.png");//ze wzglêdu na problem z pacman.png - na razie porzyczê pokeball'a
+	tekstura->loadFromFile("pacman.png");
 	zawodnik->setTexture(*tekstura);zawodnik->setScale(sf::Vector2f((*grid)/ tekstura->getSize().x, (*grid)/tekstura->getSize().y ));
-	zawodnik->setPosition(window->getSize().x / 2, window->getSize().y / 2);
+	zawodnik->setPosition((window->getSize().x-zawodnik->getGlobalBounds().width) / 2, (window->getSize().y - zawodnik->getGlobalBounds().height) / 2);
 	predkosc.x = *grid/8;predkosc.y = *grid/8; punkty = 0;
 }
 sf::FloatRect Gracz::getBounds(){
@@ -23,7 +23,7 @@ void Gracz::draw(){
 void Gracz::update(){
 	pozycja.x = zawodnik->getPosition().x; pozycja.y = zawodnik->getPosition().y;
 	//kolizje z œcianami
-	if (zawodnik->getGlobalBounds().left < 0.f){//œciana z lewej
+	if (zawodnik->getGlobalBounds().left < 0.f) {//œciana z lewej
 		zawodnik->setPosition(0.f, zawodnik->getGlobalBounds().top);
 	}
 	else if (zawodnik->getGlobalBounds().left+ zawodnik->getGlobalBounds().width > window->getSize().x){//œciana z prawej
@@ -37,20 +37,18 @@ void Gracz::update(){
 	}
 
 	//poruszanie graczem
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-		zawodnik->move(-predkosc.x,0.f);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		zawodnik->move(-predkosc.x, 0.f);
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		zawodnik->move(predkosc.x, 0.f);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-		zawodnik->move(0.f, -predkosc.y);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-		zawodnik->move(0.f, predkosc.y);
-	}
-	if (alivePlayer != false)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		zawodnik->move(0.f, -predkosc.y); 
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		zawodnik->move(0.f, predkosc.y); 
+
+	if (alivePlayer != false)//koniec odliczania czasu
 	t_stop = clock();
+
 }
 int Gracz::getPunkty(){
 	return punkty;

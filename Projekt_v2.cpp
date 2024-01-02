@@ -34,8 +34,8 @@ int main() {
 
 	Interfejs o_grze(&gridSizeF, &window); bool obw = false; o_grze.setCharSize(gridSizeU * 2 / 3);
 	o_grze.setString(
-		" Gra zostala stworzona jako podobienstwo PACMAN'a.\n Zasady sa takie same jak w PacMan'ie.\nUnikaj wrogow,zbieraj punkty."
-		"\nCzas jest ograniczony, na skonczenie gry jest 5 minut", " ", " ", " Powrot ");
+		" Gra zostala stworzona jako podobienstwo PACMAN'a.\n\n Zasady sa takie same jak w PacMan'ie.\n\nUnikaj wrogow,zbieraj punkty."
+		, " ", " ", " Powrot ");
 	o_grze.setPosition(-7 * gridSizeF, -2 * gridSizeF);
 
 	sf::Clock zegar;//tworzymy obiekt mierzący czas
@@ -53,17 +53,20 @@ int main() {
 	Mapa poziom2(2, &map_height, &map_width, &gridSizeF, &window);
 	Mapa poziom3(3, &map_height, &map_width, &gridSizeF, &window);
 	int poziom = 0,indeks=0;
-	WrogCS ConSh(&window);
+	WrogCS ConSh(&gridSizeF,&window);
 
 	std::string linia;
-	sf::Text napisy, * koniec, bufor[20], odczytane, nazwa;//machnąć tu wskaźniki
+	sf::Text napisy, * koniec, odczytane, nazwa, wynik;//machnąć tu wskaźniki
 	sf::String playerName; playerName.clear();//Łańcuch znaków wpisany przez użytkownika
 
-	std::vector<sf::Text> lista;
+	std::vector<sf::Text> lista,odwrocona_lista;
 
 	koniec = new sf::Text;
 	sf::Font czcionka; czcionka.loadFromFile("Arial.ttf"); napisy.setFont(czcionka);
-	napisy.setCharacterSize(gridSizeU * 2 / 3); napisy.setFillColor(sf::Color::Cyan); napisy.setPosition(0, 0);
+	napisy.setCharacterSize(gridSizeU * 2 / 3); napisy.setFillColor(sf::Color::Magenta); napisy.setPosition(0, 0);
+
+	wynik.setCharacterSize(gridSizeU * 2 / 3); wynik.setFont(czcionka); wynik.setString("Twoj wynik: ");
+
 	koniec->setFont(czcionka); koniec->setCharacterSize(2 * gridSizeU); koniec->setStyle(sf::Text::Underlined);
 	koniec->setPosition(koniec->getGlobalBounds().width, window.getSize().y / 2 - 2 * gridSizeF);
 
@@ -72,22 +75,17 @@ int main() {
 
 	nazwa.setFont(czcionka); nazwa.setCharacterSize(gridSizeU); nazwa.setFillColor(sf::Color::White); nazwa.setPosition(3 * gridSizeU, 6 * gridSizeU);
 	//PĘTLA GRY
-	while (window.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
-	{
+	while (window.isOpen()){
 		sf::Event event;
-		while (window.pollEvent(event))
-		{
+		while (window.pollEvent(event)){
 			if (event.type == sf::Event::Closed)
 				window.close();
-
 			if ((event.type == sf::Event::TextEntered) && (wybor_poziomu.getIntState() == true)&&(gra!=true)) {
 				playerName += event.text.unicode;
 				nazwa.setString(playerName);
 			}
-
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				Esc();
-
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
 				Help();
 		}
@@ -105,30 +103,27 @@ int main() {
 		if(wybor_poziomu.getIntState()==true)
 		window.draw(nazwa);
 
-		p1.setName(nazwa.getString());
-
-		bool spr = true; 
+		p1.setName(nazwa.getString());//ustalanie nazwy gracza na wpisaną przez użytkownika
+ 
 		std::ifstream odczyt;
 		odczyt.open("tab.txt", std::ios::in);
 		if (odczyt.good() == true) {
 			while (getline(odczyt, linia))//(plik z którego odczytujemy, zmienna przechowująca odczytaną linie
 			{
 				odczytane.setString(linia);
-				if(lista.size()<20)
 				lista.push_back(odczytane);//przerzucam do wektora pełną linie z pliku
 			}
 		}
 		odczyt.close();
 
-		for (int i = 0; i < 20; i++) {
-			for (int j = 0; j < 20; j++) {
-				if (lista[i].getString() == lista[j].getString())//jeśli wartość w wektorze będzie taka sama jak w buforze zwracam indeks
-					std::cout<< i;
-			}
-		}
-		if (tab_wynikow.getIntState() == true) {
+		if (tab_wynikow.getIntState() == true)//rysowanie danych odczytanych z pliku następuje tylko przy wyświetlaniu odpowiedniego interfejsu
+		{
 			for (int i = 0; i < 20; i++) {
-				odczytane = lista[i];
+				if (odwrocona_lista.size() < 20) {
+					odwrocona_lista.push_back(lista.back());
+					lista.pop_back();
+				}
+				odczytane = odwrocona_lista[i];
 				odczytane.setPosition(odczytane.getPosition().x, odczytane.getPosition().y + gridSizeF * i);
 				if (odczytane.getPosition().y < window.getSize().y - 4 * gridSizeF)
 					window.draw(odczytane);
@@ -146,12 +141,12 @@ int main() {
 				glowne_menu.setIntState(false);  o_grze.setIntState(true); }
 				  break;
 			case 4: {
-				glowne_menu.setIntState(false); exit(0); }//menu.close();}//działa ale zakomentowane jest żeby wyjatek nie wyskakiwał
+				glowne_menu.setIntState(false); exit(0); }//menu.close();} jest exit(0) ponieważ zamykanie okna kończyło się błędem
 				  break;
 			}
 		}
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (wybor_poziomu.getIntState() == true)) {
-			if (playerName.isEmpty()) {
+			if (playerName.isEmpty()) {//warunek blokujący możliwość wybrania poziomu bez podania nazwy użytkownika
 				nazwa.setString("Wpisz nazwe: ");
 				if (wybor_poziomu.getIntIndeks() == 4){
 					wybor_poziomu.setIntState(false); glowne_menu.setIntState(true);
@@ -167,7 +162,6 @@ int main() {
 					  break;
 				}
 			}
-			
 		}
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (tab_wynikow.getIntState() == true) && (tab_wynikow.getIntIndeks() == 4)) {
 			glowne_menu.setIntState(true); tab_wynikow.setIntState(false);
@@ -175,23 +169,23 @@ int main() {
 		if (((sf::Mouse::isButtonPressed(sf::Mouse::Left)) == true) && (o_grze.getIntState() == true) && (o_grze.getIntIndeks() == 4)) {
 			glowne_menu.setIntState(true); o_grze.setIntState(false);
 		}
-		if (gra == true) {
-			window.clear(sf::Color::Black);
-			//aktualnie wyświetlane napisy
+		if (gra == true) {//warunek blokujący wyświetlanie się interfejsów i gry w tym samym czasie
+			window.clear(sf::Color(20,20,20));
+			//akutalizowane dane gracza
 			napisy.setString(infoGracza(p1.getPunkty(), p1.getCzas(),poziom,p1.getName()).str());
 			//kolizje
-			switch (poziom) {
+			switch (poziom) {//kolizje gracza ze ścianami na każym poziomie trudnośći
 			case 0:p1.wall_collision(mapka.wrogowie); break;
 			case 1:p1.wall_collision(poziom1.wrogowie); break;
 			case 2:p1.wall_collision(poziom2.wrogowie); break;
 			case 3:p1.wall_collision(poziom3.wrogowie); break;
 			}
-			ConSh.setPoz(poziom);
-			p1.enemy_collision(w_1.wrogowie);
-			p1.scores_collision(pkt.wrogowie);
-			p1.ConSh_collision(ConSh.getBounds());
+			ConSh.setPoz(poziom);//ustawienie poziomu trudności Convex shape'a
+			p1.enemy_collision(w_1.wrogowie);//kolizje z wrogami
+			p1.scores_collision(pkt.wrogowie);//"zjadanie" punktów
+			p1.ConSh_collision(ConSh.getBounds());//kolizje z Convex shapem
 			switch (poziom) {
-			case 0:mapka.setPoints(pkt.wrogowie); break;
+			case 0:mapka.setPoints(pkt.wrogowie); break;//kolizje mapy z punktami - jeśli ściana i punkt się stykają punkt jest usuwany
 			case 1:poziom1.setPoints(pkt.wrogowie); break;
 			case 2:poziom2.setPoints(pkt.wrogowie); break;
 			case 3:poziom3.setPoints(pkt.wrogowie); break;
@@ -199,9 +193,12 @@ int main() {
 			p1.update();
 			if ((p1.getPlayerState() != false) && (p1.Win() == true)) {//koniec gry - gracz wygrywa
 				koniec->setString("Wygrales!"); koniec->setFillColor(sf::Color::Green);
+				napisy.setPosition(5 * gridSizeF, 5 * gridSizeF); napisy.setScale(1.5, 1.5); napisy.setFillColor(sf::Color::Green);
+				wynik.setPosition(napisy.getPosition().x, napisy.getPosition().y - gridSizeU);
+				wynik.setFillColor(napisy.getFillColor()); wynik.setScale(napisy.getScale());
 				window.draw(*koniec);
 			}
-			else if (p1.getPlayerState() != false) {
+			else if (p1.getPlayerState() != false) {//warunek trwania gry - gracz żyje i rysowanie elementów gry
 				switch (poziom) {
 				case 0:mapka.draw(); break;
 				case 1:poziom1.draw(); break;
@@ -211,24 +208,28 @@ int main() {
 				p1.draw(); w_1.draw(); pkt.draw(); ConSh.draw();
 			}//rysowanie gracza (oraz elemetnów gry),jeśli gracz "żyje"
 
-			else if ((p1.getPlayerState() == false))
-			{//gra się kończy po śmierci gracza
+			else if ((p1.getPlayerState() == false)){//gra się kończy po śmierci gracza
 				koniec->setString("YOU'RE DEAD!"); koniec->setFillColor(sf::Color(255, 0, 0, 128));
+				napisy.setPosition(5 * gridSizeF, 5 * gridSizeF); napisy.setScale(1.5, 1.5); napisy.setFillColor(sf::Color::Red);
+				wynik.setPosition(napisy.getPosition().x, napisy.getPosition().y - gridSizeU);
+				wynik.setFillColor(napisy.getFillColor()); wynik.setScale(napisy.getScale());
 				window.draw(*koniec);
 			}
 
-			window.draw(napisy);
+			window.draw(napisy);//rysowanie aktualizowanych danych gracza
+			window.draw(wynik);
 
 			if (zegar.getElapsedTime().asMilliseconds() > 10.0f) {//nieregularny wróg porusza się i obraca 
 				ConSh.ruch();
 				w_1.ruch();
 				if ((p1.Win() == true) || (p1.getPlayerState() == false))
-					animacja(koniec, &gridSizeF, window.getSize());
+					animacja(koniec, &gridSizeF, window.getSize());//animowany napis
 				zegar.restart();
 			}
 		}
 		window.display();
 		if (((p1.getPlayerState() == false) || (p1.Win() == true))&&(dane->nazwa!= p1.getName())) {
+			//zapis do pliku danych z gry - pkt,nazwa,poziom,czas gry po przegranej lub wygranej
 			dane->nazwa = p1.getName(); dane->punkty = p1.getPunkty(); dane->czas = p1.getCzas(); dane->poziom = poziom;
 			std::ofstream wpis;wpis.open("tab.txt",std::ios::out|std::ios::app);
 			wpis << "\nNazwa: " << dane->nazwa << "\tPoziom: " << dane->poziom << "\tPkt: " << dane->punkty << "\t\tCzas gry: ";
@@ -250,7 +251,8 @@ int main() {
 	delete koniec; delete dane;
 	return 0;
 }
-std::stringstream infoGracza(int pkt, int czas,int poziom,std::string nazwa) {std::stringstream ss;
+std::stringstream infoGracza(int pkt, int czas,int poziom,std::string nazwa) {//funkcja odpowiadająca za przekazanie danych do strumienia "stringów"
+	std::stringstream ss;
 		ss << "Gracz: " << nazwa <<"\tPoziom: "<<poziom<<"\t";
 	if (czas < 10) {
 		ss << "Czas: " << "00:0" << czas ; }
@@ -264,7 +266,7 @@ std::stringstream infoGracza(int pkt, int czas,int poziom,std::string nazwa) {st
 	ss << "\tPunkty: " << pkt;;
 	return ss;
 }
-void Help(){
+void Help(){//okno pomocy
 	float obr = 0;
 	sf::Clock zegar;
 	sf::RenderWindow pomoc(sf::VideoMode(400.f, 400.f), "Pomoc");
@@ -295,7 +297,7 @@ void Help(){
 		}
 	}
 }
-void Esc(){
+void Esc(){//okno przy naciśnięciu klawisza ESC
 	bool wyjdz=false, zostan=false;
 	sf::Vector2f wymiar, zakres; zakres.x = 100.f; zakres.y = 80.f;
 	sf::RenderWindow Esc(sf::VideoMode(400.f, 400.f), "Czy napewno");
@@ -307,7 +309,6 @@ void Esc(){
 	pyt.setPosition(wymiar.x/24,wymiar.y/8); pyt.setFont(czcionka);
 	tak.setString("Tak"); tak.setCharacterSize(40); tak.setFont(czcionka); tak.setPosition(wymiar.x/8,wymiar.y/2);
 	nie.setString("Nie"); nie.setCharacterSize(40); nie.setFont(czcionka); nie.setPosition((Esc.getSize().x - wymiar.x /4), wymiar.y / 2);
-
 	while (Esc.isOpen())
 	{
 		sf::Event event;

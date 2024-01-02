@@ -20,7 +20,7 @@ void Wrog::init(){
 		przesuniecie = new sf::Vector2f[ilosc];
 		krztalt.setSize(sf::Vector2f(*grid, *grid / 2));
 		krztalt.setFillColor(sf::Color::Red);//wrogowie bêd¹ mieæ czerwony
-		switch (i%4) {
+		switch (i%4) {//losowa pozycja tworzenia siê wrogów
 		case 0:krztalt.setPosition(getRandomNumber(gen, *grid, 2 * (*grid)), getRandomNumber(gen, (*grid), 2 * (*grid)));
 			break;
 		case 1:krztalt.setPosition(getRandomNumber(gen, window->getSize().x-2 * (*grid), window->getSize().x - (*grid)), getRandomNumber(gen, (*grid), 2 * (*grid)));
@@ -44,8 +44,7 @@ void Wrog::draw(){
 		window->draw(krztalt);
 	}
 }
-void Wrog::ruch()
-{
+void Wrog::ruch(){
 	float losV = (rand()%5+3)+poziom*2;
 	for (int i = 0; i < wrogowie.size(); i++) {
 		if (wrogowie[i].getPosition().x > (window->getSize().x-2*(*grid)))
@@ -73,13 +72,13 @@ Ziarno::~Ziarno(){
 }
 void Ziarno::init(){
 	ilosc =//40;
-		(*szerokosc)* (*wysokosc);
+		(*szerokosc)* (*wysokosc);//iloœæ mo¿liwych punktów do zdobycia zale¿y od szerokoœci i wysokoœci okna (iloœci siatek)
 	licznik = 0;
 	for (int i = 0; i < this->ilosc; i++){
 		krztalt.setSize(sf::Vector2f(*grid/2, *grid/2));
 		krztalt.setRotation(45.f);
-		krztalt.setFillColor(sf::Color(62,158,84));
-		krztalt.setPosition(((*grid) * (i % (*szerokosc))) + krztalt.getSize().x, ((*grid) * licznik)+4.f);//obecnie losowa pozycja 
+		krztalt.setFillColor(sf::Color(203, 197, 135));
+		krztalt.setPosition(((*grid) * (i % (*szerokosc))) + krztalt.getSize().x, ((*grid) * licznik)+4.f);
 		if (i % (*szerokosc)== (*szerokosc)-1)
 			licznik++;
 		wrogowie.push_back(krztalt);
@@ -120,13 +119,13 @@ void Mapa::setPoints(std::vector< sf::RectangleShape >& pkt) {
 	}
 }
 //------------------------------------------------------------- ConvexShape -------------------------------------------------------------
-WrogCS::WrogCS(sf::RenderWindow* okno)
+WrogCS::WrogCS(float *grid,sf::RenderWindow* okno)
 {
-	this->window = okno; init();
+	this->grid = grid; this->window = okno; init();
 }
 WrogCS::~WrogCS()
 {
-	delete window;
+	delete window; delete grid;
 }
 void WrogCS::init() {
 	
@@ -142,19 +141,20 @@ void WrogCS::init() {
 
 	gwiazda.setFillColor(sf::Color::Red);
 	gwiazda.setPosition(sf::Vector2f((window->getSize().x + gwiazda.getGlobalBounds().left) / 2, -gwiazda.getGlobalBounds().top));
+	gwiazda.setScale((*grid)/30.f, (*grid) / 30.f);
 }
 void WrogCS::ruch()
 {
-	float vCS = rand() % (5 + poziom)+1;//losowanie prêdkoœci z przedzia³u 1 do 4
+	float vCS = rand() % (5 + poziom)+1;//losowanie prêdkoœci z przedzia³u
 	gwiazda.setRotation(obrot += 7.5f);
 
 	if (gwiazda.getPosition().x > (window->getSize().x + gwiazda.getGlobalBounds().left) / 2)
 		przesuniecie.x = -2.f;
 	if (gwiazda.getPosition().x < (window->getSize().x - gwiazda.getGlobalBounds().left) / 2)
 		przesuniecie.x = 3.f;
-	if (gwiazda.getPosition().y > (window->getSize().y - gwiazda.getGlobalBounds().top / 12))//liczba 12 dobrana eksperymentalnie
+	if (gwiazda.getPosition().y > (window->getSize().y - gwiazda.getGlobalBounds().top / 12))
 		przesuniecie.y = -1*vCS;
-	if (gwiazda.getPosition().y < (window->getSize().y + gwiazda.getGlobalBounds().top) / 12)//liczba 12 dobrana eksperymentalnie
+	if (gwiazda.getPosition().y < (window->getSize().y + gwiazda.getGlobalBounds().top) / 12)
 		przesuniecie.y = 1*vCS;
 
 	gwiazda.move(sf::Vector2f(przesuniecie));

@@ -6,8 +6,7 @@ class Gracz{
 	sf::RenderWindow *window;
 	sf::Texture *tekstura;
 	sf::Sprite *zawodnik;
-	sf::Vector2f predkosc;
-	sf::Vector2f pozycja;
+	sf::Vector2f predkosc, pozycja;
 	std::string nazwa;
 	float *grid, czas_gry;
 	clock_t t_start, t_stop;//zmienne przechowuj¹ce iloœæ cykli procesora od narysowania do usuniecia gracza

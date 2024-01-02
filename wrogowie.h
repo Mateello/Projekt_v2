@@ -7,7 +7,7 @@ class Wrog{
 protected:
 	int ilosc,poziom;
 	sf::RenderWindow *window;
-	sf::RectangleShape krztalt;//tej zmiennej nie usuwam poniewa¿ na niej bazowuj¹ funckje pushback dla wektorów wrogów i ziaren
+	sf::RectangleShape krztalt;//tej zmiennej nie usuwam poniewa¿ na niej bazowuj¹ funckje pushback dla wektorów wrogów, ziaren i map
 	sf::Vector2f pozycja;
 	sf::Vector2f* przesuniecie;
 	float *grid;
@@ -45,12 +45,12 @@ public:
 class WrogCS
 {
 	int poziom;
-	float obrot = 0;
+	float obrot = 0,*grid;
 	sf::ConvexShape gwiazda;//nie wiem czemu jak zrobi³em to na wskaŸnikach to wskaŸnik zwraca³ NULL
 	sf::RenderWindow* window;
 	sf::Vector2f przesuniecie;
 public:
-	WrogCS(sf::RenderWindow* okno); ~WrogCS();
+	WrogCS(float* grid, sf::RenderWindow* okno); ~WrogCS();
 	void init();
 	void ruch();
 	void draw();

@@ -4,3 +4,33 @@ Nazwa: Teest	Poziom: 3	Pkt: 4		Czas gry: 00:09
 Nazwa: sda	Poziom: 2	Pkt: 17		Czas gry: 00:11
 Nazwa: asdasdsada	Poziom: 2	Pkt: 9		Czas gry: 00:04
 Nazwa: asdadwa	Poziom: 2	Pkt: 10		Czas gry: 00:04
+Nazwa: Mateso	Poziom: 2	Pkt: 73		Czas gry: 63:0 1
+Nazwa: ABx	Poziom: 1	Pkt: 37		Czas gry: 00:11
+Nazwa: sdadaf	Poziom: 2	Pkt: 125		Czas gry: 00:24
+Nazwa: asd	Poziom: 2	Pkt: 11		Czas gry: 00:03
+Nazwa: sadasf	Poziom: 2	Pkt: 45		Czas gry: 00:12
+Nazwa: dasd	Poziom: 2	Pkt: 47		Czas gry: 00:10
+Nazwa: asda	Poziom: 1	Pkt: 17		Czas gry: 00:08
+Nazwa: fs	Poziom: 2	Pkt: 42		Czas gry: 00:13
+Nazwa: d	Poziom: 1	Pkt: 5		Czas gry: 00:02
+Nazwa: a	Poziom: 1	Pkt: 2		Czas gry: 00:02
+Nazwa: d	Poziom: 1	Pkt: 22		Czas gry: 00:05
+Nazwa: d	Poziom: 1	Pkt: 20		Czas gry: 00:03
+Nazwa: d	Poziom: 2	Pkt: 27		Czas gry: 00:05
+Nazwa: s	Poziom: 1	Pkt: 25		Czas gry: 00:04
+Nazwa: s	Poziom: 1	Pkt: 22		Czas gry: 00:03
+Nazwa: d	Poziom: 1	Pkt: 162		Czas gry: 00:15
+Nazwa: d	Poziom: 1	Pkt: 9		Czas gry: 00:02
+Nazwa: d	Poziom: 1	Pkt: 8		Czas gry: 00:03
+Nazwa: JD	Poziom: 2	Pkt: 11		Czas gry: 00:08
+Nazwa: s	Poziom: 2	Pkt: 84		Czas gry: 00:18
+Nazwa: dsad	Poziom: 1	Pkt: 153		Czas gry: 00:23
+Nazwa: Ale idzie	Poziom: 1	Pkt: 21		Czas gry: 00:18
+Nazwa: ghhf	Poziom: 3	Pkt: 51		Czas gry: 00:10
+Nazwa: fs	Poziom: 1	Pkt: 8		Czas gry: 00:02
+Nazwa: gf	Poziom: 1	Pkt: 9		Czas gry: 00:03
+Nazwa: hoho	Poziom: 2	Pkt: 7		Czas gry: 00:06
+Nazwa: ej nie	Poziom: 1	Pkt: 3		Czas gry: 00:17
+Nazwa: ale	Poziom: 2	Pkt: 11		Czas gry: 00:07
+Nazwa: ok	Poziom: 1	Pkt: 7		Czas gry: 00:05
+Nazwa: testtest	Poziom: 1	Pkt: 17		Czas gry: 00:07
