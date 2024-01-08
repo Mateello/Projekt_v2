@@ -21,6 +21,7 @@ public:
 	void ruch();
 	std::vector<sf::RectangleShape> wrogowie;
 	void setPoziom(int p);
+	void setStartPosition();
 };
 class Ziarno:public Wrog //zbierane przez gracza, zwiêkszaj¹ iloœæ punktów
 {
@@ -56,4 +57,5 @@ public:
 	void draw();
 	sf::FloatRect getBounds();
 	void setPoz(int poz);
+	void setStartPosition();
 };

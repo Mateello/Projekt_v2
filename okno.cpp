@@ -62,7 +62,7 @@ void Interfejs::rysuj()//zmiana koloru napisów, przy którym jest myszka
 		}
 	}
 	else
-		setIntIndeks(NULL);
+		setIntIndeks(0);
 }
 void Interfejs::rysuj(bool obw){//rysowanie interfejsów, których zadaniem jest wyœwietlanie danych
 	if (*narysowany == true)

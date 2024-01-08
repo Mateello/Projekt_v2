@@ -13,26 +13,32 @@ class Gracz{
 	int punkty;
 	bool alivePlayer,wygrana;//zmienna odpowowiadaj¹ca za to czy gracz "¿yje" czy nie
 public:
+	int zycie;
 	Gracz(float *grid,sf::RenderWindow *okno);
 	~Gracz();
 	void update();
 	void init();
 	void draw();
 	void setPosition(float x, float y);
+	void setPosition();
 	void wall_collision(std::vector< sf::RectangleShape > &sciany);//kolizje ze scianami
-	void enemy_collision(std::vector< sf::RectangleShape >&wrog);//kolizje z wrogami
+	bool enemy_collision(std::vector< sf::RectangleShape >&wrog);//kolizje z wrogami
 	void scores_collision(std::vector< sf::RectangleShape >&pkt);//kolizje z punktami
-	void ConSh_collision(sf::FloatRect bounds);
+	bool ConSh_collision(sf::FloatRect bounds);
 	int getPunkty();
+	void initTimer();
+	void stopTimer();
 	int getCzas();
 	bool Win();
 	bool getPlayerState();
+	void resetLive();
+	void resetScores();
 	void setName(std::string s);
 	std::string getName();
 	sf::FloatRect getBounds();
 };
 //-------------------------------------------------------------- Zapis do pliku ----------------------------------------------------
 struct Dane{
-	int punkty,czas,poziom;
+	int punkty,czas,poziom,zycie;
 	std::string nazwa;
 };

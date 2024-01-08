@@ -20,16 +20,15 @@ void Wrog::init(){
 		przesuniecie = new sf::Vector2f[ilosc];
 		krztalt.setSize(sf::Vector2f(*grid, *grid / 2));
 		krztalt.setFillColor(sf::Color::Red);//wrogowie bêd¹ mieæ czerwony
-		switch (i%4) {//losowa pozycja tworzenia siê wrogów
-		case 0:krztalt.setPosition(getRandomNumber(gen, *grid, 2 * (*grid)), getRandomNumber(gen, (*grid), 2 * (*grid)));
+		switch (i % 4) {//pozycja wrogów w rogach mapy
+		case 0:krztalt.setPosition(0,0);//getRandomNumber(gen, *grid, 2 * (*grid)-1), getRandomNumber(gen, (*grid), 2 * (*grid)-1));
 			break;
-		case 1:krztalt.setPosition(getRandomNumber(gen, window->getSize().x-2 * (*grid), window->getSize().x - (*grid)), getRandomNumber(gen, (*grid), 2 * (*grid)));
+		case 1:krztalt.setPosition(window->getSize().x,0);
 			break;
-		case 2:krztalt.setPosition(getRandomNumber(gen, window->getSize().x - 2 * (*grid), window->getSize().x - (*grid)),
-			getRandomNumber(gen, window->getSize().y - 2 * (*grid), window->getSize().y - (*grid)));
+		case 2:krztalt.setPosition(window->getSize().x, window->getSize().y);
+			getRandomNumber(gen, window->getSize().y, window->getSize().y );
 			break;
-		case 3:krztalt.setPosition(getRandomNumber(gen, *grid, 2 * (*grid)), getRandomNumber(gen, 
-			window->getSize().y - 2 * (*grid), window->getSize().y - (*grid)));
+		case 3:krztalt.setPosition(0, window->getSize().y);
 			break;
 		}
 		pozycja.x = krztalt.getPosition().x; pozycja.y = krztalt.getPosition().y;
@@ -47,13 +46,13 @@ void Wrog::draw(){
 void Wrog::ruch(){
 	float losV = (rand()%5+3)+poziom*2;
 	for (int i = 0; i < wrogowie.size(); i++) {
-		if (wrogowie[i].getPosition().x > (window->getSize().x-2*(*grid)))
-			przesuniecie[i].x = -2.f*poziom;
-		if (wrogowie[i].getPosition().x< (*grid)+wrogowie[i].getGlobalBounds().width)
-			przesuniecie[i].x = 2.f*poziom;
-		if (wrogowie[i].getPosition().y > (window->getSize().y - 2*(*grid)))
+		if (wrogowie[i].getPosition().x > (window->getSize().x-(*grid)- wrogowie[i].getGlobalBounds().width))
+			przesuniecie[i].x = -2.f* poziom;
+		else if (wrogowie[i].getPosition().x< (*grid))//+wrogowie[i].getGlobalBounds().width)
+			przesuniecie[i].x = 2.f* poziom;
+		if (wrogowie[i].getPosition().y > (window->getSize().y - (*grid) - wrogowie[i].getGlobalBounds().height))
 			przesuniecie[i].y = -1.f*losV;
-		if (wrogowie[i].getPosition().y < 2*(*grid))
+		else if (wrogowie[i].getPosition().y <(*grid))
 			przesuniecie[i].y = 1.f*losV;
 		
 		wrogowie[i].move(sf::Vector2f(przesuniecie[i]));
@@ -61,6 +60,20 @@ void Wrog::ruch(){
 }
 void Wrog::setPoziom(int p) {
 	poziom = p;
+}
+void Wrog::setStartPosition() {
+	for (int i = 0; i < this->ilosc; i++) {
+		switch (i % 4) {//pozycja wrogów w rogach mapy
+		case 0:wrogowie[i].setPosition(*grid, *grid);
+			break;
+		case 1:wrogowie[i].setPosition(window->getSize().x - (*grid), (*grid));
+			break;
+		case 2:wrogowie[i].setPosition(window->getSize().x - (*grid), window->getSize().y - (*grid));
+			break;
+		case 3:wrogowie[i].setPosition(*grid, window->getSize().y - (*grid));
+			break;
+		}
+	}
 }
 //------------------------------------------------------------- Punkty -------------------------------------------------------------
 Ziarno::Ziarno(int* wysokosc, int* szerokosc, float *grid, sf::RenderWindow* okno)//:Wrog(okno)//---powielalo mi iloœæ punktów
@@ -140,7 +153,7 @@ void WrogCS::init() {
 	gwiazda.setPoint(7, sf::Vector2f(-30.f, 10.f));
 
 	gwiazda.setFillColor(sf::Color::Red);
-	gwiazda.setPosition(sf::Vector2f((window->getSize().x + gwiazda.getGlobalBounds().left) / 2, -gwiazda.getGlobalBounds().top));
+	setStartPosition();
 	gwiazda.setScale((*grid)/30.f, (*grid) / 30.f);
 }
 void WrogCS::ruch()
@@ -169,4 +182,7 @@ sf::FloatRect WrogCS::getBounds()
 }
 void WrogCS::setPoz(int poz) {
 	poziom = poz;
+}
+void WrogCS::setStartPosition() {
+	gwiazda.setPosition(sf::Vector2f((window->getSize().x - gwiazda.getGlobalBounds().width) / 2, -gwiazda.getGlobalBounds().height));
 }

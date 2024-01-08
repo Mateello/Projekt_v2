@@ -1,36 +1,124 @@
-Nazwa: Mateo	Poziom: 1	Pkt: 21		Czas gry: 00:07
-Nazwa: Les GO	Poziom: 1	Pkt: 13		Czas gry: 00:08
-Nazwa: Teest	Poziom: 3	Pkt: 4		Czas gry: 00:09
-Nazwa: sda	Poziom: 2	Pkt: 17		Czas gry: 00:11
-Nazwa: asdasdsada	Poziom: 2	Pkt: 9		Czas gry: 00:04
-Nazwa: asdadwa	Poziom: 2	Pkt: 10		Czas gry: 00:04
-Nazwa: Mateso	Poziom: 2	Pkt: 73		Czas gry: 63:0 1
-Nazwa: ABx	Poziom: 1	Pkt: 37		Czas gry: 00:11
-Nazwa: sdadaf	Poziom: 2	Pkt: 125		Czas gry: 00:24
-Nazwa: asd	Poziom: 2	Pkt: 11		Czas gry: 00:03
-Nazwa: sadasf	Poziom: 2	Pkt: 45		Czas gry: 00:12
-Nazwa: dasd	Poziom: 2	Pkt: 47		Czas gry: 00:10
-Nazwa: asda	Poziom: 1	Pkt: 17		Czas gry: 00:08
-Nazwa: fs	Poziom: 2	Pkt: 42		Czas gry: 00:13
-Nazwa: d	Poziom: 1	Pkt: 5		Czas gry: 00:02
-Nazwa: a	Poziom: 1	Pkt: 2		Czas gry: 00:02
-Nazwa: d	Poziom: 1	Pkt: 22		Czas gry: 00:05
-Nazwa: d	Poziom: 1	Pkt: 20		Czas gry: 00:03
-Nazwa: d	Poziom: 2	Pkt: 27		Czas gry: 00:05
-Nazwa: s	Poziom: 1	Pkt: 25		Czas gry: 00:04
-Nazwa: s	Poziom: 1	Pkt: 22		Czas gry: 00:03
-Nazwa: d	Poziom: 1	Pkt: 162		Czas gry: 00:15
-Nazwa: d	Poziom: 1	Pkt: 9		Czas gry: 00:02
-Nazwa: d	Poziom: 1	Pkt: 8		Czas gry: 00:03
-Nazwa: JD	Poziom: 2	Pkt: 11		Czas gry: 00:08
-Nazwa: s	Poziom: 2	Pkt: 84		Czas gry: 00:18
-Nazwa: dsad	Poziom: 1	Pkt: 153		Czas gry: 00:23
-Nazwa: Ale idzie	Poziom: 1	Pkt: 21		Czas gry: 00:18
-Nazwa: ghhf	Poziom: 3	Pkt: 51		Czas gry: 00:10
-Nazwa: fs	Poziom: 1	Pkt: 8		Czas gry: 00:02
-Nazwa: gf	Poziom: 1	Pkt: 9		Czas gry: 00:03
-Nazwa: hoho	Poziom: 2	Pkt: 7		Czas gry: 00:06
-Nazwa: ej nie	Poziom: 1	Pkt: 3		Czas gry: 00:17
-Nazwa: ale	Poziom: 2	Pkt: 11		Czas gry: 00:07
-Nazwa: ok	Poziom: 1	Pkt: 7		Czas gry: 00:05
-Nazwa: testtest	Poziom: 1	Pkt: 17		Czas gry: 00:07
+
+Nazwa: fd	Poziom: 1	Pkt: 8		Czas gry: 00:03
+Nazwa: Wpisz nazwe: 	Poziom: 1	Pkt: 10		Czas gry: 00:03
+Nazwa: f	Poziom: 1	Pkt: 10		Czas gry: 00:03
+Nazwa: fj	Poziom: 1	Pkt: 10		Czas gry: 00:03
+Nazwa: fjk	Poziom: 1	Pkt: 10		Czas gry: 00:03
+Nazwa: ok	Poziom: 1	Pkt: 18		Czas gry: 00:07
+Nazwa: okf	Poziom: 1	Pkt: 18		Czas gry: 00:07
+Nazwa: okfd	Poziom: 1	Pkt: 18		Czas gry: 00:07
+Nazwa: dciekawe	Poziom: 2	Pkt: 12		Czas gry: 00:17
+Nazwa: dsf	Poziom: 1	Pkt: 10		Czas gry: 00:18
+Nazwa: hg	Poziom: 1	Pkt: 9		Czas gry: 00:07
+Nazwa: okej	Poziom: 3	Pkt: 8		Czas gry: 00:05
+Nazwa: okejh	Poziom: 1	Pkt: 8		Czas gry: 00:05
+Nazwa: jl	Poziom: 1	Pkt: 4		Czas gry: 00:08
+Nazwa: LOL	Poziom: 1	Pkt: 8		Czas gry: 00:06
+Nazwa: koko	Poziom: 1	Pkt: 1		Czas gry: 00:00
+Nazwa: f	Poziom: 1	Pkt: 41		Czas gry: 00:10
+Nazwa: sdws	Poziom: 1	Pkt: 3		Czas gry: 198: 3
+Nazwa: Marek	Poziom: 1	Pkt: 6		Czas gry: 00:08
+Nazwa: Marek	Poziom: 1	Pkt: 63		Czas gry: 00:12
+Nazwa: Marek	Poziom: 1	Pkt: 5		Czas gry: 00:07
+Nazwa: Marek	Poziom: 1	Pkt: 100		Czas gry: 00:40
+Nazwa: g	Poziom: 2	Pkt: 67		Czas gry: 00:04
+Nazwa: j	Poziom: 1	Pkt: 12		Czas gry: 00:01
+Nazwa: hg	Poziom: 1	Pkt: 15		Czas gry: 00:02
+Nazwa: gopg	Poziom: 1	Pkt: 8		Czas gry: 00:00
+Nazwa: PG	Poziom: 1	Pkt: 6		Czas gry: 00:00
+Nazwa: POG	Poziom: 1	Pkt: 2		Czas gry: 00:00
+Nazwa: gf	Poziom: 1	Pkt: 19		Czas gry: 00:02
+Nazwa: gfg	Poziom: 1	Pkt: 20		Czas gry: 00:0-4
+Nazwa: koko	Poziom: 1	Pkt: 1		Czas gry: 00:00
+Nazwa: hophop	Poziom: 2	Pkt: 15		Czas gry: 00:01
+Nazwa: hyhy	Poziom: 2	Pkt: 16		Czas gry: 00:01
+Nazwa: hyhyf	Poziom: 2	Pkt: 16		Czas gry: 00:01
+Nazwa: test	Poziom: 1	Pkt: 4		Czas gry: 00:01
+Nazwa: fd	Poziom: 1	Pkt: 5		Czas gry: 00:01
+Nazwa: gigi	Poziom: 1	Pkt: 9		Czas gry: 00:01
+Nazwa: hphp	Poziom: 1	Pkt: 12		Czas gry: 00:02
+Nazwa: g	Poziom: 1	Pkt: 2		Czas gry: 00:00
+Nazwa: hhhh	Poziom: 1	Pkt: 9		Czas gry: 00:01
+Nazwa: g	Poziom: 1	Pkt: 37		Czas gry: 00:04
+Nazwa: ghgh	Poziom: 1	Pkt: 16		Czas gry: 00:03
+Nazwa: f	Poziom: 1	Pkt: 22		Czas gry: 00:03
+Nazwa: f	Poziom: 1	Pkt: 110		Czas gry: 00:14
+Nazwa: gf	Poziom: 1	Pkt: 26		Czas gry: 00:04
+Nazwa: ed	Poziom: 1	Pkt: 83		Czas gry: 00:06
+Nazwa: hphp	Poziom: 1	Pkt: 105		Czas gry: 00:08
+Nazwa: gfgf	Poziom: 1	Pkt: 46		Czas gry: 00:05
+Nazwa: gf	Poziom: 1	Pkt: 101		Czas gry: 00:09
+Nazwa: gfd	Poziom: 1	Pkt: 1		Czas gry: 00:00
+Nazwa: gh	Poziom: 1	Pkt: 17		Czas gry: 00:01
+Nazwa: fd	Poziom: 1	Pkt: 71		Czas gry: 00:05
+Nazwa: fgfg	Poziom: 1	Pkt: 7		Czas gry: 00:01
+Nazwa: dfdf	Poziom: 1	Pkt: 17		Czas gry: 00:01
+Nazwa: fg	Poziom: 1	Pkt: 21		Czas gry: 00:03
+Nazwa: dee	Poziom: 1	Pkt: 23		Czas gry: 00:03
+Nazwa: df	Poziom: 1	Pkt: 14		Czas gry: 00:04
+Nazwa: gg	Poziom: 1	Pkt: 28		Czas gry: 00:04
+Nazwa: gf	Poziom: 1	Pkt: 26		Czas gry: 00:04
+Nazwa: gg	Poziom: 1	Pkt: 6		Czas gry: 00:02
+Nazwa: hh	Poziom: 1	Pkt: 32		Czas gry: 00:10
+Nazwa: g	Poziom: 1	Pkt: 6		Czas gry: 00:01
+Nazwa: g	Poziom: 1	Pkt: 33		Czas gry: 00:08
+Nazwa: h	Poziom: 1	Pkt: 14		Czas gry: 00:06
+Nazwa: f	Poziom: 1	Pkt: 12		Czas gry: 00:03
+Nazwa: g	Poziom: 1	Pkt: 1		Czas gry: 00:04
+Nazwa: g	Poziom: 1	Pkt: 14		Czas gry: 00:04
+Nazwa: f	Poziom: 1	Pkt: 14		Czas gry: 00:02
+Nazwa: f	Poziom: 1	Pkt: 7		Czas gry: 00:01
+Nazwa: g	Poziom: 1	Pkt: 22		Czas gry: 00:06
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 15		Czas gry: 00:0-1
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 11		Czas gry: 00:0-1
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 14		Czas gry: 00:05
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 13		Czas gry: 00:05
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 16		Czas gry: 00:05
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 15		Czas gry: 00:05
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 15		Czas gry: 00:04
+Nazwa: jak	Poziom: 1	Zycie: 2	Pkt: 8		Czas gry: 00:16
+Nazwa: h	Poziom: 1	Zycie: 1	Pkt: 8		Czas gry: 00:10
+Nazwa: g	Poziom: 1	Zycie: 1	Pkt: 8		Czas gry: 00:30
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:06
+Nazwa: hghg	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:04
+Nazwa: ggo	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:23
+Nazwa: fd	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:16
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 0		Czas gry: 00:02
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 0		Czas gry: 00:02
+Nazwa: h	Poziom: 1	Zycie: 3	Pkt: 0		Czas gry: 00:09
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:00
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:04
+Nazwa: h	Poziom: 1	Zycie: 3	Pkt: 0		Czas gry: 00:02
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:02
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:02
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:11
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 66		Czas gry: 00:12
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 10		Czas gry: 00:04
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 9		Czas gry: 00:02
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 68		Czas gry: 00:09
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 9		Czas gry: 00:03
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 10		Czas gry: 00:02
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 13		Czas gry: 00:02
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 13		Czas gry: 00:03
+Nazwa: jg	Poziom: 1	Zycie: 0	Pkt: 15		Czas gry: 00:03
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 9		Czas gry: 00:03
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 16		Czas gry: 00:03
+Nazwa: h	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:05
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:04
+Nazwa: g	Poziom: 1	Zycie: 2	Pkt: 8		Czas gry: 00:06
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:04
+Nazwa: g	Poziom: 1	Zycie: 2	Pkt: 8		Czas gry: 00:06
+Nazwa: gw	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:02
+Nazwa: h	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:05
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:04
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:04
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:03
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:06
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:04
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:05
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:05
+Nazwa: gjjjj	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:05
+Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:04	Wygrana!
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:02	Przegrana
+Nazwa: ggggggggggg	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:05	Wygrana!
+Nazwa: h	Poziom: 1	Zycie: 2	Pkt: 8		Czas gry: 00:06	Wygrana!
