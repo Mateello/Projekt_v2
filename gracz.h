@@ -1,4 +1,7 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 #include<iostream>
 #include <vector>
 
@@ -8,6 +11,8 @@ class Gracz{
 	sf::Sprite *zawodnik;
 	sf::Vector2f predkosc, pozycja;
 	std::string nazwa;
+	sf::SoundBuffer punkt,wrog;
+	sf::Sound punktS,wrogS;
 	float *grid, czas_gry;
 	clock_t t_start, t_stop;//zmienne przechowuj¹ce iloœæ cykli procesora od narysowania do usuniecia gracza
 	int punkty;

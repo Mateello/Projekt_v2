@@ -122,3 +122,23 @@ Nazwa: g	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:04	Wygrana!
 Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 0		Czas gry: 00:02	Przegrana
 Nazwa: ggggggggggg	Poziom: 1	Zycie: 3	Pkt: 8		Czas gry: 00:05	Wygrana!
 Nazwa: h	Poziom: 1	Zycie: 2	Pkt: 8		Czas gry: 00:06	Wygrana!
+Nazwa: Soltys	Poziom: 1	Zycie: 0	Pkt: 121		Czas gry: 00:20	Przegrana
+Nazwa: ju	Poziom: 2	Zycie: 0	Pkt: 22		Czas gry: 00:06	Przegrana
+Nazwa: GRa	Poziom: 1	Zycie: 0	Pkt: 80		Czas gry: 00:15	Przegrana
+Nazwa: gf	Poziom: 3	Zycie: 0	Pkt: 48		Czas gry: 00:09	Przegrana
+Nazwa: hdfhf	Poziom: 1	Zycie: 0	Pkt: 78		Czas gry: 00:18	Przegrana
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 170		Czas gry: 00:20	Przegrana
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 84		Czas gry: 00:09	Przegrana
+Nazwa: k	Poziom: 2	Zycie: 0	Pkt: 99		Czas gry: 00:13	Przegrana
+Nazwa: j	Poziom: 3	Zycie: 0	Pkt: 35		Czas gry: 00:05	Przegrana
+Nazwa: j	Poziom: 2	Zycie: 0	Pkt: 56		Czas gry: 00:06	Przegrana
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 437		Czas gry: 71: 1	Przegrana
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 51		Czas gry: 00:07	Przegrana
+Nazwa: j	Poziom: 1	Zycie: 0	Pkt: 18		Czas gry: 00:09	Przegrana
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 18		Czas gry: 00:04	Przegrana
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 200		Czas gry: 00:19	Przegrana
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 46		Czas gry: 00:06	Przegrana
+Nazwa: k	Poziom: 1	Zycie: 0	Pkt: 197		Czas gry: 00:19	Przegrana
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 102		Czas gry: 00:10	Przegrana
+Nazwa: h	Poziom: 1	Zycie: 0	Pkt: 28		Czas gry: 00:07	Przegrana
+Nazwa: g	Poziom: 1	Zycie: 0	Pkt: 16		Czas gry: 00:06	Przegrana

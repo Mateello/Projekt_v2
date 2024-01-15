@@ -1,6 +1,9 @@
 ﻿//ARiSS 3 Sem, s194336 Projekt - "PACMAN"
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 #include<iostream>
 #include<sstream>//string stream, do wyświetlania czasu gry, punktów, nazwy gracza
 #include<fstream>
@@ -13,8 +16,21 @@ void Help();
 void Esc();
 void animacja(sf::Text* koniec, float* grid, sf::Vector2u size);
 void Wyjscie(sf::Text *wyjscie, float* grid, sf::Vector2i* m_poz);
-
 int main() {
+	sf::Music intro;
+	intro.openFromFile("pacman_beginning.wav");
+	intro.setLoop(true); intro.setVolume(3);
+
+	sf::SoundBuffer win, lose;
+	win.loadFromFile("niebo.wav");
+	lose.loadFromFile("deathschwing.wav");
+	sf::Sound end_w, end_l;
+	end_w.setBuffer(win);
+	end_l.setBuffer(lose);
+
+	sf::Image imag;
+	imag.loadFromFile("ikona.png");
+
 	srand(time(NULL));
 
 	float gridSizeF = 30.f;//zmienna przechowująca zmienną "siatki" gry od niej będą zależeć wielkość okna, mapy itd
@@ -22,6 +38,7 @@ int main() {
 	
 	sf::RenderWindow window(sf::VideoMode(gridSizeF * 30, gridSizeF * 25), "PacMan");
 	window.setFramerateLimit(60);
+	window.setIcon(imag.getSize().x,imag.getSize().y,imag.getPixelsPtr());
 
 	int map_height = (int)window.getSize().y / gridSizeF;
 	int map_width = (int)window.getSize().x / gridSizeF;
@@ -42,8 +59,8 @@ int main() {
 
 	Interfejs o_grze(&gridSizeF, &window); bool obw = false; o_grze.setCharSize(gridSizeU * 2 / 3);
 	o_grze.setString(
-		" Gra zostala stworzona jako podobienstwo PACMAN'a.\n\n Zasady sa takie same jak w PacMan'ie.\n\nUnikaj wrogow,zbieraj punkty."
-		, " ", " ", " Powrot ");
+		" Gra zostala stworzona jako podobienstwo PACMAN'a.\n\n Zasady sa opieraja sie na zasadach PacMan'a.\n\nMusisz unikac wrogow oraz zbierac punkty"
+		"\n\nSterowanie klawiszami WSAD ", " ", " ", " Powrot ");
 	o_grze.setPosition(-7 * gridSizeF, -2 * gridSizeF);
 
 	sf::Clock zegar;//Obiekt mierzący czas
@@ -115,6 +132,12 @@ int main() {
 	nazwa.setFillColor(sf::Color::White);
 	nazwa.setPosition(3 * gridSizeU, 6 * gridSizeU);
 
+	if (gra == false)
+		intro.play();
+	if ((p1.getPlayerState() == false) && (p1.Win() == false))
+		end_l.play();
+	else if ((p1.zycie > 0) && (p1.Win() == true))
+		end_w.play();
 	//PĘTLA GRY
 	while (window.isOpen()) {
 		sf::Event event;
@@ -125,10 +148,10 @@ int main() {
 				playerName += event.text.unicode;
 				nazwa.setString(playerName);
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-				Esc();
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
 				Help();
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+				Esc();
 		}
 		if (gra == false) {//wszystkie elementy rysowane związane z interfejsami itp
 			//zmnienne aktualizujące pozycję myszki
@@ -217,6 +240,7 @@ int main() {
 			}
 		}
 		else{//if(p1.getPlayerState()==true) {//warunek blokujący wyświetlanie się interfejsów i gry w tym samym czasie
+			intro.stop();
 			window.clear(sf::Color(20, 20, 20));
 			//akutalizowane dane gracza
 			napisy.setString(infoGracza(p1.getPunkty(), p1.getCzas(), poziom,p1.zycie, p1.getName()).str());
@@ -277,7 +301,7 @@ int main() {
 				koniec->setFillColor(sf::Color(255, 0, 0, 128));
 				
 				napisy.setPosition(2.f * gridSizeF, 5 * gridSizeF);
-				napisy.setScale(1.5, 1.5); 
+				napisy.setScale(1.1, 1.1); 
 				napisy.setFillColor(sf::Color::Red);
 				
 				wynik.setPosition(napisy.getPosition().x, napisy.getPosition().y - gridSizeU);
@@ -371,11 +395,12 @@ std::stringstream infoGracza(int pkt, int czas,int poziom,int zycie,std::string 
 void Help(){//okno pomocy
 	float obr = 0;
 	sf::Clock zegar;
-	sf::RenderWindow pomoc(sf::VideoMode(400.f, 400.f), "Pomoc");
+	sf::RenderWindow pomoc(sf::VideoMode(600.f, 400.f), "Pomoc");
 	sf::Font czcionka; sf::Text tekst;
 	czcionka.loadFromFile("Righteous-Regular.ttf");
-	tekst.setString("Pomoc"); tekst.setFillColor(sf::Color::Green); tekst.setCharacterSize(50);
-	tekst.setPosition(sf::Vector2f(0.f,0.f)); tekst.setFont(czcionka);
+	tekst.setString("Pomoc:\n\n" "Poruszanie: \nW -> w gore" "\nS -> w dol\nD -> w prawo\nA -> w lewo"); 
+	tekst.setFillColor(sf::Color::Green); tekst.setCharacterSize(30);
+	tekst.setPosition(sf::Vector2f(200.f,75.f)); tekst.setFont(czcionka);
 	while (pomoc.isOpen())//jeśli gra (silnik gry) będzie działać, okna będą wyświetlane
 	{
 		sf::Event event;
@@ -383,20 +408,20 @@ void Help(){//okno pomocy
 			if (event.type = sf::Event::Closed){
 				pomoc.close();
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::F2)){
 				pomoc.close();
 			}
 		}
 		pomoc.clear();
 		pomoc.draw(tekst);
 		pomoc.display();
-		if (zegar.getElapsedTime().asMilliseconds() > 10.0f){
+		/**if (zegar.getElapsedTime().asMilliseconds() > 10.0f) {
 			if ((tekst.getPosition().x < 200.f) && (tekst.getPosition().y < 200.f))
 			{tekst.move(0.5f, 1.f); tekst.setRotation(5.f);}
 			else
 				tekst.move(0.f, 0.f);
 			zegar.restart();
-		}
+		}*/
 	}
 }
 void Esc(){//okno przy naciśnięciu klawisza ESC
